@@ -190,7 +190,7 @@ const LayHeader = defineComponent({
       </div>
       <el-scrollbar v-else>
         <el-backtop
-          :title="t('buttons.pureBackTop')"
+          title="回到顶部"
           :right="10"
           :bottom="10"
           target=".main-container .el-scrollbar__wrap"

@@ -153,7 +153,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 100,
             menuType: 0, // 菜单类型（0代表菜单、1代表iframe、2代表外链、3代表按钮）
-            title: "menus.pureExternalPage"
+            title: "外部页面"
           },
           {
             parentId: 100,
@@ -183,56 +183,56 @@ export default defineFakeRoute([
             parentId: 104,
             id: 105,
             menuType: 1,
-            title: "menus.pureEpDoc"
+            title: "element-plus"
           },
           {
             parentId: 104,
             id: 106,
             menuType: 1,
-            title: "menus.pureTailwindcssDoc"
+            title: "tailwindcss"
           },
           {
             parentId: 104,
             id: 107,
             menuType: 1,
-            title: "menus.pureVueDoc"
+            title: "vue3"
           },
           {
             parentId: 104,
             id: 108,
             menuType: 1,
-            title: "menus.pureViteDoc"
+            title: "vite"
           },
           {
             parentId: 104,
             id: 109,
             menuType: 1,
-            title: "menus.purePiniaDoc"
+            title: "pinia"
           },
           {
             parentId: 104,
             id: 110,
             menuType: 1,
-            title: "menus.pureRouterDoc"
+            title: "vue-router"
           },
           // 权限管理
           {
             parentId: 0,
             id: 200,
             menuType: 0,
-            title: "menus.purePermission"
+            title: "权限管理"
           },
           {
             parentId: 200,
             id: 201,
             menuType: 0,
-            title: "menus.purePermissionPage"
+            title: "页面权限"
           },
           {
             parentId: 200,
             id: 202,
             menuType: 0,
-            title: "menus.purePermissionButton"
+            title: "按钮权限"
           },
           {
             parentId: 202,
@@ -257,100 +257,100 @@ export default defineFakeRoute([
             parentId: 0,
             id: 600,
             menuType: 0,
-            title: "menus.pureTenantManagement"
+            title: "租户管理"
           },
           {
             parentId: 600,
             id: 701,
             menuType: 0,
-            title: "menus.pureTenantList"
+            title: "租户列表"
           },
           {
             parentId: 600,
             id: 702,
             menuType: 0,
-            title: "menus.pureTenantPackage"
+            title: "租户套餐"
           },
           // 系统管理
           {
             parentId: 0,
             id: 300,
             menuType: 0,
-            title: "menus.pureSysManagement"
+            title: "系统管理"
           },
           {
             parentId: 300,
             id: 301,
             menuType: 0,
-            title: "menus.pureUser"
+            title: "用户管理"
           },
           {
             parentId: 300,
             id: 302,
             menuType: 0,
-            title: "menus.pureRole"
+            title: "角色管理"
           },
           {
             parentId: 300,
             id: 303,
             menuType: 0,
-            title: "menus.pureSystemMenu"
+            title: "菜单管理"
           },
           {
             parentId: 300,
             id: 304,
             menuType: 0,
-            title: "menus.pureDept"
+            title: "部门管理"
           },
           {
             parentId: 300,
             id: 305,
             menuType: 0,
-            title: "menus.pureDict"
+            title: "字典管理"
           },
           // 系统监控
           {
             parentId: 0,
             id: 400,
             menuType: 0,
-            title: "menus.pureSysMonitor"
+            title: "系统监控"
           },
           {
             parentId: 400,
             id: 401,
             menuType: 0,
-            title: "menus.pureOnlineUser"
+            title: "在线用户"
           },
           {
             parentId: 400,
             id: 402,
             menuType: 0,
-            title: "menus.pureLoginLog"
+            title: "登录日志"
           },
           {
             parentId: 400,
             id: 403,
             menuType: 0,
-            title: "menus.pureOperationLog"
+            title: "操作日志"
           },
           {
             parentId: 400,
             id: 404,
             menuType: 0,
-            title: "menus.pureSystemLog"
+            title: "系统日志"
           },
           // 标签页操作
           {
             parentId: 0,
             id: 500,
             menuType: 0,
-            title: "menus.pureTabs"
+            title: "标签页操作"
           },
           {
             parentId: 500,
             id: 501,
             menuType: 0,
-            title: "menus.pureTabs"
+            title: "标签页操作"
           },
           {
             parentId: 500,
@@ -406,7 +406,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 100,
             menuType: 0, // 菜单类型（0代表菜单、1代表iframe、2代表外链、3代表按钮）
-            title: "menus.pureExternalPage",
+            title: "外部页面",
             name: "PureIframe",
             path: "/iframe",
             component: "",
@@ -526,7 +526,7 @@ export default defineFakeRoute([
             parentId: 104,
             id: 105,
             menuType: 1,
-            title: "menus.pureEpDoc",
+            title: "element-plus",
             name: "FrameEp",
             path: "/iframe/ep",
             component: "",
@@ -550,7 +550,7 @@ export default defineFakeRoute([
             parentId: 104,
             id: 106,
             menuType: 1,
-            title: "menus.pureTailwindcssDoc",
+            title: "tailwindcss",
             name: "FrameTailwindcss",
             path: "/iframe/tailwindcss",
             component: "",
@@ -574,7 +574,7 @@ export default defineFakeRoute([
             parentId: 104,
             id: 107,
             menuType: 1,
-            title: "menus.pureVueDoc",
+            title: "vue3",
             name: "FrameVue",
             path: "/iframe/vue3",
             component: "",
@@ -598,7 +598,7 @@ export default defineFakeRoute([
             parentId: 104,
             id: 108,
             menuType: 1,
-            title: "menus.pureViteDoc",
+            title: "vite",
             name: "FrameVite",
             path: "/iframe/vite",
             component: "",
@@ -622,7 +622,7 @@ export default defineFakeRoute([
             parentId: 104,
             id: 109,
             menuType: 1,
-            title: "menus.purePiniaDoc",
+            title: "pinia",
             name: "FramePinia",
             path: "/iframe/pinia",
             component: "",
@@ -646,7 +646,7 @@ export default defineFakeRoute([
             parentId: 104,
             id: 110,
             menuType: 1,
-            title: "menus.pureRouterDoc",
+            title: "vue-router",
             name: "FrameRouter",
             path: "/iframe/vue-router",
             component: "",
@@ -671,7 +671,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 200,
             menuType: 0,
-            title: "menus.purePermission",
+            title: "权限管理",
             name: "PurePermission",
             path: "/permission",
             component: "",
@@ -695,7 +695,7 @@ export default defineFakeRoute([
             parentId: 200,
             id: 201,
             menuType: 0,
-            title: "menus.purePermissionPage",
+            title: "页面权限",
             name: "PermissionPage",
             path: "/permission/page/index",
             component: "",
@@ -719,7 +719,7 @@ export default defineFakeRoute([
             parentId: 200,
             id: 202,
             menuType: 0,
-            title: "menus.purePermissionButton",
+            title: "按钮权限",
             name: "PermissionButton",
             path: "/permission/button",
             component: "",
@@ -743,7 +743,7 @@ export default defineFakeRoute([
             parentId: 202,
             id: 203,
             menuType: 0,
-            title: "menus.purePermissionButtonRouter",
+            title: "路由返回按钮权限",
             name: "PermissionButtonRouter",
             path: "/permission/button/router",
             component: "permission/button/index",
@@ -839,7 +839,7 @@ export default defineFakeRoute([
             parentId: 202,
             id: 204,
             menuType: 0,
-            title: "menus.purePermissionButtonLogin",
+            title: "登录接口返回按钮权限",
             name: "PermissionButtonLogin",
             path: "/permission/button/login",
             component: "permission/button/perms",
@@ -936,7 +936,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 600,
             menuType: 0,
-            title: "menus.pureTenantManagement",
+            title: "租户管理",
             name: "PureTenant",
             path: "/tenant",
             component: "",
@@ -960,7 +960,7 @@ export default defineFakeRoute([
             parentId: 600,
             id: 701,
             menuType: 0,
-            title: "menus.pureTenantList",
+            title: "租户列表",
             name: "TenantList",
             path: "/tenant/list/index",
             component: "",
@@ -984,7 +984,7 @@ export default defineFakeRoute([
             parentId: 600,
             id: 702,
             menuType: 0,
-            title: "menus.pureTenantPackage",
+            title: "租户套餐",
             name: "TenantPackage",
             path: "/tenant/package/index",
             component: "",
@@ -1009,7 +1009,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 300,
             menuType: 0,
-            title: "menus.pureSysManagement",
+            title: "系统管理",
             name: "PureSystem",
             path: "/system",
             component: "",
@@ -1033,7 +1033,7 @@ export default defineFakeRoute([
             parentId: 300,
             id: 301,
             menuType: 0,
-            title: "menus.pureUser",
+            title: "用户管理",
             name: "SystemUser",
             path: "/system/user/index",
             component: "",
@@ -1057,7 +1057,7 @@ export default defineFakeRoute([
             parentId: 300,
             id: 302,
             menuType: 0,
-            title: "menus.pureRole",
+            title: "角色管理",
             name: "SystemRole",
             path: "/system/role/index",
             component: "",
@@ -1081,7 +1081,7 @@ export default defineFakeRoute([
             parentId: 300,
             id: 303,
             menuType: 0,
-            title: "menus.pureSystemMenu",
+            title: "菜单管理",
             name: "SystemMenu",
             path: "/system/menu/index",
             component: "",
@@ -1105,7 +1105,7 @@ export default defineFakeRoute([
             parentId: 300,
             id: 304,
             menuType: 0,
-            title: "menus.pureDept",
+            title: "部门管理",
             name: "SystemDept",
             path: "/system/dept/index",
             component: "",
@@ -1129,7 +1129,7 @@ export default defineFakeRoute([
             parentId: 300,
             id: 305,
             menuType: 0,
-            title: "menus.pureDict",
+            title: "字典管理",
             name: "SystemDict",
             path: "/system/dict/index",
             component: "",
@@ -1154,7 +1154,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 400,
             menuType: 0,
-            title: "menus.pureSysMonitor",
+            title: "系统监控",
             name: "PureMonitor",
             path: "/monitor",
             component: "",
@@ -1178,7 +1178,7 @@ export default defineFakeRoute([
             parentId: 400,
             id: 401,
             menuType: 0,
-            title: "menus.pureOnlineUser",
+            title: "在线用户",
             name: "OnlineUser",
             path: "/monitor/online-user",
             component: "monitor/online/index",
@@ -1202,7 +1202,7 @@ export default defineFakeRoute([
             parentId: 400,
             id: 402,
             menuType: 0,
-            title: "menus.pureLoginLog",
+            title: "登录日志",
             name: "LoginLog",
             path: "/monitor/login-logs",
             component: "monitor/logs/login/index",
@@ -1226,7 +1226,7 @@ export default defineFakeRoute([
             parentId: 400,
             id: 403,
             menuType: 0,
-            title: "menus.pureOperationLog",
+            title: "操作日志",
             name: "OperationLog",
             path: "/monitor/operation-logs",
             component: "monitor/logs/operation/index",
@@ -1250,7 +1250,7 @@ export default defineFakeRoute([
             parentId: 400,
             id: 404,
             menuType: 0,
-            title: "menus.pureSystemLog",
+            title: "系统日志",
             name: "SystemLog",
             path: "/monitor/system-logs",
             component: "monitor/logs/system/index",
@@ -1275,7 +1275,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 500,
             menuType: 0,
-            title: "menus.pureTabs",
+            title: "标签页操作",
             name: "PureTabs",
             path: "/tabs",
             component: "",
@@ -1299,7 +1299,7 @@ export default defineFakeRoute([
             parentId: 500,
             id: 501,
             menuType: 0,
-            title: "menus.pureTabs",
+            title: "标签页操作",
             name: "Tabs",
             path: "/tabs/index",
             component: "",
@@ -1870,7 +1870,7 @@ export default defineFakeRoute([
                 parentId: 0,
                 id: 400,
                 menuType: 0,
-                title: "menus.pureSysMonitor",
+                title: "系统监控",
                 name: "PureMonitor",
                 path: "/monitor",
                 component: "",
@@ -1894,7 +1894,7 @@ export default defineFakeRoute([
                 parentId: 400,
                 id: 401,
                 menuType: 0,
-                title: "menus.pureOnlineUser",
+                title: "在线用户",
                 name: "OnlineUser",
                 path: "/monitor/online-user",
                 component: "monitor/online/index",
@@ -1918,7 +1918,7 @@ export default defineFakeRoute([
                 parentId: 400,
                 id: 402,
                 menuType: 0,
-                title: "menus.pureLoginLog",
+                title: "登录日志",
                 name: "LoginLog",
                 path: "/monitor/login-logs",
                 component: "monitor/logs/login/index",
@@ -1942,7 +1942,7 @@ export default defineFakeRoute([
                 parentId: 400,
                 id: 403,
                 menuType: 0,
-                title: "menus.pureOperationLog",
+                title: "操作日志",
                 name: "OperationLog",
                 path: "/monitor/operation-logs",
                 component: "monitor/logs/operation/index",
@@ -1966,7 +1966,7 @@ export default defineFakeRoute([
                 parentId: 400,
                 id: 404,
                 menuType: 0,
-                title: "menus.pureSystemLog",
+                title: "系统日志",
                 name: "SystemLog",
                 path: "/monitor/system-logs",
                 component: "monitor/logs/system/index",
@@ -2235,7 +2235,7 @@ export default defineFakeRoute([
             parentId: 0,
             id: 100,
             menuType: 0, // 菜单类型（0代表菜单、1代表iframe、2代表外链、3代表按钮）
-            title: "menus.pureExternalPage"
+            title: "外部页面"
           },
           {
             parentId: 100,
@@ -2265,56 +2265,56 @@ export default defineFakeRoute([
             parentId: 104,
             id: 105,
             menuType: 1,
-            title: "menus.pureEpDoc"
+            title: "element-plus"
           },
           {
             parentId: 104,
             id: 106,
             menuType: 1,
-            title: "menus.pureTailwindcssDoc"
+            title: "tailwindcss"
           },
           {
             parentId: 104,
             id: 107,
             menuType: 1,
-            title: "menus.pureVueDoc"
+            title: "vue3"
           },
           {
             parentId: 104,
             id: 108,
             menuType: 1,
-            title: "menus.pureViteDoc"
+            title: "vite"
           },
           {
             parentId: 104,
             id: 109,
             menuType: 1,
-            title: "menus.purePiniaDoc"
+            title: "pinia"
           },
           {
             parentId: 104,
             id: 110,
             menuType: 1,
-            title: "menus.pureRouterDoc"
+            title: "vue-router"
           },
           // 权限管理
           {
             parentId: 0,
             id: 200,
             menuType: 0,
-            title: "menus.purePermission"
+            title: "权限管理"
           },
           {
             parentId: 200,
             id: 201,
             menuType: 0,
-            title: "menus.purePermissionPage"
+            title: "页面权限"
           },
           {
             parentId: 200,
             id: 202,
             menuType: 0,
-            title: "menus.purePermissionButton"
+            title: "按钮权限"
           },
           {
             parentId: 202,
@@ -2339,81 +2339,81 @@ export default defineFakeRoute([
             parentId: 0,
             id: 300,
             menuType: 0,
-            title: "menus.pureSysManagement"
+            title: "系统管理"
           },
           {
             parentId: 300,
             id: 301,
             menuType: 0,
-            title: "menus.pureUser"
+            title: "用户管理"
           },
           {
             parentId: 300,
             id: 302,
             menuType: 0,
-            title: "menus.pureRole"
+            title: "角色管理"
           },
           {
             parentId: 300,
             id: 303,
             menuType: 0,
-            title: "menus.pureSystemMenu"
+            title: "菜单管理"
           },
           {
             parentId: 300,
             id: 304,
             menuType: 0,
-            title: "menus.pureDept"
+            title: "部门管理"
           },
           {
             parentId: 300,
             id: 305,
             menuType: 0,
-            title: "menus.pureDict"
+            title: "字典管理"
           },
           // 系统监控
           {
             parentId: 0,
             id: 400,
             menuType: 0,
-            title: "menus.pureSysMonitor"
+            title: "系统监控"
           },
           {
             parentId: 400,
             id: 401,
             menuType: 0,
-            title: "menus.pureOnlineUser"
+            title: "在线用户"
           },
           {
             parentId: 400,
             id: 402,
             menuType: 0,
-            title: "menus.pureLoginLog"
+            title: "登录日志"
           },
           {
             parentId: 400,
             id: 403,
             menuType: 0,
-            title: "menus.pureOperationLog"
+            title: "操作日志"
           },
           {
             parentId: 400,
             id: 404,
             menuType: 0,
-            title: "menus.pureSystemLog"
+            title: "系统日志"
           },
           // 标签页操作
           {
             parentId: 0,
             id: 500,
             menuType: 0,
-            title: "menus.pureTabs"
+            title: "标签页操作"
           },
           {
             parentId: 500,
             id: 501,
             menuType: 0,
-            title: "menus.pureTabs"
+            title: "标签页操作"
           },
           {
             parentId: 500,

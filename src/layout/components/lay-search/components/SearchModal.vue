@@ -293,7 +293,7 @@ onKeyStroke("ArrowDown", handleDown);
       v-model="keyword"
       size="large"
       clearable
-      :placeholder="t('search.purePlaceholder')"
+      placeholder="搜索菜单（支持拼音搜索）"
       @input="handleSearch"
     >
       <template #prefix>
@@ -305,7 +305,7 @@ onKeyStroke("ArrowDown", handleDown);
     </el-input>
     <div class="search-content">
       <el-scrollbar ref="scrollbarRef" max-height="calc(90vh - 140px)">
-        <el-empty v-if="showEmpty" :description="t('search.pureEmpty')" />
+        <el-empty v-if="showEmpty" description="暂无搜索结果" />
         <SearchHistory
           v-if="showSearchHistory"
           ref="historyRef"

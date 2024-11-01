@@ -12,8 +12,8 @@ const { t } = useI18n();
 
 <template>
   <div class="dark:text-white">
-    <p>{{ t("menus.pureMenu1") }}</p>
-    <p style="text-indent: 2em">{{ t("menus.pureMenu1-1") }}</p>
+    <p>菜单1</p>
+    <p style="text-indent: 2em">菜单1-1</p>
     <el-input v-model="input" />
   </div>
 </template>

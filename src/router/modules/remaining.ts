@@ -7,7 +7,7 @@ export default [
     name: "Login",
     component: () => import("@/views/login/index.vue"),
     meta: {
-      title: $t("menus.pureLogin"),
+      title: "登录",
       showLink: false,
       rank: 101
     }
@@ -34,7 +34,7 @@ export default [
     name: "Empty",
     component: () => import("@/views/empty/index.vue"),
     meta: {
-      title: $t("menus.pureEmpty"),
+      title: "暂无搜索结果",
       showLink: false,
       rank: 103
     }
@@ -44,7 +44,7 @@ export default [
     name: "AccountSettings",
     component: () => import("@/views/account-settings/index.vue"),
     meta: {
-      title: $t("buttons.pureAccountSettings"),
+      title: "账户设置",
       showLink: false,
       rank: 104
     }

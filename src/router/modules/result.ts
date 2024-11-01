@@ -6,7 +6,7 @@ export default {
   redirect: "/result/success",
   meta: {
     icon: "ri:checkbox-circle-line",
-    title: $t("menus.pureResult"),
+    title: $t("结果页面"),
     rank: result
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "Success",
       component: () => import("@/views/result/success.vue"),
       meta: {
-        title: $t("menus.pureSuccess")
+        title: $t("成功页面")
       }
     },
     {
@@ -23,7 +23,7 @@ export default {
       name: "Fail",
       component: () => import("@/views/result/fail.vue"),
       meta: {
-        title: $t("menus.pureFail")
+        title: $t("失败页面")
       }
     }
   ]

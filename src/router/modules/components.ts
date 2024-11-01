@@ -1,4 +1,4 @@
-import { $t } from "@/plugins/i18n";
+// import { $t } from "@/plugins/i18n";
 import { components } from "@/router/enums";
 
 export default {
@@ -6,7 +6,7 @@ export default {
   redirect: "/components/dialog",
   meta: {
     icon: "ep:menu",
-    title: $t("menus.pureComponents"),
+    title: "组件",
     rank: components
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "DialogPage",
       component: () => import("@/views/components/dialog/index.vue"),
       meta: {
-        title: $t("menus.pureDialog")
+        title: "函数式弹框"
       }
     },
     {
@@ -23,7 +23,7 @@ export default {
       name: "Message",
       component: () => import("@/views/components/message.vue"),
       meta: {
-        title: $t("menus.pureMessage")
+        title: "消息提示"
       }
     },
     {
@@ -31,7 +31,7 @@ export default {
       name: "PureUpload",
       component: () => import("@/views/components/upload/index.vue"),
       meta: {
-        title: $t("menus.pureUpload")
+        title: "文件上传"
       }
     },
     {
@@ -39,7 +39,7 @@ export default {
       name: "CheckCard",
       component: () => import("@/views/components/check-card.vue"),
       meta: {
-        title: $t("menus.pureCheckCard"),
+        title: "多选卡片",
         extraIcon: "IF-pure-iconfont-new svg"
       }
     },
@@ -48,7 +48,7 @@ export default {
       name: "DatePicker",
       component: () => import("@/views/components/date-picker.vue"),
       meta: {
-        title: $t("menus.pureDatePicker")
+        title: "日期选择器"
       }
     },
     {
@@ -56,7 +56,7 @@ export default {
       name: "DateTimePicker",
       component: () => import("@/views/components/datetime-picker.vue"),
       meta: {
-        title: $t("menus.pureDateTimePicker")
+        title: "日期时间选择器"
       }
     },
     {
@@ -64,7 +64,7 @@ export default {
       name: "TimePicker",
       component: () => import("@/views/components/time-picker.vue"),
       meta: {
-        title: $t("menus.pureTimePicker")
+        title: "时间选择器"
       }
     },
     {
@@ -72,7 +72,7 @@ export default {
       name: "IconSelect",
       component: () => import("@/views/components/icon-select.vue"),
       meta: {
-        title: $t("menus.pureIconSelect")
+        title: "图标选择器"
       }
     },
     {
@@ -80,7 +80,7 @@ export default {
       name: "AnimateCss",
       component: () => import("@/views/components/animatecss.vue"),
       meta: {
-        title: $t("menus.pureAnimatecss")
+        title: "animate.css选择器"
       }
     },
     {
@@ -88,7 +88,7 @@ export default {
       name: "Cropping",
       component: () => import("@/views/components/cropping/index.vue"),
       meta: {
-        title: $t("menus.pureCropping")
+        title: "图片裁剪"
       }
     },
     {
@@ -96,7 +96,7 @@ export default {
       name: "Segmented",
       component: () => import("@/views/components/segmented.vue"),
       meta: {
-        title: $t("menus.pureSegmented")
+        title: "分段控制器"
       }
     },
     {
@@ -104,7 +104,7 @@ export default {
       name: "PureText",
       component: () => import("@/views/components/text.vue"),
       meta: {
-        title: $t("menus.pureText"),
+        title: "文本省略",
         extraIcon: "IF-pure-iconfont-new svg"
       }
     },
@@ -113,7 +113,7 @@ export default {
       name: "PureButton",
       component: () => import("@/views/components/el-button.vue"),
       meta: {
-        title: $t("menus.pureElButton")
+        title: "按钮"
       }
     },
     {
@@ -121,7 +121,7 @@ export default {
       name: "CheckButton",
       component: () => import("@/views/components/check-button.vue"),
       meta: {
-        title: $t("menus.pureCheckButton"),
+        title: "可选按钮",
         extraIcon: "IF-pure-iconfont-new svg"
       }
     },
@@ -130,7 +130,7 @@ export default {
       name: "ButtonPage",
       component: () => import("@/views/components/button.vue"),
       meta: {
-        title: $t("menus.pureButton")
+        title: "按钮动效"
       }
     },
     {
@@ -138,7 +138,7 @@ export default {
       name: "PureProgress",
       component: () => import("@/views/components/progress.vue"),
       meta: {
-        title: $t("menus.pureProgress")
+        title: "进度条"
       }
     },
     {
@@ -146,7 +146,7 @@ export default {
       name: "PureTag",
       component: () => import("@/views/components/tag.vue"),
       meta: {
-        title: $t("menus.pureTag")
+        title: "标签"
       }
     },
     {
@@ -154,7 +154,7 @@ export default {
       name: "Statistic",
       component: () => import("@/views/components/statistic.vue"),
       meta: {
-        title: $t("menus.pureStatistic")
+        title: "统计组件"
       }
     },
     {
@@ -162,7 +162,7 @@ export default {
       name: "Collapse",
       component: () => import("@/views/components/collapse.vue"),
       meta: {
-        title: $t("menus.pureCollapse")
+        title: "折叠面板"
       }
     },
     {
@@ -170,7 +170,7 @@ export default {
       name: "Cascader",
       component: () => import("@/views/components/cascader.vue"),
       meta: {
-        title: $t("menus.pureCascader")
+        title: "区域级联选择器"
       }
     },
     {
@@ -178,7 +178,7 @@ export default {
       name: "ColorPicker",
       component: () => import("@/views/components/color-picker.vue"),
       meta: {
-        title: $t("menus.pureColorPicker")
+        title: "颜色选择器"
       }
     },
     {
@@ -186,7 +186,7 @@ export default {
       name: "Selector",
       component: () => import("@/views/components/selector.vue"),
       meta: {
-        title: $t("menus.pureSelector")
+        title: "范围选择器"
       }
     },
     {
@@ -194,7 +194,7 @@ export default {
       name: "Waterfall",
       component: () => import("@/views/components/waterfall/index.vue"),
       meta: {
-        title: $t("menus.pureWaterfall")
+        title: "瀑布流无限滚动"
       }
     },
     {
@@ -202,7 +202,7 @@ export default {
       name: "SplitPane",
       component: () => import("@/views/components/split-pane.vue"),
       meta: {
-        title: $t("menus.pureSplitPane")
+        title: "切割面板"
       }
     },
     {
@@ -210,7 +210,7 @@ export default {
       name: "Swiper",
       component: () => import("@/views/components/swiper.vue"),
       meta: {
-        title: $t("menus.pureSwiper")
+        title: "Swiper插件"
       }
     },
     {
@@ -218,7 +218,7 @@ export default {
       name: "TimeLine",
       component: () => import("@/views/components/timeline.vue"),
       meta: {
-        title: $t("menus.pureTimeline")
+        title: "时间线"
       }
     },
     {
@@ -226,7 +226,7 @@ export default {
       name: "CountTo",
       component: () => import("@/views/components/count-to.vue"),
       meta: {
-        title: $t("menus.pureCountTo")
+        title: "数字动画"
       }
     },
     {
@@ -234,7 +234,7 @@ export default {
       name: "ContextMenu",
       component: () => import("@/views/components/contextmenu/index.vue"),
       meta: {
-        title: $t("menus.pureContextmenu")
+        title: "右键菜单"
       }
     },
     {
@@ -242,7 +242,7 @@ export default {
       name: "JsonEditor",
       component: () => import("@/views/components/json-editor.vue"),
       meta: {
-        title: $t("menus.pureJsonEditor")
+        title: "JSON编辑器"
       }
     },
     {
@@ -250,7 +250,7 @@ export default {
       name: "SeamlessScroll",
       component: () => import("@/views/components/seamless-scroll.vue"),
       meta: {
-        title: $t("menus.pureSeamless")
+        title: "无缝滚动"
       }
     },
     {
@@ -258,7 +258,7 @@ export default {
       name: "VirtualList",
       component: () => import("@/views/components/virtual-list/index.vue"),
       meta: {
-        title: $t("menus.pureVirtualList")
+        title: "虚拟列表"
       }
     }
   ]

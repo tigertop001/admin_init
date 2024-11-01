@@ -68,11 +68,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    v-loading="loading"
-    class="frame"
-    :element-loading-text="t('status.pureLoad')"
-  >
+  <div v-loading="loading" class="frame" element-loading-text="加载中...">
     <iframe ref="frameRef" :src="frameSrc" class="frame-iframe" />
   </div>
 </template>

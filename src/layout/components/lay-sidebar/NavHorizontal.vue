@@ -69,7 +69,7 @@ onMounted(() => {
     class="horizontal-header"
   >
     <div v-if="showLogo" class="horizontal-header-left" @click="backTopMenu">
-      <img :src="getLogo()" alt="logo" />
+      <img :src="getLogo()" alt="logo" class="w-2" />
       <span>{{ title }}</span>
     </div>
     <el-menu
@@ -166,19 +166,19 @@ onMounted(() => {
         <template #dropdown>
           <el-dropdown-item @click="toAccountSettings">
             <IconifyIconOffline class="mr-[5px]" :icon="AccountSettingsIcon" />
-            {{ t("buttons.pureAccountSettings") }}
+            账户设置
           </el-dropdown-item>
           <el-dropdown-menu>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline class="mr-[5px]" :icon="LogoutCircleRLine" />
-              {{ t("buttons.pureLoginOut") }}
+              退出系统
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
       <span
         class="set-icon navbar-bg-hover"
-        :title="t('buttons.pureOpenSystemSet')"
+        title="打开系统配置"
         @click="onPanel"
       >
         <IconifyIconOffline :icon="Setting" />

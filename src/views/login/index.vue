@@ -87,12 +87,12 @@ const onLogin = async (formEl: FormInstance | undefined) => {
               router
                 .push(getTopMenu(true).path)
                 .then(() => {
-                  message(t("login.pureLoginSuccess"), { type: "success" });
+                  message("登录成功", { type: "success" });
                 })
                 .finally(() => (disabled.value = false));
             });
           } else {
-            message(t("login.pureLoginFail"), { type: "error" });
+            message("登录失败", { type: "error" });
           }
         })
         .finally(() => (loading.value = false));
@@ -230,7 +230,7 @@ watch(loginDay, value => {
                 :rules="[
                   {
                     required: true,
-                    message: transformI18n($t('login.pureTenantReg')),
+                    message: '租户名',
                     trigger: 'blur'
                   }
                 ]"
@@ -239,7 +239,7 @@ watch(loginDay, value => {
                 <el-input
                   v-model="ruleForm.tenant"
                   clearable
-                  :placeholder="t('login.pureTenant')"
+                  placeholder="租户名"
                   :prefix-icon="useRenderIcon(Tenant)"
                 />
               </el-form-item>
@@ -250,7 +250,7 @@ watch(loginDay, value => {
                 :rules="[
                   {
                     required: true,
-                    message: transformI18n($t('login.pureUsernameReg')),
+                    message: '账号',
                     trigger: 'blur'
                   }
                 ]"
@@ -259,7 +259,7 @@ watch(loginDay, value => {
                 <el-input
                   v-model="ruleForm.username"
                   clearable
-                  :placeholder="t('login.pureUsername')"
+                  placeholder="账号"
                   :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>
@@ -271,7 +271,7 @@ watch(loginDay, value => {
                   v-model="ruleForm.password"
                   clearable
                   show-password
-                  :placeholder="t('login.purePassword')"
+                  placeholder="密码"
                   :prefix-icon="useRenderIcon(Lock)"
                 />
               </el-form-item>
@@ -282,7 +282,7 @@ watch(loginDay, value => {
                 <el-input
                   v-model="ruleForm.verifyCode"
                   clearable
-                  :placeholder="t('login.pureVerifyCode')"
+                  placeholder="验证码"
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
                 >
                   <template v-slot:append>
@@ -310,10 +310,11 @@ watch(loginDay, value => {
                         <option value="7">7</option>
                         <option value="30">30</option>
                       </select>
-                      {{ t("login.pureRemember") }}
+                      天内免登录
                       <IconifyIconOffline
                         v-tippy="{
-                          content: t('login.pureRememberInfo'),
+                          content:
+                            '勾选并登录后，规定天数内无需输入用户名和密码会自动登入系统',
                           placement: 'top'
                         }"
                         :icon="Info"
@@ -326,7 +327,7 @@ watch(loginDay, value => {
                     type="primary"
                     @click="useUserStoreHook().SET_CURRENTPAGE(4)"
                   >
-                    {{ t("login.pureForget") }}
+                    忘记密码?
                   </el-button>
                 </div>
                 <el-button
@@ -337,7 +338,7 @@ watch(loginDay, value => {
                   :disabled="disabled"
                   @click="onLogin(ruleFormRef)"
                 >
-                  {{ t("login.pureLogin") }}
+                  登录
                 </el-button>
               </el-form-item>
             </Motion>
@@ -362,9 +363,7 @@ watch(loginDay, value => {
           <Motion v-if="currentPage === 0" :delay="350">
             <el-form-item>
               <el-divider>
-                <p class="text-gray-500 text-xs">
-                  {{ t("login.pureThirdLogin") }}
-                </p>
+                <p class="text-gray-500 text-xs">第三方登录</p>
               </el-divider>
               <div class="w-full flex justify-evenly">
                 <span

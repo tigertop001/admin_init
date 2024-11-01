@@ -1,4 +1,4 @@
-import { $t } from "@/plugins/i18n";
+// import { $t } from "@/plugins/i18n";
 import { mind } from "@/router/enums";
 const IFrame = () => import("@/layout/frame.vue");
 
@@ -7,7 +7,7 @@ export default {
   redirect: "/mind-map/index",
   meta: {
     icon: "ri:mind-map",
-    title: $t("menus.pureMindMap"),
+    title: "思维导图",
     rank: mind
   },
   children: [
@@ -16,7 +16,7 @@ export default {
       name: "FrameMindMap",
       component: IFrame,
       meta: {
-        title: $t("menus.pureMindMap"),
+        title: "思维导图",
         keepAlive: true,
         frameSrc: "https://wanglin2.github.io/mind-map/#/"
       }

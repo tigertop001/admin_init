@@ -14,9 +14,9 @@ const { query } = useRoute();
 
 <template>
   <div class="dark:text-white">
-    <p>{{ t("menus.pureMenu1") }}</p>
-    <p style="text-indent: 2em">{{ t("menus.pureMenu1-2") }}</p>
-    <p style="text-indent: 4em">{{ t("menus.pureMenu1-2-2") }}</p>
+    <p>菜单1</p>
+    <p style="text-indent: 2em">菜单1-2-1</p>
+    <p style="text-indent: 4em">{{ t("menus.") }}</p>
     <el-input v-model="input" />
 
     <div v-if="query.text" class="mt-4">

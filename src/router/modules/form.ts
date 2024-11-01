@@ -1,4 +1,4 @@
-import { $t } from "@/plugins/i18n";
+// import { $t } from "@/plugins/i18n";
 import { form } from "@/router/enums";
 
 export default {
@@ -6,7 +6,7 @@ export default {
   redirect: "/form/index",
   meta: {
     icon: "ri:edit-box-line",
-    title: $t("menus.pureSchemaForm"),
+    title: "表单",
     rank: form
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "SchemaForm",
       component: () => import("@/views/schema-form/index.vue"),
       meta: {
-        title: $t("menus.pureSchemaForm"),
+        title: "表单",
         extraIcon: "IF-pure-iconfont-new svg"
       }
     }

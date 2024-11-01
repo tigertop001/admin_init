@@ -1,4 +1,4 @@
-import { $t } from "@/plugins/i18n";
+// import { $t } from "@/plugins/i18n";
 import { board } from "@/router/enums";
 const IFrame = () => import("@/layout/frame.vue");
 
@@ -7,7 +7,7 @@ export default {
   redirect: "/board/index",
   meta: {
     icon: "ri:artboard-line",
-    title: $t("menus.pureBoard"),
+    title: "艺术画板",
     rank: board
   },
   children: [
@@ -16,7 +16,7 @@ export default {
       name: "FrameBoard",
       component: IFrame,
       meta: {
-        title: $t("menus.pureBoard"),
+        title: "艺术画板",
         keepAlive: true,
         frameSrc: "https://songlh.top/paint-board/"
       }

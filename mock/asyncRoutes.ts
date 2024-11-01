@@ -19,7 +19,7 @@ const tenantManagementRouter = {
   path: "/tenant",
   meta: {
     icon: "ri:home-gear-line",
-    title: "menus.pureTenantManagement",
+    title: "租户管理",
     rank: tenant,
     extraIcon: "IF-pure-iconfont-new svg"
   },
@@ -29,7 +29,7 @@ const tenantManagementRouter = {
       name: "TenantList",
       meta: {
         icon: "ri:list-check",
-        title: "menus.pureTenantList",
+        title: "租户列表",
         roles: ["admin"]
       }
     },
@@ -38,7 +38,7 @@ const tenantManagementRouter = {
       name: "TenantPackage",
       meta: {
         icon: "ri:file-paper-line",
-        title: "menus.pureTenantPackage",
+        title: "租户套餐",
         roles: ["admin"]
       }
     }
@@ -49,7 +49,7 @@ const systemManagementRouter = {
   path: "/system",
   meta: {
     icon: "ri:settings-3-line",
-    title: "menus.pureSysManagement",
+    title: "系统管理",
     rank: system
   },
   children: [
@@ -58,7 +58,7 @@ const systemManagementRouter = {
       name: "SystemUser",
       meta: {
         icon: "ri:admin-line",
-        title: "menus.pureUser",
+        title: "用户管理",
         roles: ["admin"]
       }
     },
@@ -67,7 +67,7 @@ const systemManagementRouter = {
       name: "SystemRole",
       meta: {
         icon: "ri:admin-fill",
-        title: "menus.pureRole",
+        title: "角色管理",
         roles: ["admin"]
       }
     },
@@ -76,7 +76,7 @@ const systemManagementRouter = {
       name: "SystemMenu",
       meta: {
         icon: "ep:menu",
-        title: "menus.pureSystemMenu",
+        title: "菜单管理",
         roles: ["admin"]
       }
     },
@@ -85,7 +85,7 @@ const systemManagementRouter = {
       name: "SystemDept",
       meta: {
         icon: "ri:git-branch-line",
-        title: "menus.pureDept",
+        title: "部门管理",
         roles: ["admin"]
       }
     },
@@ -95,7 +95,7 @@ const systemManagementRouter = {
       meta: {
         icon: "ri:book-2-line",
         extraIcon: "IF-pure-iconfont-new svg",
-        title: "menus.pureDict",
+        title: "字典管理",
         roles: ["admin"]
       }
     }
@@ -106,7 +106,7 @@ const systemMonitorRouter = {
   path: "/monitor",
   meta: {
     icon: "ep:monitor",
-    title: "menus.pureSysMonitor",
+    title: "系统监控",
     rank: monitor
   },
   children: [
@@ -116,7 +116,7 @@ const systemMonitorRouter = {
       name: "OnlineUser",
       meta: {
         icon: "ri:user-voice-line",
-        title: "menus.pureOnlineUser",
+        title: "在线用户",
         roles: ["admin"]
       }
     },
@@ -126,7 +126,7 @@ const systemMonitorRouter = {
       name: "LoginLog",
       meta: {
         icon: "ri:window-line",
-        title: "menus.pureLoginLog",
+        title: "登录日志",
         roles: ["admin"]
       }
     },
@@ -136,7 +136,7 @@ const systemMonitorRouter = {
       name: "OperationLog",
       meta: {
         icon: "ri:history-fill",
-        title: "menus.pureOperationLog",
+        title: "操作日志",
         roles: ["admin"]
       }
     },
@@ -146,7 +146,7 @@ const systemMonitorRouter = {
       name: "SystemLog",
       meta: {
         icon: "ri:file-search-line",
-        title: "menus.pureSystemLog",
+        title: "系统日志",
         roles: ["admin"]
       }
     }
@@ -156,7 +156,7 @@ const systemMonitorRouter = {
 const permissionRouter = {
   path: "/permission",
   meta: {
-    title: "menus.purePermission",
+    title: "权限管理",
     icon: "ep:lollipop",
     rank: permission
   },
@@ -165,14 +165,14 @@ const permissionRouter = {
       path: "/permission/page/index",
       name: "PermissionPage",
       meta: {
-        title: "menus.purePermissionPage",
+        title: "页面权限",
         roles: ["admin", "common"]
       }
     },
     {
       path: "/permission/button",
       meta: {
-        title: "menus.purePermissionButton",
+        title: "按钮权限",
         roles: ["admin", "common"]
       },
       children: [
@@ -181,7 +181,7 @@ const permissionRouter = {
           component: "permission/button/index",
           name: "PermissionButtonRouter",
           meta: {
-            title: "menus.purePermissionButtonRouter",
+            title: "路由返回按钮权限",
             auths: [
               "permission:btn:add",
               "permission:btn:edit",
@@ -194,7 +194,7 @@ const permissionRouter = {
           component: "permission/button/perms",
           name: "PermissionButtonLogin",
           meta: {
-            title: "menus.purePermissionButtonLogin"
+            title: "登录接口返回按钮权限"
           }
         }
       ]
@@ -206,21 +206,21 @@ const frameRouter = {
   path: "/iframe",
   meta: {
     icon: "ri:links-fill",
-    title: "menus.pureExternalPage",
+    title: "外部页面",
     rank: frame
   },
   children: [
     {
       path: "/iframe/embedded",
       meta: {
-        title: "menus.pureEmbeddedDoc"
+        title: "文档内嵌"
       },
       children: [
         {
           path: "/iframe/colorhunt",
           name: "FrameColorHunt",
           meta: {
-            title: "menus.pureColorHuntDoc",
+            title: "调色板",
             frameSrc: "https://colorhunt.co/",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -230,7 +230,7 @@ const frameRouter = {
           path: "/iframe/uigradients",
           name: "FrameUiGradients",
           meta: {
-            title: "menus.pureUiGradients",
+            title: "渐变色",
             frameSrc: "https://uigradients.com/",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -240,7 +240,7 @@ const frameRouter = {
           path: "/iframe/ep",
           name: "FrameEp",
           meta: {
-            title: "menus.pureEpDoc",
+            title: "element-plus",
             frameSrc: "https://element-plus.org/zh-CN/",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -250,7 +250,7 @@ const frameRouter = {
           path: "/iframe/tailwindcss",
           name: "FrameTailwindcss",
           meta: {
-            title: "menus.pureTailwindcssDoc",
+            title: "tailwindcss",
             frameSrc: "https://tailwindcss.com/docs/installation",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -260,7 +260,7 @@ const frameRouter = {
           path: "/iframe/vue3",
           name: "FrameVue",
           meta: {
-            title: "menus.pureVueDoc",
+            title: "vue3",
             frameSrc: "https://cn.vuejs.org/",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -270,7 +270,7 @@ const frameRouter = {
           path: "/iframe/vite",
           name: "FrameVite",
           meta: {
-            title: "menus.pureViteDoc",
+            title: "vite",
             frameSrc: "https://cn.vitejs.dev/",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -280,7 +280,7 @@ const frameRouter = {
           path: "/iframe/pinia",
           name: "FramePinia",
           meta: {
-            title: "menus.purePiniaDoc",
+            title: "pinia",
             frameSrc: "https://pinia.vuejs.org/zh/index.html",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -290,7 +290,7 @@ const frameRouter = {
           path: "/iframe/vue-router",
           name: "FrameRouter",
           meta: {
-            title: "menus.pureRouterDoc",
+            title: "vue-router",
             frameSrc: "https://router.vuejs.org/zh/",
             keepAlive: true,
             roles: ["admin", "common"]
@@ -301,14 +301,14 @@ const frameRouter = {
     {
       path: "/iframe/external",
       meta: {
-        title: "menus.pureExternalDoc"
+        title: "文档外链"
       },
       children: [
         {
           path: "/external",
           name: "https://pure-admin.github.io/pure-admin-doc",
           meta: {
-            title: "menus.pureExternalLink",
+            title: "vue-pure-admin",
             roles: ["admin", "common"]
           }
         },
@@ -316,7 +316,7 @@ const frameRouter = {
           path: "/pureUtilsLink",
           name: "https://pure-admin-utils.netlify.app/",
           meta: {
-            title: "menus.pureUtilsLink",
+            title: "pure-admin-utils",
             roles: ["admin", "common"]
           }
         }
@@ -329,7 +329,7 @@ const tabsRouter = {
   path: "/tabs",
   meta: {
     icon: "ri:bookmark-2-line",
-    title: "menus.pureTabs",
+    title: "标签页操作",
     rank: tabs
   },
   children: [
@@ -337,7 +337,7 @@ const tabsRouter = {
       path: "/tabs/index",
       name: "Tabs",
       meta: {
-        title: "menus.pureTabs",
+        title: "标签页操作",
         roles: ["admin", "common"]
       }
     },

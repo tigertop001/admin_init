@@ -1,4 +1,4 @@
-import { $t } from "@/plugins/i18n";
+// import { $t } from "@/plugins/i18n";
 
 export interface ListItem {
   avatar: string;
@@ -20,13 +20,13 @@ export interface TabItem {
 export const noticesData: TabItem[] = [
   {
     key: "1",
-    name: $t("status.pureNotify"),
+    name: "通知",
     list: [],
-    emptyText: $t("status.pureNoNotify")
+    emptyText: "暂无通知"
   },
   {
     key: "2",
-    name: $t("status.pureMessage"),
+    name: "消息提示",
     list: [
       {
         avatar: "https://xiaoxian521.github.io/hyperlink/svg/smile1.svg",
@@ -51,11 +51,11 @@ export const noticesData: TabItem[] = [
         type: "2"
       }
     ],
-    emptyText: $t("status.pureNoMessage")
+    emptyText: "暂无消息"
   },
   {
     key: "3",
-    name: $t("status.pureTodo"),
+    name: "待办",
     list: [
       {
         avatar: "",
@@ -94,6 +94,6 @@ export const noticesData: TabItem[] = [
         type: "3"
       }
     ],
-    emptyText: $t("status.pureNoTodo")
+    emptyText: "暂无待办"
   }
 ];

@@ -51,21 +51,21 @@ export default defineComponent({
     floatBtns() {
       return [
         {
-          tip: "优质服务",
-          icon: Service,
-          link: "https://pure-admin.github.io/pure-admin-doc/pages/service",
+          tip: "会员管理",
+          icon: Max,
+          link: "https://google.com",
           show: false
         },
         {
-          tip: "保姆级文档",
-          link: "https://pure-admin.github.io/pure-admin-doc",
+          tip: "活动管理",
+          link: "https://google.com",
           icon: Book,
           show: false
         },
         {
-          tip: "max版本",
-          link: "https://github.com/pure-admin/vue-pure-admin-max",
-          icon: Max,
+          tip: "风控管理",
+          link: "https://google.com",
+          icon: Service,
           show: false
         }
       ];

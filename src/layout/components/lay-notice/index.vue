@@ -44,7 +44,7 @@ const getLabel = computed(
         >
           <el-empty
             v-if="notices.length === 0"
-            :description="t('status.pureNoMessage')"
+            description="暂无消息"
             :image-size="60"
           />
           <span v-else>

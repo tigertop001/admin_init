@@ -17,7 +17,7 @@ const loginRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.purePassWordReg"))));
+          callback(new Error("请输入密码"));
         } else if (!REGEXP_PWD.test(value)) {
           callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
         } else {
@@ -31,11 +31,9 @@ const loginRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.pureVerifyCodeReg"))));
+          callback(new Error("请输入验证码"));
         } else if (useUserStoreHook().verifyCode !== value) {
-          callback(
-            new Error(transformI18n($t("login.pureVerifyCodeCorrectReg")))
-          );
+          callback(new Error("请输入正确的验证码"));
         } else {
           callback();
         }
@@ -51,9 +49,9 @@ const phoneRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.purePhoneReg"))));
+          callback(new Error("请输入手机号码"));
         } else if (!isPhone(value)) {
-          callback(new Error(transformI18n($t("login.purePhoneCorrectReg"))));
+          callback(new Error("请输入正确的手机号码格式"));
         } else {
           callback();
         }
@@ -65,9 +63,9 @@ const phoneRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.pureVerifyCodeReg"))));
+          callback(new Error("请输入验证码"));
         } else if (!REGEXP_SIX.test(value)) {
-          callback(new Error(transformI18n($t("login.pureVerifyCodeSixReg"))));
+          callback(new Error("请输入6位数字验证码"));
         } else {
           callback();
         }
@@ -83,9 +81,9 @@ const updateRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.purePhoneReg"))));
+          callback(new Error("请输入手机号码"));
         } else if (!isPhone(value)) {
-          callback(new Error(transformI18n($t("login.purePhoneCorrectReg"))));
+          callback(new Error("请输入正确的手机号码格式"));
         } else {
           callback();
         }
@@ -97,9 +95,9 @@ const updateRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.pureVerifyCodeReg"))));
+          callback(new Error("请输入验证码"));
         } else if (!REGEXP_SIX.test(value)) {
-          callback(new Error(transformI18n($t("login.pureVerifyCodeSixReg"))));
+          callback(new Error("请输入6位数字验证码"));
         } else {
           callback();
         }
@@ -111,7 +109,7 @@ const updateRules = reactive<FormRules>({
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error(transformI18n($t("login.purePassWordReg"))));
+          callback(new Error("请输入密码"));
         } else if (!REGEXP_PWD.test(value)) {
           callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
         } else {

@@ -87,22 +87,29 @@ const transitionMain = defineComponent({
     const enterTransition = transitions.value(this.route)?.enterTransition;
     const leaveTransition = transitions.value(this.route)?.leaveTransition;
     return h(
-      Transition,
-      {
-        name: enterTransition ? "pure-classes-transition" : transitionName,
-        enterActiveClass: enterTransition
-          ? `animate__animated ${enterTransition}`
-          : undefined,
-        leaveActiveClass: leaveTransition
-          ? `animate__animated ${leaveTransition}`
-          : undefined,
-        mode: "out-in",
-        appear: true
-      },
+      "div",
+      {},
       {
         default: () => [this.$slots.default()]
       }
     );
+    // return h(
+    //   Transition,
+    //   {
+    //     name: enterTransition ? "pure-classes-transition" : transitionName,
+    //     enterActiveClass: enterTransition
+    //       ? `animate__animated ${enterTransition}`
+    //       : undefined,
+    //     leaveActiveClass: leaveTransition
+    //       ? `animate__animated ${leaveTransition}`
+    //       : undefined,
+    //     mode: "out-in",
+    //     appear: true
+    //   },
+    //   {
+    //     default: () => [this.$slots.default()]
+    //   }
+    // );
   }
 });
 </script>
@@ -133,7 +140,7 @@ const transitionMain = defineComponent({
               }"
             >
               <el-backtop
-                :title="t('buttons.pureBackTop')"
+                title="回到顶部"
                 :right="10"
                 :bottom="10"
                 target=".app-main .el-scrollbar__wrap"

@@ -6,7 +6,7 @@ export default {
   redirect: "/table/index",
   meta: {
     icon: "ri:table-line",
-    title: $t("menus.pureTable"),
+    title: "表格",
     rank: table
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "PureTable",
       component: () => import("@/views/table/index.vue"),
       meta: {
-        title: $t("menus.pureTableBase")
+        title: "基础用法"
       }
     },
     {
@@ -31,7 +31,7 @@ export default {
       name: "PureTableEdit",
       component: () => import("@/views/table/edit.vue"),
       meta: {
-        title: $t("menus.pureTableEdit"),
+        title: "可编辑用法",
         extraIcon: "IF-pure-iconfont-new svg"
       }
     },
@@ -40,7 +40,7 @@ export default {
       name: "VxeTable",
       component: () => import("@/views/table/virtual.vue"),
       meta: {
-        title: $t("menus.pureVxeTable"),
+        title: "虚拟滚动",
         extraIcon: "IF-pure-iconfont-new svg"
       }
     }
