@@ -1,7 +1,7 @@
 import "@/utils/sso";
 import Cookies from "js-cookie";
 import { getConfig } from "@/config";
-import NProgress from "@/utils/progress";
+// import NProgress from "@/utils/progress";
 import { transformI18n } from "@/plugins/i18n";
 import { buildHierarchyTree } from "@/utils/tree";
 import remainingRouter from "./modules/remaining";
@@ -115,7 +115,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     }
   }
   const userInfo = storageLocal().getItem<DataInfo<number>>(userKey);
-  NProgress.start();
+  // NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {
     to.matched.some(item => {
@@ -143,7 +143,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       // name为超链接
       if (externalLink) {
         openLink(to?.name as string);
-        NProgress.done();
+        // NProgress.done();
       } else {
         toCorrectRoute();
       }
@@ -201,8 +201,8 @@ router.beforeEach((to: ToRouteType, _from, next) => {
   }
 });
 
-router.afterEach(() => {
-  NProgress.done();
-});
+// router.afterEach(() => {
+//   NProgress.done();
+// });
 
 export default router;
