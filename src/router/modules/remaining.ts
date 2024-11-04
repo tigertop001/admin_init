@@ -1,4 +1,4 @@
-import { $t } from "@/plugins/i18n";
+// import { $t } from "@/plugins/i18n";
 const Layout = () => import("@/layout/index.vue");
 
 export default [
@@ -16,7 +16,7 @@ export default [
     path: "/redirect",
     component: Layout,
     meta: {
-      title: $t("status.pureLoad"),
+      title: "加载中...",
       showLink: false,
       rank: 102
     },
