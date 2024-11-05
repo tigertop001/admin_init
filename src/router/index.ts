@@ -37,7 +37,7 @@ import {
  * 如何排除文件请看：https://cn.vitejs.dev/guide/features.html#negative-patterns
  */
 const modules: Record<string, any> = import.meta.glob(
-  ["./modules/**/*.ts", "!./modules/**/remaining.ts"],
+  ["@/views/**/router/*.ts", "./modules/**/*.ts", "!./modules/**/remaining.ts"],
   {
     eager: true
   }
@@ -62,10 +62,10 @@ export const constantMenus: Array<RouteComponent> = ascending(
 
 /** 不参与菜单的路由 */
 export const remainingPaths = Object.keys(remainingRouter).map(v => {
+  console.log(remainingRouter[v].path);
   return remainingRouter[v].path;
 });
-
-/** 创建路由实例 */
+/** 创建路由'实例 */
 export const router: Router = createRouter({
   history: getHistoryMode(import.meta.env.VITE_ROUTER_HISTORY),
   routes: constantRoutes.concat(...(remainingRouter as any)),

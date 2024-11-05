@@ -19,7 +19,7 @@ const tenantManagementRouter = {
   path: "/tenant",
   meta: {
     icon: "ri:home-gear-line",
-    title: "租户管理",
+    title: "租户管理1",
     rank: tenant,
     extraIcon: "IF-pure-iconfont-new svg"
   },
@@ -29,7 +29,7 @@ const tenantManagementRouter = {
       name: "TenantList",
       meta: {
         icon: "ri:list-check",
-        title: "租户列表",
+        title: "租户列表2",
         roles: ["admin"]
       }
     },

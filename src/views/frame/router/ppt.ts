@@ -1,5 +1,5 @@
 import { ppt } from "@/router/enums";
-const IFrame = () => import("@/layout/frame.vue");
+const IFrame = () => import("@/views/frame/frame.vue");
 
 export default {
   path: "/ppt",

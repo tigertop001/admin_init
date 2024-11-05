@@ -1,6 +1,6 @@
 // import { $t } from "@/plugins/i18n";
 import { board } from "@/router/enums";
-const IFrame = () => import("@/layout/frame.vue");
+const IFrame = () => import("@/views/frame/frame.vue");
 
 export default {
   path: "/board",
