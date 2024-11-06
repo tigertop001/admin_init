@@ -8,7 +8,6 @@ report.html
 vite.config.*.timestamp*
 
 yarn.lock
-pnpm-lock.yaml
 npm-debug.logx
 .pnpm-error.log*
 .pnpm-debug.log
@@ -21,4 +20,3 @@ tests/**/coverage/
 *.njsproj
 *.sln
 tsconfig.tsbuildinfo
-pnpm-lock.yaml
