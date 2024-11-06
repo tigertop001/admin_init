@@ -193,6 +193,9 @@
       "glob": "*"
     },
     "lint-staged": {
+      "*": [
+        "prettier --write"
+      ],
       "pnpm-lock.yaml": "echo 'pnpm-lock.yaml is not allowed to be committed!' && exit 1"
     },
     "peerDependencyRules": {
