@@ -70,7 +70,11 @@ type ResultTable = {
 
 /** 登录 */
 export const getLogin = (data?: object) => {
-  return http.request<UserResult>("post", "/login", { data });
+  return http.request<UserResult>(
+    "post",
+    "/mock/672b55c8cb7443249e0150fe/account/login",
+    { data }
+  );
 };
 
 /** 刷新`token` */

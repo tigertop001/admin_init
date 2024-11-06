@@ -24,6 +24,11 @@ const url = ref(`${VITE_PUBLIC_PATH}html/button.html`);
         代码位置 src/views/components/button.vue
       </el-link>
     </template>
-    <iframe :src="url" frameborder="0" class="iframe w-full h-[60vh]" />
+    <iframe
+      :src="url"
+      sandbox="allow-scripts allow-same-origin"
+      frameborder="0"
+      class="iframe w-full h-[60vh]"
+    />
   </el-card>
 </template>
