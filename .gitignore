@@ -9,7 +9,7 @@ vite.config.*.timestamp*
 
 yarn.lock
 pnpm-lock.yaml
-npm-debug.log*
+npm-debug.logx
 .pnpm-error.log*
 .pnpm-debug.log
 tests/**/coverage/
@@ -21,4 +21,4 @@ tests/**/coverage/
 *.njsproj
 *.sln
 tsconfig.tsbuildinfo
-pnpm-lock.yaml
+pnpm-lock.yaml*
