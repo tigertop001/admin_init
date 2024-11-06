@@ -1,5 +1,5 @@
 {
-  "name": "vue-pure-admin-max",
+  "name": "admin",
   "version": "5.8.0",
   "private": true,
   "type": "module",
@@ -174,8 +174,9 @@
     "vue-tsc": "^2.0.29"
   },
   "engines": {
-    "node": "^18.18.0 || ^20.9.0 || >=21.1.0",
-    "pnpm": ">=9"
+    "node": "^20.9.0 || >=21.1.0",
+    "pnpm": ">=9",
+    "npm": ">=10"
   },
   "pnpm": {
     "allowedDeprecatedVersions": {
