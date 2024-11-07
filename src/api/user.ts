@@ -79,15 +79,27 @@ export const getLogin = (data?: object) => {
 
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
-  return http.request<RefreshTokenResult>("post", "/refresh-token", { data });
+  return http.request<RefreshTokenResult>(
+    "post",
+    "/mock/672b55c8cb7443249e0150fe/account/refresh-token",
+    { data }
+  );
 };
 
 /** 账户设置-个人信息 */
 export const getMine = (data?: object) => {
-  return http.request<UserInfoResult>("get", "/mine", { data });
+  return http.request<UserInfoResult>(
+    "get",
+    "/mock/672b55c8cb7443249e0150fe/account/mine",
+    { data }
+  );
 };
 
 /** 账户设置-个人安全日志 */
 export const getMineLogs = (data?: object) => {
-  return http.request<ResultTable>("get", "/mine-logs", { data });
+  return http.request<ResultTable>(
+    "get",
+    "/mock/672b55c8cb7443249e0150fe/account/mine-logs",
+    { data }
+  );
 };
