@@ -7,7 +7,11 @@ type Result = {
 
 /** 地图数据 */
 export const mapJson = (params?: object) => {
-  return http.request<Result>("get", "/get-map-info", { params });
+  return http.request<Result>(
+    "get",
+    "/mock/672b55c8cb7443249e0150fe/account/get-map-info",
+    { params }
+  );
 };
 
 /** 文件上传 */
