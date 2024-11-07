@@ -31,7 +31,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
           rewrite: path => path.replace(/^\/api/, "") // 可选：重写请求路径
         },
         "/mock": {
-          target: "http://192.168.9.129:7300",
+          target: "http://0.0.0.0:7300",
           changeOrigin: true, // 修改源
           rewrite: path => path // 可选：重写请求路径
         }
