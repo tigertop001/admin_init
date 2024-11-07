@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+// import { useI18n } from "vue-i18n";
 import LayFrame from "../lay-frame/index.vue";
 import LayFooter from "../lay-footer/index.vue";
 import { useTags } from "@/layout/hooks/useTag";
@@ -12,7 +12,7 @@ const props = defineProps({
   fixedHeader: Boolean
 });
 
-const { t } = useI18n();
+// const { t } = useI18n();
 const { showModel } = useTags();
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
 
