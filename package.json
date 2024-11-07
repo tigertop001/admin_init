@@ -165,7 +165,6 @@
     "vite-plugin-cdn-import": "^1.0.1",
     "vite-plugin-checker": "^0.7.2",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-fake-server": "^2.1.1",
     "vite-plugin-remove-console": "^2.2.0",
     "vite-plugin-router-warn": "^1.0.0",
     "vite-plugin-vue-inspector": "^5.1.3",
