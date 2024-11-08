@@ -5,4 +5,4 @@
 PATH="/usr/local/bin:$PATH"
 
 # 使用自定义的 commitlint 配置文件
-npx --no-install commitlint --config ./commitlint.config.js --edit "$1"
+npx --no-install commitlint --config ./.husky/commitlint.config.js --edit "$1"
