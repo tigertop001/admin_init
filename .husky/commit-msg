@@ -1,17 +1,17 @@
-# #!/bin/sh
-
-# # shellcheck source=./_/husky.sh
-
-
-# PATH="/usr/local/bin:$PATH"
-
-# npx --no-install commitlint --edit "$1"
-
-
 #!/bin/sh
 
-# 设置 PATH
+# shellcheck source=./_/husky.sh
+
+
 PATH="/usr/local/bin:$PATH"
 
-# 使用自定义的 commitlint 配置文件
-npx --no-install commitlint --config ./commitlint.config.js --edit "$1"
+npx --no-install commitlint --edit "$1"
+  
+
+# #!/bin/sh
+
+# # 设置 PATH
+# PATH="/usr/local/bin:$PATH"
+
+# # 使用自定义的 commitlint 配置文件
+# npx --no-install commitlint --config ./commitlint.config.js --edit "$1"
