@@ -16,6 +16,7 @@ export default {
       [
         "feat",
         "fix",
+        "feat",
         "perf",
         "style",
         "docs",
