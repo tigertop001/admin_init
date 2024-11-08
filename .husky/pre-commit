@@ -6,3 +6,9 @@ PATH="/usr/local/bin:$PATH"
 
 # Perform lint check on files in the staging area through .lintstagedrc configuration
 pnpm exec lint-staged
+
+# 检查暂存区中是否有 -lock.yaml 文件
+if git diff --cached --name-only | grep -q '\pnpm-lock.yaml'; then
+  echo "错误: 请勿提交 pnpm-lock.yaml 文件。该文件由包管理器自动生成，应避免纳入版本控制"
+  exit 1
+fi
