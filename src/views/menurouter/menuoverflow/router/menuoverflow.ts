@@ -12,7 +12,7 @@ export default {
     {
       path: "/menuoverflow/index",
       name: "MenuOverflow",
-      component: () => import("@/views/menuoverflow/index.vue"),
+      component: () => import("../index.vue"),
       meta: {
         title: "菜单超出显示 Tooltip 文字提示",
         showParent: true

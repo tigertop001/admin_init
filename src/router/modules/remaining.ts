@@ -5,7 +5,7 @@ export default [
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/login/index.vue"),
+    component: () => import("@/views/norouter/login/index.vue"),
     meta: {
       title: "登录",
       showLink: false,
@@ -32,7 +32,7 @@ export default [
   {
     path: "/empty",
     name: "Empty",
-    component: () => import("@/views/empty/index.vue"),
+    component: () => import("@/views/norouter/empty/index.vue"),
     meta: {
       title: "暂无搜索结果",
       showLink: false,
@@ -42,7 +42,7 @@ export default [
   {
     path: "/account-settings",
     name: "AccountSettings",
-    component: () => import("@/views/account-settings/index.vue"),
+    component: () => import("@/views/norouter/account-settings/index.vue"),
     meta: {
       title: "账户设置",
       showLink: false,

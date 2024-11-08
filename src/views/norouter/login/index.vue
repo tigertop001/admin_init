@@ -66,7 +66,7 @@ const {
 const { VITE_ENABLE_TENANT } = import.meta.env;
 
 const ruleForm = reactive({
-  tenant: "pure-admin",
+  tenant: "admin",
   username: "admin",
   password: "admin123",
   verifyCode: ""
@@ -407,22 +407,6 @@ watch(loginDay, value => {
 </template>
 
 <style scoped>
-@import url("@/style/login.css");
-</style>
-
-<style lang="scss" scoped>
-:deep(.el-input-group__append, .el-input-group__prepend) {
-  padding: 0;
-}
-
-.translation {
-  ::v-deep(.el-dropdown-menu__item) {
-    padding: 5px 40px;
-  }
-
-  .check-btn {
-    position: absolute;
-    left: 20px;
-  }
-}
+@import url("../login.css");
+@import url("../index.scss");
 </style>

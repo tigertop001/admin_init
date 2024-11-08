@@ -56,16 +56,5 @@ const { loading, columns, dataList, pagination, Empty, onCurrentChange } =
 </style>
 
 <style lang="scss" scoped>
-:deep(.el-table) {
-  --el-table-border: none;
-  --el-table-border-color: transparent;
-
-  .el-empty__description {
-    margin: 0;
-  }
-
-  .el-scrollbar__bar {
-    display: none;
-  }
-}
+@import url("./styles/index.scss"); // 样式通过 scoped 限制
 </style>

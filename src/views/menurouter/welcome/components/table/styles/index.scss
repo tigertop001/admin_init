@@ -1,0 +1,12 @@
+:deep(.el-table) {
+  --el-table-border: none;
+  --el-table-border-color: transparent;
+
+  .el-empty__description {
+    margin: 0;
+  }
+
+  .el-scrollbar__bar {
+    display: none;
+  }
+}
