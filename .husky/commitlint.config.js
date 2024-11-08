@@ -15,7 +15,6 @@ export default {
       "always",
       [
         "feat",
-        "fix",
         "perf",
         "style",
         "docs",
