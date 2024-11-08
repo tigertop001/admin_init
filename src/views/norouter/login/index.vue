@@ -380,9 +380,9 @@ watch(loginDay, value => {
               </div>
             </el-form-item>
           </Motion>
-          <!-- 手机号登录 -->
+          <!-- 手机号登录  -->
           <LoginPhone v-if="currentPage === 1" />
-          <!-- 二维码登录 -->
+          <!-- 二维码登录  -->
           <LoginQrCode v-if="currentPage === 2" />
           <!-- 注册 -->
           <LoginRegist v-if="currentPage === 3" />
