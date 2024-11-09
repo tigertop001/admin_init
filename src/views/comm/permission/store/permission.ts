@@ -9,11 +9,11 @@ import {
   constantMenus,
   filterNoPermissionTree,
   formatFlatteningRoutes
-} from "../globalUtils";
-import { useMultiTagsStoreHook } from "./multiTags";
+} from "@/store/globalUtils";
+import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 
 export const usePermissionStore = defineStore({
-  id: "pure-permission",
+  id: "permission",
   state: () => ({
     // 静态路由生成的菜单
     constantMenus,

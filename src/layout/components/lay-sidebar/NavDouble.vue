@@ -10,7 +10,7 @@ import { useAppStoreHook } from "@/store/modules/app";
 import { storageLocal, isAllEmpty } from "@pureadmin/utils";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { findRouteByPath, getParentPaths } from "@/router/utils";
-import { usePermissionStoreHook } from "@/store/modules/permission";
+import { usePermissionStoreHook } from "@/views/comm/permission/store/permission";
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import LaySidebarItem from "../lay-sidebar/components/SidebarItem.vue";
 import LaySidebarLeftCollapse from "../lay-sidebar/components/SidebarLeftCollapse.vue";

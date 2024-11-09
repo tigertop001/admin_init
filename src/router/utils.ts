@@ -21,7 +21,7 @@ import { buildHierarchyTree } from "@/utils/tree";
 import { userKey, type DataInfo } from "@/utils/auth";
 import { type menuType, routerArrays } from "@/layout/types";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/store/modules/permission";
+import { usePermissionStoreHook } from "@/views/comm/permission/store/permission";
 const IFrame = () => import("@/views/comm/frame/frame.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
@@ -151,6 +151,7 @@ function addPathMatch() {
 
 /** 处理动态路由（后端返回的路由） */
 function handleAsyncRoutes(routeList) {
+  console.log("处理后端返回的路由--", routeList);
   if (routeList.length === 0) {
     usePermissionStoreHook().handleWholeMenus(routeList);
   } else {
@@ -196,6 +197,7 @@ function initRouter() {
     const key = "async-routes";
     const asyncRouteList = storageLocal().getItem(key) as any;
     if (asyncRouteList && asyncRouteList?.length > 0) {
+      console.log("000---000", asyncRouteList);
       return new Promise(resolve => {
         handleAsyncRoutes(asyncRouteList);
         resolve(router);

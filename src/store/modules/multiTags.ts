@@ -12,7 +12,7 @@ import {
   storageLocal,
   responsiveStorageNameSpace
 } from "../globalUtils";
-import { usePermissionStoreHook } from "./permission";
+import { usePermissionStoreHook } from "../../views/comm/permission/store/permission";
 
 export const useMultiTagsStore = defineStore({
   id: "pure-multiTags",

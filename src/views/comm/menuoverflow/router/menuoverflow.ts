@@ -5,7 +5,7 @@ export default {
   path: "/menuoverflow",
   redirect: "/menuoverflow/index",
   meta: {
-    title: "目录超出显示 Tooltip 文字提示",
+    title: "超出提示",
     rank: menuoverflow
   },
   children: [
@@ -14,7 +14,7 @@ export default {
       name: "MenuOverflow",
       component: () => import("../index.vue"),
       meta: {
-        title: "菜单超出显示 Tooltip 文字提示",
+        title: "超出提示",
         showParent: true
       }
     }

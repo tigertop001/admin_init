@@ -9,7 +9,7 @@ import TagChrome from "./components/TagChrome.vue";
 import { handleAliveRoute, getTopMenu } from "@/router/utils";
 import { useSettingStoreHook } from "@/store/modules/settings";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/store/modules/permission";
+import { usePermissionStoreHook } from "@/views/comm/permission/store/permission";
 import { ref, watch, unref, toRaw, nextTick, onBeforeUnmount } from "vue";
 import {
   delay,
