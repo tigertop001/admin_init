@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
-import { getMineLogs } from "@/api/user";
+import { getMineLogs } from "@/views/comm/login/api/user";
 import { reactive, ref, onMounted } from "vue";
 import { deviceDetection } from "@pureadmin/utils";
 import type { PaginationProps } from "@pureadmin/table";
