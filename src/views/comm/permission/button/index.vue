@@ -1,106 +1,73 @@
 <script setup lang="ts">
-import { hasAuth, getAuths } from "@/router/utils";
+import { initRouter } from "@/router/utils";
+import { storageLocal } from "@pureadmin/utils";
+import { type CSSProperties, ref, computed } from "vue";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
+import { usePermissionStoreHook } from "@/views/comm/permission/store/permission";
 
 defineOptions({
-  name: "PermissionButtonRouter"
+  name: "PermissionPage"
 });
+
+const elStyle = computed((): CSSProperties => {
+  return {
+    width: "85vw",
+    justifyContent: "start"
+  };
+});
+
+const username = ref(useUserStoreHook()?.username);
+
+const options = [
+  {
+    value: "admin",
+    label: "管理员角色"
+  },
+  {
+    value: "common",
+    label: "普通角色"
+  }
+];
+
+function onChange() {
+  useUserStoreHook()
+    .loginByUsername({ username: username.value, password: "admin123" })
+    .then(res => {
+      if (res.success) {
+        storageLocal().removeItem("async-routes");
+        usePermissionStoreHook().clearAllCachePage();
+        initRouter();
+      }
+    });
+}
 </script>
 
 <template>
   <div>
-    <p class="mb-2">当前拥有的code列表：{{ getAuths() }}</p>
-
-    <el-card shadow="never" class="mb-2">
-      <template #header>
-        <div class="card-header">组件方式判断权限</div>
-        <el-link
-          class="mt-2"
-          href="https://github.com/pure-admin/vue-pure-admin/blob/main/src/views/permission/button/index.vue"
-          target="_blank"
-        >
-          代码位置 src/views/permission/button/index.vue
-        </el-link>
-      </template>
-      <el-space wrap>
-        <Auth value="permission:btn:add">
-          <el-button plain type="warning">
-            拥有code：'permission:btn:add' 权限可见
-          </el-button>
-        </Auth>
-        <Auth :value="['permission:btn:edit']">
-          <el-button plain type="primary">
-            拥有code：['permission:btn:edit'] 权限可见
-          </el-button>
-        </Auth>
-        <Auth
-          :value="[
-            'permission:btn:add',
-            'permission:btn:edit',
-            'permission:btn:delete'
-          ]"
-        >
-          <el-button plain type="danger">
-            拥有code：['permission:btn:add', 'permission:btn:edit',
-            'permission:btn:delete'] 权限可见
-          </el-button>
-        </Auth>
-      </el-space>
-    </el-card>
-
-    <el-card shadow="never" class="mb-2">
-      <template #header>
-        <div class="card-header">函数方式判断权限</div>
-      </template>
-      <el-space wrap>
-        <el-button v-if="hasAuth('permission:btn:add')" plain type="warning">
-          拥有code：'permission:btn:add' 权限可见
-        </el-button>
-        <el-button v-if="hasAuth(['permission:btn:edit'])" plain type="primary">
-          拥有code：['permission:btn:edit'] 权限可见
-        </el-button>
-        <el-button
-          v-if="
-            hasAuth([
-              'permission:btn:add',
-              'permission:btn:edit',
-              'permission:btn:delete'
-            ])
-          "
-          plain
-          type="danger"
-        >
-          拥有code：['permission:btn:add', 'permission:btn:edit',
-          'permission:btn:delete'] 权限可见
-        </el-button>
-      </el-space>
-    </el-card>
-
-    <el-card shadow="never">
+    <p class="mb-2">
+      模拟后台根据不同角色返回对应路由，观察左侧菜单变化（管理员角色可查看系统管理菜单、普通角色不可查看系统管理菜单）
+    </p>
+    <el-card shadow="never" :style="elStyle">
       <template #header>
         <div class="card-header">
-          指令方式判断权限（该方式不能动态修改权限）
+          <span>当前角色：{{ username }}</span>
         </div>
-      </template>
-      <el-space wrap>
-        <el-button v-auth="'permission:btn:add'" plain type="warning">
-          拥有code：'permission:btn:add' 权限可见
-        </el-button>
-        <el-button v-auth="['permission:btn:edit']" plain type="primary">
-          拥有code：['permission:btn:edit'] 权限可见
-        </el-button>
-        <el-button
-          v-auth="[
-            'permission:btn:add',
-            'permission:btn:edit',
-            'permission:btn:delete'
-          ]"
-          plain
-          type="danger"
+        <el-link
+          class="mt-2"
+          href="https://github.com/pure-admin/vue-pure-admin/blob/main/src/views/permission/page/index.vue"
+          target="_blank"
         >
-          拥有code：['permission:btn:add', 'permission:btn:edit',
-          'permission:btn:delete'] 权限可见
-        </el-button>
-      </el-space>
+          代码位置 src/views/permission/page/index.vue
+        </el-link>
+      </template>
+      <el-select v-model="username" class="!w-[160px]" @change="onChange">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
     </el-card>
   </div>
 </template>

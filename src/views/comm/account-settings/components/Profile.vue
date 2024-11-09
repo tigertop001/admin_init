@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { formUpload } from "@/api/mock";
+import { formUpload } from "./api";
 import { message } from "@/utils/message";
 import { type UserInfo, getMine } from "@/views/comm/login/api/user";
 import type { FormInstance, FormRules } from "element-plus";

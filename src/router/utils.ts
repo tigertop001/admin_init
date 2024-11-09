@@ -27,7 +27,7 @@ const IFrame = () => import("@/views/comm/frame/frame.vue");
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 
 // 动态路由
-import { getAsyncRoutes } from "@/api/routes";
+import { getAsyncRoutes } from "./api";
 
 function handRank(routeInfo: any) {
   const { name, path, parentId, meta } = routeInfo;
@@ -151,7 +151,6 @@ function addPathMatch() {
 
 /** 处理动态路由（后端返回的路由） */
 function handleAsyncRoutes(routeList) {
-  console.log("处理后端返回的路由--", routeList);
   if (routeList.length === 0) {
     usePermissionStoreHook().handleWholeMenus(routeList);
   } else {
@@ -197,7 +196,6 @@ function initRouter() {
     const key = "async-routes";
     const asyncRouteList = storageLocal().getItem(key) as any;
     if (asyncRouteList && asyncRouteList?.length > 0) {
-      console.log("000---000", asyncRouteList);
       return new Promise(resolve => {
         handleAsyncRoutes(asyncRouteList);
         resolve(router);

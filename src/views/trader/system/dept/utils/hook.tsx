@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import editForm from "../form.vue";
 import { handleTree } from "@/utils/tree";
 import { message } from "@/utils/message";
-import { getDeptList } from "@/api/system";
+import { getDeptList } from "../api/index";
 import { usePublicHooks } from "../../hooks";
 import { addDialog } from "@/components/ReDialog";
 import { reactive, ref, onMounted, h } from "vue";

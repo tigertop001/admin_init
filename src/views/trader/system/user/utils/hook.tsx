@@ -22,7 +22,7 @@ import {
   getDeptList,
   getUserList,
   getAllRoleList
-} from "@/api/system";
+} from "./api/index";
 import {
   ElForm,
   ElInput,
