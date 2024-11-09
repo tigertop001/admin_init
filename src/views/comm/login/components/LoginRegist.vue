@@ -6,8 +6,8 @@ import { message } from "@/utils/message";
 import { updateRules } from "../utils/rule";
 import type { FormInstance } from "element-plus";
 import { useVerifyCode } from "../utils/verifyCode";
-import { $t, transformI18n } from "@/plugins/i18n";
-import { useUserStoreHook } from "@/store/modules/user";
+// import { $t, transformI18n } from "@/plugins/i18n";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import Lock from "@iconify-icons/ri/lock-fill";
 import Iphone from "@iconify-icons/ep/iphone";
@@ -31,7 +31,7 @@ const repeatPasswordRule = [
       if (value === "") {
         callback(new Error("密码"));
       } else if (ruleForm.password !== value) {
-        callback(new Error(transformI18n("两次密码不一致")));
+        callback(new Error("两次密码不一致"));
       } else {
         callback();
       }

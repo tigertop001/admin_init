@@ -5,9 +5,9 @@ import Motion from "../utils/motion";
 import { message } from "@/utils/message";
 import { phoneRules } from "../utils/rule";
 import type { FormInstance } from "element-plus";
-import { $t, transformI18n } from "@/plugins/i18n";
+// import { $t, transformI18n } from "@/plugins/i18n";
 import { useVerifyCode } from "../utils/verifyCode";
-import { useUserStoreHook } from "@/store/modules/user";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import Iphone from "@iconify-icons/ep/iphone";
 
@@ -27,7 +27,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // 模拟登录请求，需根据实际开发进行修改
       setTimeout(() => {
-        message(transformI18n("登录成功"), {
+        message("登录成功", {
           type: "success"
         });
         loading.value = false;

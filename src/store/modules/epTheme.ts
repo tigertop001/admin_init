@@ -4,7 +4,7 @@ import {
   getConfig,
   storageLocal,
   responsiveStorageNameSpace
-} from "../utils";
+} from "../globalUtils";
 
 export const useEpThemeStore = defineStore({
   id: "pure-epTheme",

@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { useUserStoreHook } from "@/store/modules/user";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { storageLocal, isString, isIncludeAllChildren } from "@pureadmin/utils";
 
 export interface DataInfo<T> {

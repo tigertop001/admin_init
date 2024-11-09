@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { hasPerms } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 
 const { permissions } = useUserStoreHook();
 

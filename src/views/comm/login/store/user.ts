@@ -6,14 +6,14 @@ import {
   resetRouter,
   routerArrays,
   storageLocal
-} from "../utils";
+} from "@/store/globalUtils";
 import {
   type UserResult,
   type RefreshTokenResult,
   getLogin,
   refreshTokenApi
 } from "@/views/comm/login/api/user";
-import { useMultiTagsStoreHook } from "./multiTags";
+import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
 
 export const useUserStore = defineStore({

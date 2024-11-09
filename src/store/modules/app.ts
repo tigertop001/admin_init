@@ -6,7 +6,7 @@ import {
   storageLocal,
   deviceDetection,
   responsiveStorageNameSpace
-} from "../utils";
+} from "../globalUtils";
 
 export const useAppStore = defineStore({
   id: "pure-app",

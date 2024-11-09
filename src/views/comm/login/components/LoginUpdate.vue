@@ -6,8 +6,8 @@ import { message } from "@/utils/message";
 import { updateRules } from "../utils/rule";
 import type { FormInstance } from "element-plus";
 import { useVerifyCode } from "../utils/verifyCode";
-import { $t, transformI18n } from "@/plugins/i18n";
-import { useUserStoreHook } from "@/store/modules/user";
+// import { $t, transformI18n } from "@/plugins/i18n";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import Lock from "@iconify-icons/ri/lock-fill";
 import Iphone from "@iconify-icons/ep/iphone";
@@ -26,9 +26,9 @@ const repeatPasswordRule = [
   {
     validator: (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(transformI18n("请输入确认密码")));
+        callback(new Error("请输入确认密码"));
       } else if (ruleForm.password !== value) {
-        callback(new Error(transformI18n("兩次密碼不一致！")));
+        callback(new Error("兩次密碼不一致！"));
       } else {
         callback();
       }
@@ -44,7 +44,7 @@ const onUpdate = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // 模拟请求，需根据实际开发进行修改
       setTimeout(() => {
-        message(transformI18n("修改密碼成功"), {
+        message("修改密碼成功", {
           type: "success"
         });
         loading.value = false;

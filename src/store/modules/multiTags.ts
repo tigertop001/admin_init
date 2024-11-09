@@ -11,7 +11,7 @@ import {
   routerArrays,
   storageLocal,
   responsiveStorageNameSpace
-} from "../utils";
+} from "../globalUtils";
 import { usePermissionStoreHook } from "./permission";
 
 export const useMultiTagsStore = defineStore({

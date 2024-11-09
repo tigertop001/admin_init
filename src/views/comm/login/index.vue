@@ -16,7 +16,7 @@ import LoginPhone from "./components/LoginPhone.vue";
 import LoginRegist from "./components/LoginRegist.vue";
 import LoginUpdate from "./components/LoginUpdate.vue";
 import LoginQrCode from "./components/LoginQrCode.vue";
-import { useUserStoreHook } from "@/store/modules/user";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { bg, avatar, illustration } from "./utils/static";
 import { ReImageVerify } from "@/components/ReImageVerify";

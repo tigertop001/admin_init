@@ -1,8 +1,8 @@
 import { reactive } from "vue";
 import { isPhone } from "@pureadmin/utils";
 import type { FormRules } from "element-plus";
-import { $t, transformI18n } from "@/plugins/i18n";
-import { useUserStoreHook } from "@/store/modules/user";
+// import { $t, transformI18n } from "@/plugins/i18n";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 
 /** 6位数字验证码正则 */
 export const REGEXP_SIX = /^\d{6}$/;
@@ -19,7 +19,9 @@ const loginRules = reactive<FormRules>({
         if (value === "") {
           callback(new Error("请输入密码"));
         } else if (!REGEXP_PWD.test(value)) {
-          callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
+          callback(
+            new Error("密码格式应为8-18位数字、字母、符号的任意两种组合")
+          );
         } else {
           callback();
         }
@@ -111,7 +113,9 @@ const updateRules = reactive<FormRules>({
         if (value === "") {
           callback(new Error("请输入密码"));
         } else if (!REGEXP_PWD.test(value)) {
-          callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
+          callback(
+            new Error("密码格式应为8-18位数字、字母、符号的任意两种组合")
+          );
         } else {
           callback();
         }

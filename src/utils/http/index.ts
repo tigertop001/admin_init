@@ -12,7 +12,7 @@ import type {
 import { stringify } from "qs";
 // import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
+import { useUserStoreHook } from "@/views/comm/login/store/user";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
