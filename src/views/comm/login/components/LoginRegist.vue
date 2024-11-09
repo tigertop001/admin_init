@@ -31,9 +31,7 @@ const repeatPasswordRule = [
       if (value === "") {
         callback(new Error("密码"));
       } else if (ruleForm.password !== value) {
-        callback(
-          new Error(transformI18n($t("login.purePassWordDifferentReg")))
-        );
+        callback(new Error(transformI18n("两次密码不一致")));
       } else {
         callback();
       }

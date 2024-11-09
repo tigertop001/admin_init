@@ -26,11 +26,9 @@ const repeatPasswordRule = [
   {
     validator: (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(transformI18n($t("login.purePassWordSureReg"))));
+        callback(new Error(transformI18n("请输入确认密码")));
       } else if (ruleForm.password !== value) {
-        callback(
-          new Error(transformI18n($t("login.purePassWordDifferentReg")))
-        );
+        callback(new Error(transformI18n("兩次密碼不一致！")));
       } else {
         callback();
       }
@@ -46,7 +44,7 @@ const onUpdate = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // 模拟请求，需根据实际开发进行修改
       setTimeout(() => {
-        message(transformI18n($t("login.purePassWordUpdateReg")), {
+        message(transformI18n("修改密碼成功"), {
           type: "success"
         });
         loading.value = false;

@@ -9,7 +9,7 @@ import { debounce } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import { useEventListener } from "@vueuse/core";
 import type { FormInstance } from "element-plus";
-import { $t, transformI18n } from "@/plugins/i18n";
+// import { $t, transformI18n } from "@/plugins/i18n";
 import { operates, thirdParty } from "./utils/enums";
 import { useLayout } from "@/layout/hooks/useLayout";
 import LoginPhone from "./components/LoginPhone.vue";
@@ -45,15 +45,15 @@ const loading = ref(false);
 const checked = ref(false);
 const disabled = ref(false);
 const ruleFormRef = ref<FormInstance>();
-const currentPage = computed(() => {
-  return useUserStoreHook().currentPage;
-});
+const currentPage = computed(() => useUserStoreHook().currentPage);
 
 const { t } = useI18n();
 const { initStorage } = useLayout();
 initStorage();
+
 const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange();
 dataThemeChange(overallStyle.value);
+
 const { title, getDropdownItemStyle, getDropdownItemClass } = useNav();
 const {
   locale,
@@ -81,7 +81,6 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         .loginByUsername({ username: ruleForm.username, password: "admin123" })
         .then(res => {
           if (res.success) {
-            // 获取后端路由
             return initRouter().then(() => {
               disabled.value = true;
               router
@@ -106,24 +105,31 @@ const immediateDebounce: any = debounce(
   true
 );
 
-useEventListener(document, "keypress", ({ code }) => {
-  if (
-    ["Enter", "NumpadEnter"].includes(code) &&
-    !disabled.value &&
-    !loading.value
-  )
-    immediateDebounce(ruleFormRef.value);
-});
+// 优化 event listener 只在首次渲染时绑定
+useEventListener(
+  "keypress",
+  ({ code }) => {
+    if (
+      ["Enter", "NumpadEnter"].includes(code) &&
+      !disabled.value &&
+      !loading.value
+    ) {
+      immediateDebounce(ruleFormRef.value);
+    }
+  },
+  { once: true }
+);
 
-watch(imgCode, value => {
-  useUserStoreHook().SET_VERIFYCODE(value);
-});
-watch(checked, bool => {
-  useUserStoreHook().SET_ISREMEMBERED(bool);
-});
-watch(loginDay, value => {
-  useUserStoreHook().SET_LOGINDAY(value);
-});
+// 监听并更新 store 中的状态，避免不必要的深度监听
+watch(
+  [imgCode, checked, loginDay],
+  ([imgCodeValue, checkedValue, loginDayValue]) => {
+    const userStore = useUserStoreHook();
+    userStore.SET_VERIFYCODE(imgCodeValue);
+    userStore.SET_ISREMEMBERED(checkedValue);
+    userStore.SET_LOGINDAY(loginDayValue);
+  }
+);
 </script>
 
 <template>
@@ -203,6 +209,7 @@ watch(loginDay, value => {
         </template>
       </el-dropdown>
     </div>
+
     <div class="login-container">
       <div class="img">
         <component :is="toRaw(illustration)" />
@@ -218,6 +225,7 @@ watch(loginDay, value => {
             </h2>
           </Motion>
 
+          <!-- 登录表单 -->
           <el-form
             v-if="currentPage === 0"
             ref="ruleFormRef"
@@ -406,7 +414,21 @@ watch(loginDay, value => {
   </div>
 </template>
 
-<style scoped>
-@import url("../login.css");
-@import url("../index.scss");
+<style lang="scss" scoped>
+@import url("./styles/login.css");
+
+:deep(.el-input-group__append, .el-input-group__prepend) {
+  padding: 0;
+}
+
+.translation {
+  ::v-deep(.el-dropdown-menu__item) {
+    padding: 5px 40px;
+  }
+
+  .check-btn {
+    position: absolute;
+    left: 20px;
+  }
+}
 </style>
