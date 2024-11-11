@@ -128,7 +128,6 @@
     "@types/qrcode": "^1.5.5",
     "@types/qs": "^6.9.15",
     "@types/sortablejs": "^1.15.8",
-    "@types/vue-router": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@unocss/preset-uno": "^0.63.6",
@@ -196,8 +195,7 @@
       "*": [
         "prettier --write"
       ],
-      "pnpm-lock.yaml": "echo 'pnpm-lock.yaml is not allowed to be committed!' && exit 1",
-      "*.ts": "eslint --fix"
+      "pnpm-lock.yaml": "echo 'pnpm-lock.yaml is not allowed to be committed!' && exit 1"
     },
     "peerDependencyRules": {
       "allowedVersions": {
