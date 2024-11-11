@@ -29,14 +29,12 @@
         "build/*"
       ]
     },
-    "typeRoots": ["node_modules/@types", "node_modules/vue-router/types"],
     "types": [
       "node",
       "vite/client",
       "element-plus/global",
       "@pureadmin/table/volar",
-      "@pureadmin/descriptions/volar",
-      "vue-router"
+      "@pureadmin/descriptions/volar"
     ]
   },
   "include": [
@@ -44,8 +42,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/*.d.ts",
-    "vite.config.ts",
-    "src/**/*.d.ts"
+    "vite.config.ts"
   ],
   "exclude": [
     "dist",
