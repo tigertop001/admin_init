@@ -35,9 +35,7 @@
       "node",
       "vite/client",
       "element-plus/global",
-      "@pureadmin/table/volar",
-      "@pureadmin/descriptions/volar",
-      "vue-router"
+      "@pureadmin/table/volar"
     ]
   },
   "include": [
