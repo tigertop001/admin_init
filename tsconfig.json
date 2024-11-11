@@ -27,9 +27,10 @@
       ],
       "@build/*": [
         "build/*"
-      ]
+      ],
+       "@pureadmin/descriptions/volar": ["node_modules/@pureadmin/descriptions/volar"]
     },
-    "typeRoots": ["node_modules/@types", "node_modules/vue-router/types"],
+    "typeRoots": ["node_modules/@types", "node_modules/vue-router/types", "src/types" ],
     "types": [
       "node",
       "vite/client",
