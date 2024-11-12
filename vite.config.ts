@@ -11,6 +11,7 @@ import {
 
 export default ({ mode }: ConfigEnv): UserConfigExport => {
   const env = loadEnv(mode, "envs");
+  console.log(mode, "---env----env", env);
   const { VITE_CDN, VITE_PORT, VITE_COMPRESSION, VITE_PUBLIC_PATH } =
     wrapperEnv(env);
   return {
