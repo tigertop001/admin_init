@@ -67,5 +67,20 @@ function hideLoading() {
 </template>
 
 <style lang="scss" scoped>
-@import url("./styles/index.scss"); // 样式通过 scoped 限制
+.frame {
+  position: absolute;
+  inset: 0;
+
+  .frame-iframe {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 0;
+  }
+}
+
+.main-content {
+  margin: 2px 0 0 !important;
+}
 </style>
