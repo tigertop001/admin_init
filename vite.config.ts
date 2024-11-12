@@ -10,14 +10,16 @@ import {
 } from "./build/utils";
 
 export default ({ mode }: ConfigEnv): UserConfigExport => {
+  const env = loadEnv(mode, "envs");
   const { VITE_CDN, VITE_PORT, VITE_COMPRESSION, VITE_PUBLIC_PATH } =
-    wrapperEnv(loadEnv(mode, root));
+    wrapperEnv(env);
   return {
     base: VITE_PUBLIC_PATH,
     root,
     resolve: {
       alias
     },
+    envDir: "envs",
     // 服务端渲染
     server: {
       // 端口号

@@ -2,7 +2,7 @@
   <el-config-provider :locale="currentLocale">
     <router-view />
     <ReDialog />
-    <ReFloatButton :floatBtns="floatBtns" />
+    <!-- <ReFloatButton :floatBtns="floatBtns" /> -->
   </el-config-provider>
 </template>
 
@@ -21,7 +21,7 @@ import Service from "@iconify-icons/ri/user-heart-line";
 import Book from "@iconify-icons/ri/book-open-line";
 import Max from "@iconify-icons/ri/vip-diamond-line";
 import { ReDialog } from "@/components/ReDialog";
-import ReFloatButton from "@/components/ReFloatButton";
+// import ReFloatButton from "@/components/ReFloatButton";
 
 // 响应式状态
 const storage = useStorage<{ locale?: string }>("locale", { locale: "zh" }); // Initialize with a key and a default value
@@ -45,45 +45,45 @@ const currentLocale = computed(() => {
   }
 });
 
-// 浮动按钮的计算属性
-const floatBtns = computed(() => [
-  {
-    tip: "引导页",
-    link: "https://google.com",
-    icon: Service,
-    show: false
-  },
-  {
-    tip: "艺术画板",
-    link: "https://google.com",
-    icon: Service,
-    show: false
-  },
-  {
-    tip: "PPT",
-    link: "https://google.com",
-    icon: Service,
-    show: false
-  },
-  {
-    tip: "思维导图",
-    link: "https://google.com",
-    icon: Service,
-    show: false
-  },
-  {
-    tip: "流程图",
-    icon: Max,
-    link: "https://google.com",
-    show: false
-  },
-  {
-    tip: "表单设计器",
-    link: "https://google.com",
-    icon: Book,
-    show: false
-  }
-]);
+// // 浮动按钮的计算属性
+// const floatBtns = computed(() => [
+//   {
+//     tip: "引导页",
+//     link: "https://google.com",
+//     icon: Service,
+//     show: false
+//   },
+//   {
+//     tip: "艺术画板",
+//     link: "https://google.com",
+//     icon: Service,
+//     show: false
+//   },
+//   {
+//     tip: "PPT",
+//     link: "https://google.com",
+//     icon: Service,
+//     show: false
+//   },
+//   {
+//     tip: "思维导图",
+//     link: "https://google.com",
+//     icon: Service,
+//     show: false
+//   },
+//   {
+//     tip: "流程图",
+//     icon: Max,
+//     link: "https://google.com",
+//     show: false
+//   },
+//   {
+//     tip: "表单设计器",
+//     link: "https://google.com",
+//     icon: Book,
+//     show: false
+//   }
+// ]);
 
 // 生命周期钩子
 onBeforeMount(() => {

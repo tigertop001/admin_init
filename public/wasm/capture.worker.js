@@ -245,7 +245,10 @@ var Module = typeof Module != "undefined" ? Module : {};
                   : (NATIVE_ARRAY_BUFFER_VIEWS && Int8Array[KEY]) || property
               );
             } catch (error) {
-              /* empty */
+              console.error(
+                "Error occurred in exportTypedArrayStaticMethod:",
+                error
+              );
             }
           } else return;
         }
@@ -270,7 +273,6 @@ var Module = typeof Module != "undefined" ? Module : {};
         typeof TypedArray != "function" ||
         TypedArray === Function.prototype
       ) {
-        // eslint-disable-next-line no-shadow
         TypedArray = function TypedArray() {
           throw TypeError("Incorrect invocation");
         };
@@ -637,12 +639,12 @@ var Module = typeof Module != "undefined" ? Module : {};
             NativeArrayBuffer(1);
           }) ||
           !fails(function () {
-            new NativeArrayBuffer(-1); // eslint-disable-line no-new
+            new NativeArrayBuffer(-1);
           }) ||
           fails(function () {
-            new NativeArrayBuffer(); // eslint-disable-line no-new
-            new NativeArrayBuffer(1.5); // eslint-disable-line no-new
-            new NativeArrayBuffer(NaN); // eslint-disable-line no-new
+            new NativeArrayBuffer();
+            new NativeArrayBuffer(1.5);
+            new NativeArrayBuffer(NaN);
             return NativeArrayBuffer.name != ARRAY_BUFFER;
           })
         ) {
@@ -784,11 +786,11 @@ var Module = typeof Module != "undefined" ? Module : {};
           var index = toAbsoluteIndex(fromIndex, length);
           var value;
           // Array#includes uses SameValueZero equality algorithm
-          // eslint-disable-next-line no-self-compare
+
           if (IS_INCLUDES && el != el)
             while (length > index) {
               value = O[index++];
-              // eslint-disable-next-line no-self-compare
+
               if (value != value) return true;
               // Array#indexOf ignores holes, Array#includes - not
             }
@@ -844,15 +846,16 @@ var Module = typeof Module != "undefined" ? Module : {};
           var target = IS_MAP
             ? create($this, length)
             : IS_FILTER
-            ? create($this, 0)
-            : undefined;
+              ? create($this, 0)
+              : undefined;
           var value, result;
           for (; length > index; index++)
             if (NO_HOLES || index in self) {
               value = self[index];
               result = boundFunction(value, index, O);
               if (TYPE) {
-                if (IS_MAP) target[index] = result; // map
+                if (IS_MAP)
+                  target[index] = result; // map
                 else if (result)
                   switch (TYPE) {
                     case 3:
@@ -943,7 +946,6 @@ var Module = typeof Module != "undefined" ? Module : {};
         return (
           !!method &&
           fails(function () {
-            // eslint-disable-next-line no-useless-call,no-throw-literal
             method.call(
               null,
               argument ||
@@ -1076,12 +1078,12 @@ var Module = typeof Module != "undefined" ? Module : {};
         iteratorWithReturn[ITERATOR] = function () {
           return this;
         };
-        // eslint-disable-next-line no-throw-literal
+
         Array.from(iteratorWithReturn, function () {
           throw 2;
         });
       } catch (error) {
-        /* empty */
+        console.error("Error during iterator handling:", error);
       }
 
       module.exports = function (exec, SKIP_CLOSING) {
@@ -1098,7 +1100,7 @@ var Module = typeof Module != "undefined" ? Module : {};
           };
           exec(object);
         } catch (error) {
-          /* empty */
+          console.error("Error during execution of exec function:", error);
         }
         return ITERATION_SUPPORT;
       };
@@ -1139,7 +1141,7 @@ var Module = typeof Module != "undefined" ? Module : {};
         try {
           return it[key];
         } catch (error) {
-          /* empty */
+          console.error("Error during tryGet of exec function:", error);
         }
       };
 
@@ -1151,18 +1153,19 @@ var Module = typeof Module != "undefined" ? Module : {};
             return it === undefined
               ? "Undefined"
               : it === null
-              ? "Null"
-              : // @@toStringTag case
-              typeof (tag = tryGet((O = Object(it)), TO_STRING_TAG)) == "string"
-              ? tag
-              : // builtinTag case
-              CORRECT_ARGUMENTS
-              ? classofRaw(O)
-              : // ES3 arguments fallback
-              (result = classofRaw(O)) == "Object" &&
-                typeof O.callee == "function"
-              ? "Arguments"
-              : result;
+                ? "Null"
+                : // @@toStringTag case
+                  typeof (tag = tryGet((O = Object(it)), TO_STRING_TAG)) ==
+                    "string"
+                  ? tag
+                  : // builtinTag case
+                    CORRECT_ARGUMENTS
+                    ? classofRaw(O)
+                    : // ES3 arguments fallback
+                      (result = classofRaw(O)) == "Object" &&
+                        typeof O.callee == "function"
+                      ? "Arguments"
+                      : result;
           };
 
       /***/
@@ -1714,6 +1717,7 @@ var Module = typeof Module != "undefined" ? Module : {};
         try {
           return !!exec();
         } catch (error) {
+          console.log(error);
           return true;
         }
       };
@@ -1810,14 +1814,12 @@ var Module = typeof Module != "undefined" ? Module : {};
 
       // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
       module.exports =
-        // eslint-disable-next-line no-undef
         check(typeof globalThis == "object" && globalThis) ||
         check(typeof window == "object" && window) ||
         check(typeof self == "object" && self) ||
         check(
           typeof __webpack_require__.g == "object" && __webpack_require__.g
         ) ||
-        // eslint-disable-next-line no-new-func
         Function("return this")();
 
       /***/
@@ -1895,7 +1897,7 @@ var Module = typeof Module != "undefined" ? Module : {};
 
     /***/ 1179: /***/ function (module) {
       // IEEE754 conversions based on https://github.com/feross/ieee754
-      // eslint-disable-next-line no-shadow-restricted-names
+
       var Infinity = 1 / 0;
       var abs = Math.abs;
       var pow = Math.pow;
@@ -1913,9 +1915,8 @@ var Module = typeof Module != "undefined" ? Module : {};
         var index = 0;
         var exponent, mantissa, c;
         number = abs(number);
-        // eslint-disable-next-line no-self-compare
+
         if (number != number || number === Infinity) {
-          // eslint-disable-next-line no-self-compare
           mantissa = number != number ? 1 : 0;
           exponent = eMax;
         } else {
@@ -2016,7 +2017,7 @@ var Module = typeof Module != "undefined" ? Module : {};
       // fallback for non-array-like ES3 and non-enumerable old V8 strings
       module.exports = fails(function () {
         // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
-        // eslint-disable-next-line no-prototype-builtins
+
         return !Object("z").propertyIsEnumerable(0);
       })
         ? function (it) {
@@ -2200,10 +2201,10 @@ var Module = typeof Module != "undefined" ? Module : {};
         return value == POLYFILL
           ? true
           : value == NATIVE
-          ? false
-          : typeof detection == "function"
-          ? fails(detection)
-          : !!detection;
+            ? false
+            : typeof detection == "function"
+              ? fails(detection)
+              : !!detection;
       };
 
       var normalize = (isForced.normalize = function (string) {
@@ -2481,7 +2482,7 @@ var Module = typeof Module != "undefined" ? Module : {};
         !!Object.getOwnPropertySymbols &&
         !fails(function () {
           // Chrome 38 Symbol has incorrect toString conversion
-          // eslint-disable-next-line no-undef
+
           return !String(Symbol());
         });
 
@@ -2598,6 +2599,7 @@ var Module = typeof Module != "undefined" ? Module : {};
           /* global ActiveXObject */
           activeXDocument = document.domain && new ActiveXObject("htmlfile");
         } catch (error) {
+          console.log(error);
           /* ignore */
         }
         NullProtoObject = activeXDocument
@@ -2683,6 +2685,7 @@ var Module = typeof Module != "undefined" ? Module : {};
               try {
                 return nativeDefineProperty(O, P, Attributes);
               } catch (error) {
+                console.log(error);
                 /* empty */
               }
             if ("get" in Attributes || "set" in Attributes)
@@ -2720,6 +2723,7 @@ var Module = typeof Module != "undefined" ? Module : {};
               try {
                 return nativeGetOwnPropertyDescriptor(O, P);
               } catch (error) {
+                console.log(error);
                 /* empty */
               }
             if (has(O, P))
@@ -2871,7 +2875,7 @@ var Module = typeof Module != "undefined" ? Module : {};
       // `Object.setPrototypeOf` method
       // https://tc39.github.io/ecma262/#sec-object.setprototypeof
       // Works with __proto__ only. Old v8 can't work with null proto objects.
-      /* eslint-disable no-proto */
+
       module.exports =
         Object.setPrototypeOf ||
         ("__proto__" in {}
@@ -2887,6 +2891,7 @@ var Module = typeof Module != "undefined" ? Module : {};
                 setter.call(test, []);
                 CORRECT_SETTER = test instanceof Array;
               } catch (error) {
+                console.log(error);
                 /* empty */
               }
               return function setPrototypeOf(O, proto) {
@@ -3085,6 +3090,7 @@ var Module = typeof Module != "undefined" ? Module : {};
           createNonEnumerableProperty(global, key, value);
         } catch (error) {
           global[key] = value;
+          console.log(error);
         }
         return value;
       };
@@ -3244,7 +3250,6 @@ var Module = typeof Module != "undefined" ? Module : {};
       var defer, channel, port;
 
       var run = function (id) {
-        // eslint-disable-next-line no-prototype-builtins
         if (queue.hasOwnProperty(id)) {
           var fn = queue[id];
           delete queue[id];
@@ -3274,7 +3279,6 @@ var Module = typeof Module != "undefined" ? Module : {};
           var i = 1;
           while (arguments.length > i) args.push(arguments[i++]);
           queue[++counter] = function () {
-            // eslint-disable-next-line no-new-func
             (typeof fn == "function" ? fn : Function(fn)).apply(
               undefined,
               args
@@ -3691,8 +3695,8 @@ var Module = typeof Module != "undefined" ? Module : {};
                 (value = round(value)) < 0
                   ? 0
                   : value > 0xff
-                  ? 0xff
-                  : value & 0xff;
+                    ? 0xff
+                    : value & 0xff;
             data.view[SETTER](index * BYTES + data.byteOffset, value, true);
           };
 
@@ -3709,86 +3713,80 @@ var Module = typeof Module != "undefined" ? Module : {};
           };
 
           if (!NATIVE_ARRAY_BUFFER_VIEWS) {
-            TypedArrayConstructor = wrapper(function (
-              that,
-              data,
-              offset,
-              $length
-            ) {
-              anInstance(that, TypedArrayConstructor, CONSTRUCTOR_NAME);
-              var index = 0;
-              var byteOffset = 0;
-              var buffer, byteLength, length;
-              if (!isObject(data)) {
-                length = toIndex(data);
-                byteLength = length * BYTES;
-                buffer = new ArrayBuffer(byteLength);
-              } else if (isArrayBuffer(data)) {
-                buffer = data;
-                byteOffset = toOffset(offset, BYTES);
-                var $len = data.byteLength;
-                if ($length === undefined) {
-                  if ($len % BYTES) throw RangeError(WRONG_LENGTH);
-                  byteLength = $len - byteOffset;
-                  if (byteLength < 0) throw RangeError(WRONG_LENGTH);
+            TypedArrayConstructor = wrapper(
+              function (that, data, offset, $length) {
+                anInstance(that, TypedArrayConstructor, CONSTRUCTOR_NAME);
+                var index = 0;
+                var byteOffset = 0;
+                var buffer, byteLength, length;
+                if (!isObject(data)) {
+                  length = toIndex(data);
+                  byteLength = length * BYTES;
+                  buffer = new ArrayBuffer(byteLength);
+                } else if (isArrayBuffer(data)) {
+                  buffer = data;
+                  byteOffset = toOffset(offset, BYTES);
+                  var $len = data.byteLength;
+                  if ($length === undefined) {
+                    if ($len % BYTES) throw RangeError(WRONG_LENGTH);
+                    byteLength = $len - byteOffset;
+                    if (byteLength < 0) throw RangeError(WRONG_LENGTH);
+                  } else {
+                    byteLength = toLength($length) * BYTES;
+                    if (byteLength + byteOffset > $len)
+                      throw RangeError(WRONG_LENGTH);
+                  }
+                  length = byteLength / BYTES;
+                } else if (isTypedArray(data)) {
+                  return fromList(TypedArrayConstructor, data);
                 } else {
-                  byteLength = toLength($length) * BYTES;
-                  if (byteLength + byteOffset > $len)
-                    throw RangeError(WRONG_LENGTH);
+                  return typedArrayFrom.call(TypedArrayConstructor, data);
                 }
-                length = byteLength / BYTES;
-              } else if (isTypedArray(data)) {
-                return fromList(TypedArrayConstructor, data);
-              } else {
-                return typedArrayFrom.call(TypedArrayConstructor, data);
+                setInternalState(that, {
+                  buffer: buffer,
+                  byteOffset: byteOffset,
+                  byteLength: byteLength,
+                  length: length,
+                  view: new DataView(buffer)
+                });
+                while (index < length) addElement(that, index++);
               }
-              setInternalState(that, {
-                buffer: buffer,
-                byteOffset: byteOffset,
-                byteLength: byteLength,
-                length: length,
-                view: new DataView(buffer)
-              });
-              while (index < length) addElement(that, index++);
-            });
+            );
 
             if (setPrototypeOf)
               setPrototypeOf(TypedArrayConstructor, TypedArray);
             TypedArrayConstructorPrototype = TypedArrayConstructor.prototype =
               create(TypedArrayPrototype);
           } else if (TYPED_ARRAYS_CONSTRUCTORS_REQUIRES_WRAPPERS) {
-            TypedArrayConstructor = wrapper(function (
-              dummy,
-              data,
-              typedArrayOffset,
-              $length
-            ) {
-              anInstance(dummy, TypedArrayConstructor, CONSTRUCTOR_NAME);
-              return inheritIfRequired(
-                (function () {
-                  if (!isObject(data))
-                    return new NativeTypedArrayConstructor(toIndex(data));
-                  if (isArrayBuffer(data))
-                    return $length !== undefined
-                      ? new NativeTypedArrayConstructor(
-                          data,
-                          toOffset(typedArrayOffset, BYTES),
-                          $length
-                        )
-                      : typedArrayOffset !== undefined
-                      ? new NativeTypedArrayConstructor(
-                          data,
-                          toOffset(typedArrayOffset, BYTES)
-                        )
-                      : new NativeTypedArrayConstructor(data);
-                  if (isTypedArray(data))
-                    return fromList(TypedArrayConstructor, data);
-                  return typedArrayFrom.call(TypedArrayConstructor, data);
-                })(),
-                dummy,
-                TypedArrayConstructor
-              );
-            });
+            TypedArrayConstructor = wrapper(
+              function (dummy, data, typedArrayOffset, $length) {
+                anInstance(dummy, TypedArrayConstructor, CONSTRUCTOR_NAME);
+                return inheritIfRequired(
+                  (function () {
+                    if (!isObject(data))
+                      return new NativeTypedArrayConstructor(toIndex(data));
+                    if (isArrayBuffer(data))
+                      return $length !== undefined
+                        ? new NativeTypedArrayConstructor(
+                            data,
+                            toOffset(typedArrayOffset, BYTES),
+                            $length
+                          )
+                        : typedArrayOffset !== undefined
+                          ? new NativeTypedArrayConstructor(
+                              data,
+                              toOffset(typedArrayOffset, BYTES)
+                            )
+                          : new NativeTypedArrayConstructor(data);
+                    if (isTypedArray(data))
+                      return fromList(TypedArrayConstructor, data);
+                    return typedArrayFrom.call(TypedArrayConstructor, data);
+                  })(),
+                  dummy,
+                  TypedArrayConstructor
+                );
+              }
+            );
 
             if (setPrototypeOf)
               setPrototypeOf(TypedArrayConstructor, TypedArray);
@@ -3867,7 +3865,6 @@ var Module = typeof Module != "undefined" ? Module : {};
       __unused_webpack_exports,
       __webpack_require__
     ) {
-      /* eslint-disable no-new */
       var global = __webpack_require__(7854);
       var fails = __webpack_require__(7293);
       var checkCorrectnessOfIteration = __webpack_require__(7072);
@@ -3968,11 +3965,7 @@ var Module = typeof Module != "undefined" ? Module : {};
       var NATIVE_SYMBOL = __webpack_require__(133);
 
       module.exports =
-        NATIVE_SYMBOL &&
-        // eslint-disable-next-line no-undef
-        !Symbol.sham &&
-        // eslint-disable-next-line no-undef
-        typeof Symbol.iterator == "symbol";
+        NATIVE_SYMBOL && !Symbol.sham && typeof Symbol.iterator == "symbol";
 
       /***/
     },
@@ -4825,9 +4818,9 @@ var Module = typeof Module != "undefined" ? Module : {};
             this instanceof SymbolWrapper
               ? new NativeSymbol(description)
               : // in Edge 13, String(Symbol(undefined)) === 'Symbol(undefined)'
-              description === undefined
-              ? NativeSymbol()
-              : NativeSymbol(description);
+                description === undefined
+                ? NativeSymbol()
+                : NativeSymbol(description);
           if (description === "") EmptyStringDescriptionStore[result] = true;
           return result;
         };
@@ -4954,7 +4947,6 @@ var Module = typeof Module != "undefined" ? Module : {};
       var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
       var FORCED = fails(function () {
-        // eslint-disable-next-line no-undef
         new Int8Array(1).set({});
       });
 
@@ -5084,6 +5076,7 @@ var Module = typeof Module != "undefined" ? Module : {};
             );
           } catch (error) {
             CollectionPrototype.forEach = forEach;
+            console.log(error);
           }
       }
 
@@ -5119,6 +5112,7 @@ var Module = typeof Module != "undefined" ? Module : {};
               );
             } catch (error) {
               CollectionPrototype[ITERATOR] = ArrayValues;
+              console.log(error);
             }
           if (!CollectionPrototype[TO_STRING_TAG]) {
             createNonEnumerableProperty(
@@ -5143,6 +5137,7 @@ var Module = typeof Module != "undefined" ? Module : {};
                 } catch (error) {
                   CollectionPrototype[METHOD_NAME] =
                     ArrayIteratorMethods[METHOD_NAME];
+                  console.log(error);
                 }
             }
         }
@@ -5235,6 +5230,7 @@ var Module = typeof Module != "undefined" ? Module : {};
         /******/ return this || new Function("return this")();
         /******/
       } catch (e) {
+        console.log(e);
         /******/ if (typeof window === "object") return window;
         /******/
       }
@@ -5258,109 +5254,109 @@ var Module = typeof Module != "undefined" ? Module : {};
     "use strict";
     /* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__ =
       __webpack_require__(7042);
-    /* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0___default =
+    /* harmony import */ var _core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__
       );
     /* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_1__ =
       __webpack_require__(6992);
-    /* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_1___default =
+    /* harmony import */ var _core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_1___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_1__
       );
     /* harmony import */ var core_js_modules_es_typed_array_uint8_clamped_array_js__WEBPACK_IMPORTED_MODULE_2__ =
       __webpack_require__(9743);
-    /* harmony import */ var core_js_modules_es_typed_array_uint8_clamped_array_js__WEBPACK_IMPORTED_MODULE_2___default =
+    /* harmony import */ var _core_js_modules_es_typed_array_uint8_clamped_array_js__WEBPACK_IMPORTED_MODULE_2___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_typed_array_uint8_clamped_array_js__WEBPACK_IMPORTED_MODULE_2__
       );
     /* harmony import */ var core_js_modules_es_typed_array_fill_js__WEBPACK_IMPORTED_MODULE_3__ =
       __webpack_require__(3105);
-    /* harmony import */ var core_js_modules_es_typed_array_fill_js__WEBPACK_IMPORTED_MODULE_3___default =
+    /* harmony import */ var _core_js_modules_es_typed_array_fill_js__WEBPACK_IMPORTED_MODULE_3___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_typed_array_fill_js__WEBPACK_IMPORTED_MODULE_3__
       );
     /* harmony import */ var core_js_modules_es_typed_array_iterator_js__WEBPACK_IMPORTED_MODULE_4__ =
       __webpack_require__(6319);
-    /* harmony import */ var core_js_modules_es_typed_array_iterator_js__WEBPACK_IMPORTED_MODULE_4___default =
+    /* harmony import */ var _core_js_modules_es_typed_array_iterator_js__WEBPACK_IMPORTED_MODULE_4___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_typed_array_iterator_js__WEBPACK_IMPORTED_MODULE_4__
       );
     /* harmony import */ var core_js_modules_es_typed_array_set_js__WEBPACK_IMPORTED_MODULE_5__ =
       __webpack_require__(3462);
-    /* harmony import */ var core_js_modules_es_typed_array_set_js__WEBPACK_IMPORTED_MODULE_5___default =
+    /* harmony import */ var _core_js_modules_es_typed_array_set_js__WEBPACK_IMPORTED_MODULE_5___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_typed_array_set_js__WEBPACK_IMPORTED_MODULE_5__
       );
     /* harmony import */ var core_js_modules_es_typed_array_sort_js__WEBPACK_IMPORTED_MODULE_6__ =
       __webpack_require__(3824);
-    /* harmony import */ var core_js_modules_es_typed_array_sort_js__WEBPACK_IMPORTED_MODULE_6___default =
+    /* harmony import */ var _core_js_modules_es_typed_array_sort_js__WEBPACK_IMPORTED_MODULE_6___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_typed_array_sort_js__WEBPACK_IMPORTED_MODULE_6__
       );
     /* harmony import */ var core_js_modules_es_typed_array_to_string_js__WEBPACK_IMPORTED_MODULE_7__ =
       __webpack_require__(5016);
-    /* harmony import */ var core_js_modules_es_typed_array_to_string_js__WEBPACK_IMPORTED_MODULE_7___default =
+    /* harmony import */ var _core_js_modules_es_typed_array_to_string_js__WEBPACK_IMPORTED_MODULE_7___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_typed_array_to_string_js__WEBPACK_IMPORTED_MODULE_7__
       );
     /* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_8__ =
       __webpack_require__(4747);
-    /* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_8___default =
+    /* harmony import */ var _core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_8___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_8__
       );
     /* harmony import */ var core_js_modules_es_regexp_to_string_js__WEBPACK_IMPORTED_MODULE_9__ =
       __webpack_require__(9714);
-    /* harmony import */ var core_js_modules_es_regexp_to_string_js__WEBPACK_IMPORTED_MODULE_9___default =
+    /* harmony import */ var _core_js_modules_es_regexp_to_string_js__WEBPACK_IMPORTED_MODULE_9___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_regexp_to_string_js__WEBPACK_IMPORTED_MODULE_9__
       );
     /* harmony import */ var core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_10__ =
       __webpack_require__(1817);
-    /* harmony import */ var core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_10___default =
+    /* harmony import */ var _core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_10___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_10__
       );
     /* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_11__ =
       __webpack_require__(8674);
-    /* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_11___default =
+    /* harmony import */ var _core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_11___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_11__
       );
     /* harmony import */ var core_js_modules_es_array_filter_js__WEBPACK_IMPORTED_MODULE_12__ =
       __webpack_require__(7327);
-    /* harmony import */ var core_js_modules_es_array_filter_js__WEBPACK_IMPORTED_MODULE_12___default =
+    /* harmony import */ var _core_js_modules_es_array_filter_js__WEBPACK_IMPORTED_MODULE_12___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_array_filter_js__WEBPACK_IMPORTED_MODULE_12__
       );
     /* harmony import */ var core_js_modules_es_object_get_own_property_descriptors_js__WEBPACK_IMPORTED_MODULE_13__ =
       __webpack_require__(9337);
-    /* harmony import */ var core_js_modules_es_object_get_own_property_descriptors_js__WEBPACK_IMPORTED_MODULE_13___default =
+    /* harmony import */ var _core_js_modules_es_object_get_own_property_descriptors_js__WEBPACK_IMPORTED_MODULE_13___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_object_get_own_property_descriptors_js__WEBPACK_IMPORTED_MODULE_13__
       );
     /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_14__ =
       __webpack_require__(3948);
-    /* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_14___default =
+    /* harmony import */ var _core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_14___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_14__
       );
     /* harmony import */ var core_js_modules_es_symbol_async_iterator_js__WEBPACK_IMPORTED_MODULE_15__ =
       __webpack_require__(2443);
-    /* harmony import */ var core_js_modules_es_symbol_async_iterator_js__WEBPACK_IMPORTED_MODULE_15___default =
+    /* harmony import */ var _core_js_modules_es_symbol_async_iterator_js__WEBPACK_IMPORTED_MODULE_15___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_symbol_async_iterator_js__WEBPACK_IMPORTED_MODULE_15__
       );
     /* harmony import */ var core_js_modules_es_json_to_string_tag_js__WEBPACK_IMPORTED_MODULE_16__ =
       __webpack_require__(3706);
-    /* harmony import */ var core_js_modules_es_json_to_string_tag_js__WEBPACK_IMPORTED_MODULE_16___default =
+    /* harmony import */ var _core_js_modules_es_json_to_string_tag_js__WEBPACK_IMPORTED_MODULE_16___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_json_to_string_tag_js__WEBPACK_IMPORTED_MODULE_16__
       );
     /* harmony import */ var core_js_modules_es_math_to_string_tag_js__WEBPACK_IMPORTED_MODULE_17__ =
       __webpack_require__(2703);
-    /* harmony import */ var core_js_modules_es_math_to_string_tag_js__WEBPACK_IMPORTED_MODULE_17___default =
+    /* harmony import */ var _core_js_modules_es_math_to_string_tag_js__WEBPACK_IMPORTED_MODULE_17___default =
       /*#__PURE__*/ __webpack_require__.n(
         core_js_modules_es_math_to_string_tag_js__WEBPACK_IMPORTED_MODULE_17__
       );
@@ -5396,6 +5392,7 @@ var Module = typeof Module != "undefined" ? Module : {};
       try {
         define({}, "");
       } catch (err) {
+        console.log(err);
         define = function define(obj, key, value) {
           return (obj[key] = value);
         };
@@ -5798,12 +5795,12 @@ var Module = typeof Module != "undefined" ? Module : {};
               "break" === record.type || "continue" === record.type
                 ? (this.next = record.arg)
                 : "return" === record.type
-                ? ((this.rval = this.arg = record.arg),
-                  (this.method = "return"),
-                  (this.next = "end"))
-                : "normal" === record.type &&
-                  afterLoc &&
-                  (this.next = afterLoc),
+                  ? ((this.rval = this.arg = record.arg),
+                    (this.method = "return"),
+                    (this.next = "end"))
+                  : "normal" === record.type &&
+                    afterLoc &&
+                    (this.next = afterLoc),
               ContinueSentinel
             );
           },
@@ -5913,17 +5910,17 @@ var Module = typeof Module != "undefined" ? Module : {};
               _defineProperty(target, key, source[key]);
             })
           : Object.getOwnPropertyDescriptors
-          ? Object.defineProperties(
-              target,
-              Object.getOwnPropertyDescriptors(source)
-            )
-          : ownKeys(Object(source)).forEach(function (key) {
-              Object.defineProperty(
+            ? Object.defineProperties(
                 target,
-                key,
-                Object.getOwnPropertyDescriptor(source, key)
-              );
-            });
+                Object.getOwnPropertyDescriptors(source)
+              )
+            : ownKeys(Object(source)).forEach(function (key) {
+                Object.defineProperty(
+                  target,
+                  key,
+                  Object.getOwnPropertyDescriptor(source, key)
+                );
+              });
       }
       return target;
     }
@@ -6108,7 +6105,6 @@ var Module = typeof Module != "undefined" ? Module : {};
     const imageCapture = new ImageCapture();
     let isInit = false;
     const metaDataMap = {};
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function transpostFrame(ptr, id) {
       const data = imageCapture.getImageInfo(ptr / 4);
       // push到数组列表
@@ -6176,32 +6172,31 @@ var Module = typeof Module != "undefined" ? Module : {};
     self.Module = {
       instantiateWasm: (function () {
         var _instantiateWasm = _asyncToGenerator(
-          /*#__PURE__*/ _regeneratorRuntime().mark(function _callee(
-            info,
-            receiveInstance
-          ) {
-            var url;
-            return _regeneratorRuntime().wrap(function _callee$(_context) {
-              while (1)
-                switch ((_context.prev = _context.next)) {
-                  case 0:
-                    _context.next = 2;
-                    return initPromise;
-                  case 2:
-                    url = _context.sent;
-                    fetch(url || "./capture.worker.wasm")
-                      .then(response => response.arrayBuffer())
-                      .then(bytes => WebAssembly.instantiate(bytes, info))
-                      .then(instance => receiveInstance(instance.instance));
-                  // WebAssembly.instantiate(bytes, info).then(result => {
-                  //     receiveInstance(result.instance);
-                  // });
-                  case 4:
-                  case "end":
-                    return _context.stop();
-                }
-            }, _callee);
-          })
+          /*#__PURE__*/ _regeneratorRuntime().mark(
+            function _callee(info, receiveInstance) {
+              var url;
+              return _regeneratorRuntime().wrap(function _callee$(_context) {
+                while (1)
+                  switch ((_context.prev = _context.next)) {
+                    case 0:
+                      _context.next = 2;
+                      return initPromise;
+                    case 2:
+                      url = _context.sent;
+                      fetch(url || "./capture.worker.wasm")
+                        .then(response => response.arrayBuffer())
+                        .then(bytes => WebAssembly.instantiate(bytes, info))
+                        .then(instance => receiveInstance(instance.instance));
+                    // WebAssembly.instantiate(bytes, info).then(result => {
+                    //     receiveInstance(result.instance);
+                    // });
+                    case 4:
+                    case "end":
+                      return _context.stop();
+                  }
+              }, _callee);
+            }
+          )
         );
         function instantiateWasm(_x, _x2) {
           return _instantiateWasm.apply(this, arguments);
@@ -6245,7 +6240,7 @@ var ENVIRONMENT_IS_NODE =
   typeof process == "object" &&
   typeof process.versions == "object" &&
   typeof process.versions.node == "string";
-var ENVIRONMENT_IS_SHELL =
+var _ENVIRONMENT_IS_SHELL =
   !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
 
 // `/` should be present at the end if `scriptDirectory` is not empty
@@ -6258,7 +6253,7 @@ function locateFile(path) {
 }
 
 // Hooks that are implemented differently in different runtime environments.
-var read_, readAsync, readBinary, setWindowTitle;
+var read_, readAsync, readBinary, _setWindowTitle;
 
 if (ENVIRONMENT_IS_NODE) {
   // `require()` is no-op in an ESM module, use `createRequire()` to construct
@@ -6400,7 +6395,7 @@ else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
     // end include: web_or_worker_shell_read.js
   }
 
-  setWindowTitle = title => (document.title = title);
+  _setWindowTitle = title => (document.title = title);
 } else {
 }
 
@@ -6475,7 +6470,7 @@ function assert(condition, text) {
 
 // Memory management
 
-var HEAP,
+var _HEAP,
   /** @type {!Int8Array} */
   HEAP8,
   /** @type {!Uint8Array} */
@@ -6483,7 +6478,7 @@ var HEAP,
   /** @type {!Int16Array} */
   HEAP16,
   /** @type {!Uint16Array} */
-  HEAPU16,
+  _HEAPU16,
   /** @type {!Int32Array} */
   HEAP32,
   /** @type {!Uint32Array} */
@@ -6509,7 +6504,7 @@ function updateMemoryViews() {
 // In regular non-RELOCATABLE mode the table is exported
 // from the wasm module and this will be assigned once
 // the exports are available.
-var wasmTable;
+var _wasmTable;
 // end include: runtime_init_table.js
 // include: runtime_stack_check.js
 // end include: runtime_stack_check.js
@@ -6521,7 +6516,7 @@ var __ATMAIN__ = []; // functions called when main() is to be run
 var __ATEXIT__ = []; // functions called during shutdown
 var __ATPOSTRUN__ = []; // functions called after the main() is called
 
-var runtimeInitialized = false;
+var _runtimeInitialized = false;
 
 var runtimeKeepaliveCounter = 0;
 
@@ -6574,11 +6569,11 @@ function addOnInit(cb) {
   __ATINIT__.unshift(cb);
 }
 
-function addOnPreMain(cb) {
+function _addOnPreMain(cb) {
   __ATMAIN__.unshift(cb);
 }
 
-function addOnExit(cb) {}
+function _addOnExit(_cb) {}
 
 function addOnPostRun(cb) {
   __ATPOSTRUN__.unshift(cb);
@@ -6609,7 +6604,7 @@ function getUniqueRunDependency(id) {
   return id;
 }
 
-function addRunDependency(id) {
+function addRunDependency(_id) {
   runDependencies++;
 
   if (Module["monitorRunDependencies"]) {
@@ -6617,7 +6612,7 @@ function addRunDependency(id) {
   }
 }
 
-function removeRunDependency(id) {
+function removeRunDependency(_id) {
   runDependencies--;
 
   if (Module["monitorRunDependencies"]) {
@@ -6806,7 +6801,7 @@ function createWasm() {
   // handle a generated wasm instance, receiving its exports and
   // performing other necessary setup
   /** @param {WebAssembly.Module=} module*/
-  function receiveInstance(instance, module) {
+  function receiveInstance(instance, _module) {
     var exports = instance.exports;
 
     Module["asm"] = exports;
@@ -6885,7 +6880,7 @@ var callRuntimeCallbacks = callbacks => {
  * @param {number} ptr
  * @param {string} type
  */
-function getValue(ptr, type = "i8") {
+function _getValue(ptr, type = "i8") {
   if (type.endsWith("*")) type = "*";
   switch (type) {
     case "i1":
@@ -6914,7 +6909,7 @@ function getValue(ptr, type = "i8") {
  * @param {number} value
  * @param {string} type
  */
-function setValue(ptr, value, type = "i8") {
+function _setValue(ptr, value, type = "i8") {
   if (type.endsWith("*")) type = "*";
   switch (type) {
     case "i1":
@@ -7047,6 +7042,7 @@ var initRandomFill = () => {
         view
       );
     } catch (e) {
+      console.log(e);
       // nodejs doesn't have crypto support
     }
   }
@@ -7350,7 +7346,7 @@ var TTY = {
     fsync: function (stream) {
       stream.tty.ops.fsync(stream.tty);
     },
-    read: function (stream, buffer, offset, length, pos /* ignored */) {
+    read: function (stream, buffer, offset, length, _pos /* ignored */) {
       if (!stream.tty || !stream.tty.ops.get_char) {
         throw new FS.ErrnoError(60);
       }
@@ -7360,6 +7356,7 @@ var TTY = {
         try {
           result = stream.tty.ops.get_char(stream.tty);
         } catch (e) {
+          console.log(e);
           throw new FS.ErrnoError(29);
         }
         if (result === undefined && bytesRead === 0) {
@@ -7374,7 +7371,7 @@ var TTY = {
       }
       return bytesRead;
     },
-    write: function (stream, buffer, offset, length, pos) {
+    write: function (stream, buffer, offset, length, _pos) {
       if (!stream.tty || !stream.tty.ops.put_char) {
         throw new FS.ErrnoError(60);
       }
@@ -7383,6 +7380,7 @@ var TTY = {
           stream.tty.ops.put_char(stream.tty, buffer[offset + i]);
         }
       } catch (e) {
+        console.log(e);
         throw new FS.ErrnoError(29);
       }
       if (length) {
@@ -7392,7 +7390,7 @@ var TTY = {
     }
   },
   default_tty_ops: {
-    get_char: function (tty) {
+    get_char: function (_tty) {
       return FS_stdin_getChar();
     },
     put_char: function (tty, val) {
@@ -7409,7 +7407,7 @@ var TTY = {
         tty.output = [];
       }
     },
-    ioctl_tcgets: function (tty) {
+    ioctl_tcgets: function (_tty) {
       // typical setting
       return {
         c_iflag: 25856,
@@ -7423,11 +7421,11 @@ var TTY = {
         ]
       };
     },
-    ioctl_tcsets: function (tty, optional_actions, data) {
+    ioctl_tcsets: function (_tty, _optional_actions, _data) {
       // currently just ignore
       return 0;
     },
-    ioctl_tiocgwinsz: function (tty) {
+    ioctl_tiocgwinsz: function (_tty) {
       return [24, 80];
     }
   },
@@ -7449,20 +7447,20 @@ var TTY = {
   }
 };
 
-var zeroMemory = (address, size) => {
+var _zeroMemory = (address, size) => {
   HEAPU8.fill(0, address, address + size);
   return address;
 };
 
-var alignMemory = (size, alignment) => {
+var _alignMemory = (size, alignment) => {
   return Math.ceil(size / alignment) * alignment;
 };
-var mmapAlloc = size => {
+var mmapAlloc = _size => {
   abort();
 };
 var MEMFS = {
   ops_table: null,
-  mount(mount) {
+  mount(_mount) {
     return MEMFS.createNode(null, "/", 16384 | 511 /* 0777 */, 0);
   },
   createNode(parent, name, mode, dev) {
@@ -7627,7 +7625,7 @@ var MEMFS = {
         MEMFS.resizeFileStorage(node, attr.size);
       }
     },
-    lookup(parent, name) {
+    lookup(_parent, _name) {
       throw FS.genericErrors[44];
     },
     mknod(parent, name, mode, dev) {
@@ -7639,9 +7637,11 @@ var MEMFS = {
         var new_node;
         try {
           new_node = FS.lookupNode(new_dir, new_name);
-        } catch (e) {}
+        } catch (e) {
+          console.log(e);
+        }
         if (new_node) {
-          for (var i in new_node.contents) {
+          for (var _i in new_node.contents) {
             throw new FS.ErrnoError(55);
           }
         }
@@ -7660,7 +7660,7 @@ var MEMFS = {
     },
     rmdir(parent, name) {
       var node = FS.lookupNode(parent, name);
-      for (var i in node.contents) {
+      for (var _i in node.contents) {
         throw new FS.ErrnoError(55);
       }
       delete parent.contents[name];
@@ -7799,7 +7799,7 @@ var MEMFS = {
       }
       return { ptr, allocated };
     },
-    msync(stream, buffer, offset, length, mmapFlags) {
+    msync(stream, buffer, offset, length, _mmapFlags) {
       MEMFS.stream_ops.write(stream, buffer, 0, length, offset, false);
       // should we check if bytesWritten and length are the same?
       return 0;
@@ -7820,7 +7820,7 @@ var asyncLoad = (url, onload, onerror, noRunDep) => {
       onload(new Uint8Array(arrayBuffer));
       if (dep) removeRunDependency(dep);
     },
-    event => {
+    _event => {
       if (onerror) {
         onerror();
       } else {
@@ -8029,19 +8029,19 @@ var WORKERFS = {
         node.timestamp = attr.timestamp;
       }
     },
-    lookup(parent, name) {
+    lookup(_parent, _name) {
       throw new FS.ErrnoError(44);
     },
-    mknod(parent, name, mode, dev) {
+    mknod(_parent, _name, _mode, _dev) {
       throw new FS.ErrnoError(63);
     },
-    rename(oldNode, newDir, newName) {
+    rename(_oldNode, _newDir, _newName) {
       throw new FS.ErrnoError(63);
     },
-    unlink(parent, name) {
+    unlink(_parent, _name) {
       throw new FS.ErrnoError(63);
     },
-    rmdir(parent, name) {
+    rmdir(_parent, _name) {
       throw new FS.ErrnoError(63);
     },
     readdir(node) {
@@ -8054,7 +8054,7 @@ var WORKERFS = {
       }
       return entries;
     },
-    symlink(parent, newName, oldPath) {
+    symlink(_parent, _newName, _oldPath) {
       throw new FS.ErrnoError(63);
     }
   },
@@ -8066,7 +8066,7 @@ var WORKERFS = {
       buffer.set(new Uint8Array(ab), offset);
       return chunk.size;
     },
-    write(stream, buffer, offset, length, position) {
+    write(_stream, _buffer, _offset, _length, _position) {
       throw new FS.ErrnoError(29);
     },
     llseek(stream, offset, whence) {
@@ -8285,9 +8285,11 @@ var FS = {
   },
   mayCreate: (dir, name) => {
     try {
-      var node = FS.lookupNode(dir, name);
+      var _node = FS.lookupNode(dir, name);
       return 20;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
     return FS.nodePermissions(dir, "wx");
   },
   mayDelete: (dir, name, isdir) => {
@@ -8684,6 +8686,7 @@ var FS = {
     try {
       new_node = FS.lookupNode(new_dir, new_name);
     } catch (e) {
+      console.log(e);
       // not fatal
     }
     // early out if nothing needs to change
@@ -8919,6 +8922,7 @@ var FS = {
         });
         node = lookup.node;
       } catch (e) {
+        console.log(e);
         // ignore
       }
     }
@@ -9135,7 +9139,7 @@ var FS = {
     }
     return stream.stream_ops.msync(stream, buffer, offset, length, mmapFlags);
   },
-  munmap: stream => 0,
+  munmap: _stream => 0,
   ioctl: (stream, cmd, arg) => {
     if (!stream.stream_ops.ioctl) {
       throw new FS.ErrnoError(59);
@@ -9202,7 +9206,7 @@ var FS = {
     // setup /dev/null
     FS.registerDevice(FS.makedev(1, 3), {
       read: () => 0,
-      write: (stream, buffer, offset, length, pos) => length
+      write: (stream, buffer, offset, length, _pos) => length
     });
     FS.mkdev("/dev/null", FS.makedev(1, 3));
     // setup /dev/tty and /dev/tty1
@@ -9285,9 +9289,9 @@ var FS = {
     }
 
     // open default streams for the stdin, stdout and stderr devices
-    var stdin = FS.open("/dev/stdin", 0);
-    var stdout = FS.open("/dev/stdout", 1);
-    var stderr = FS.open("/dev/stderr", 1);
+    var _stdin = FS.open("/dev/stdin", 0);
+    var _stdout = FS.open("/dev/stdout", 1);
+    var _stderr = FS.open("/dev/stderr", 1);
   },
   ensureErrnoError: () => {
     if (FS.ErrnoError) return;
@@ -9366,7 +9370,9 @@ var FS = {
     try {
       var lookup = FS.lookupPath(path, { follow: !dontResolveLastLink });
       path = lookup.path;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
     var ret = {
       isRoot: false,
       exists: false,
@@ -9395,7 +9401,7 @@ var FS = {
     }
     return ret;
   },
-  createPath: (parent, path, canRead, canWrite) => {
+  createPath: (parent, path, _canRead, _canWrite) => {
     parent = typeof parent == "string" ? parent : FS.getPath(parent);
     var parts = path.split("/").reverse();
     while (parts.length) {
@@ -9405,6 +9411,7 @@ var FS = {
       try {
         FS.mkdir(current);
       } catch (e) {
+        console.log(e);
         // ignore EEXIST
       }
       parent = current;
@@ -9457,19 +9464,20 @@ var FS = {
       open: stream => {
         stream.seekable = false;
       },
-      close: stream => {
+      close: _stream => {
         // flush any pending line data
         if (output && output.buffer && output.buffer.length) {
           output(10);
         }
       },
-      read: (stream, buffer, offset, length, pos /* ignored */) => {
+      read: (stream, buffer, offset, length, _pos /* ignored */) => {
         var bytesRead = 0;
         for (var i = 0; i < length; i++) {
           var result;
           try {
             result = input();
           } catch (e) {
+            console.log(e);
             throw new FS.ErrnoError(29);
           }
           if (result === undefined && bytesRead === 0) {
@@ -9484,11 +9492,12 @@ var FS = {
         }
         return bytesRead;
       },
-      write: (stream, buffer, offset, length, pos) => {
+      write: (stream, buffer, offset, length, _pos) => {
         for (var i = 0; i < length; i++) {
           try {
             output(buffer[offset + i]);
           } catch (e) {
+            console.log(e);
             throw new FS.ErrnoError(29);
           }
         }
@@ -9514,6 +9523,7 @@ var FS = {
         obj.contents = intArrayFromString(read_(obj.url), true);
         obj.usedBytes = obj.contents.length;
       } catch (e) {
+        console.log(e);
         throw new FS.ErrnoError(29);
       }
     } else {
@@ -9700,7 +9710,7 @@ var FS = {
       return writeChunks(stream, buffer, offset, length, position);
     };
     // use a custom mmap function
-    stream_ops.mmap = (stream, length, position, prot, flags) => {
+    stream_ops.mmap = (stream, length, position, _prot, _flags) => {
       FS.forceLoadFile(node);
       var ptr = mmapAlloc(length);
       if (!ptr) {
@@ -9875,7 +9885,7 @@ var SYSCALLS = {
     return stream;
   }
 };
-function ___syscall_faccessat(dirfd, path, amode, flags) {
+function ___syscall_faccessat(dirfd, path, amode, _flags) {
   try {
     path = SYSCALLS.getStr(path);
     path = SYSCALLS.calculateAt(dirfd, path);
@@ -10008,10 +10018,10 @@ function ___syscall_getdents64(fd, dirp, count) {
         type = FS.isChrdev(child.mode)
           ? 2 // DT_CHR, character device.
           : FS.isDir(child.mode)
-          ? 4 // DT_DIR, directory.
-          : FS.isLink(child.mode)
-          ? 10 // DT_LNK, symbolic link.
-          : 8; // DT_REG, regular file.
+            ? 4 // DT_DIR, directory.
+            : FS.isLink(child.mode)
+              ? 10 // DT_LNK, symbolic link.
+              : 8; // DT_REG, regular file.
       }
       (tempI64 = [
         id >>> 0,
@@ -10352,7 +10362,9 @@ var growMemory = size => {
     wasmMemory.grow(pages); // .grow() takes a delta compared to the previous size
     updateMemoryViews();
     return 1 /*success*/;
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
   // implicit 0 return to save code size (caller will cast "undefined" into 0
   // anyhow)
 };
@@ -10509,10 +10521,10 @@ function _fd_fdstat_get(fd, pbuf) {
       var type = stream.tty
         ? 2
         : FS.isDir(stream.mode)
-        ? 3
-        : FS.isLink(stream.mode)
-        ? 7
-        : 4;
+          ? 3
+          : FS.isLink(stream.mode)
+            ? 7
+            : 4;
     }
     HEAP8[pbuf >> 0] = type;
     HEAP16[(pbuf + 2) >> 1] = flags;
@@ -10974,7 +10986,7 @@ var _proc_exit = code => {
   quit_(code, new ExitStatus(code));
 };
 /** @param {boolean|number=} implicit */
-var exitJS = (status, implicit) => {
+var exitJS = (status, _implicit) => {
   EXITSTATUS = status;
 
   _proc_exit(status);
@@ -11010,7 +11022,7 @@ function getCFunc(ident) {
  * @param {Arguments|Array=} args
  * @param {Object=} opts
  */
-var ccall = function (ident, returnType, argTypes, args, opts) {
+var ccall = function (ident, returnType, argTypes, args, _opts) {
   // For fast lookup of conversion functions
   var toC = {
     string: str => {
@@ -11160,7 +11172,7 @@ var wasmImports = {
   fd_write: _fd_write,
   strftime: _strftime
 };
-var asm = createWasm();
+var _asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = function () {
   return (___wasm_call_ctors = Module["asm"]["__wasm_call_ctors"]).apply(
@@ -11231,19 +11243,19 @@ var stackAlloc = function () {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiji = (Module["dynCall_iiiji"] = function () {
+var _dynCall_iiiji = (Module["dynCall_iiiji"] = function () {
   return (dynCall_iiiji = Module["dynCall_iiiji"] =
     Module["asm"]["dynCall_iiiji"]).apply(null, arguments);
 });
 
 /** @type {function(...*):?} */
-var dynCall_jiji = (Module["dynCall_jiji"] = function () {
+var _dynCall_jiji = (Module["dynCall_jiji"] = function () {
   return (dynCall_jiji = Module["dynCall_jiji"] =
     Module["asm"]["dynCall_jiji"]).apply(null, arguments);
 });
 
 /** @type {function(...*):?} */
-var dynCall_jiiji = (Module["dynCall_jiiji"] = function () {
+var _dynCall_jiiji = (Module["dynCall_jiiji"] = function () {
   return (dynCall_jiiji = Module["dynCall_jiiji"] =
     Module["asm"]["dynCall_jiiji"]).apply(null, arguments);
 });

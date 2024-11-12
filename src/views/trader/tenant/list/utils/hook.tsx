@@ -3,7 +3,7 @@ import editForm from "../form.vue";
 import { message } from "@/utils/message";
 import { ElMessageBox } from "element-plus";
 import { usePublicHooks } from "../../hooks";
-import { getTenantList } from "@/api/system";
+import { getTenantList } from "./api";
 import { addDialog } from "@/components/ReDialog";
 import { deviceDetection } from "@pureadmin/utils";
 import type { FormItemProps } from "../utils/types";

@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { formRules } from "./utils/rule";
 import { FormProps } from "./utils/types";
-import { getTenantPackageSimple } from "@/api/system";
+import { getTenantPackageSimple } from "./api";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({

@@ -6,32 +6,26 @@
   bottom: 0;
   z-index: -1;
 }
-
 .login-container {
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
   max-width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 18rem;
-  padding: 0 2rem;
-}
-
-.img {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.img img {
-  width: 500px;
+  grid-template-columns: 1fr 480px 1fr;
+  grid-gap: 1rem;
+  background: linear-gradient(to bottom, #4facfe, #00f2fe);
+  place-items: center;
 }
 
 .login-box {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 40px;
+  min-height: 400px;
+  height: auto;
 }
 
 .login-form {

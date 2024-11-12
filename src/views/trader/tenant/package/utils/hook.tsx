@@ -14,7 +14,7 @@ import {
   getTenantPackage,
   getTenantPackageMenu,
   getTenantPackageMenuIds
-} from "@/api/system";
+} from "./api/index";
 
 export function useTenantPackage(treeRef: Ref) {
   const form = reactive({

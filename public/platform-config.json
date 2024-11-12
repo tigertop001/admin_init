@@ -1,6 +1,8 @@
 {
+  "success": true,
+  "data": {
   "Version": "5.8.0",
-  "Title": "Admin",
+  "Title": "商户后台管理",
   "FixedHeader": true,
   "HiddenSideBar": false,
   "MultiTagsCache": false,
@@ -32,4 +34,5 @@
       "zoom": 12
     }
   }
+}
 }

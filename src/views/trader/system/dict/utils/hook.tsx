@@ -9,7 +9,7 @@ import { addDialog } from "@/components/ReDialog";
 import { deviceDetection } from "@pureadmin/utils";
 import type { FormItemProps } from "../utils/types";
 import type { PaginationProps } from "@pureadmin/table";
-import { getDictTree, getDictDetail } from "@/api/system";
+import { getDictTree, getDictDetail } from "./api";
 
 export function useDict() {
   // 左侧字典树的id

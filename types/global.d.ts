@@ -1,3 +1,5 @@
+// src/types/global.d.ts
+
 import type { ECharts } from "echarts";
 import type { TableColumns } from "@pureadmin/table";
 
@@ -207,4 +209,32 @@ declare global {
       touched?: boolean;
     };
   }
+
+  /**
+   * 全局 Result 类型
+   */
+  type Result = {
+    success: boolean;
+    data?: Array<any>;
+  };
+
+  /**E
+   * 全局 ResultTable 类型
+   */
+  type ResultTable = {
+    success: boolean;
+    data?: {
+      /** 列表数据 */
+      list: Array<any>;
+      /** 总条目数 */
+      total?: number;
+      /** 每页显示条目个数 */
+      pageSize?: number;
+      /** 当前页数 */
+      currentPage?: number;
+    };
+  };
 }
+
+// 使文件成为模块化文件，避免编译错误
+export {};

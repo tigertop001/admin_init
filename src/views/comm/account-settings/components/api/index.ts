@@ -1,10 +1,5 @@
 import { http } from "@/utils/http";
 
-type Result = {
-  success: boolean;
-  data: Array<any>;
-};
-
 /** 文件上传 */
 export const formUpload = data => {
   return http.request<Result>(

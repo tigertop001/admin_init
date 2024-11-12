@@ -12,10 +12,10 @@ import type { FormInstance } from "element-plus";
 // import { $t, transformI18n } from "@/plugins/i18n";
 import { operates, thirdParty } from "./utils/enums";
 import { useLayout } from "@/layout/hooks/useLayout";
-import LoginPhone from "./components/LoginPhone.vue";
-import LoginRegist from "./components/LoginRegist.vue";
+// import LoginPhone from "./components/LoginPhone.vue";
+// import LoginRegist from "./components/LoginRegist.vue";
 import LoginUpdate from "./components/LoginUpdate.vue";
-import LoginQrCode from "./components/LoginQrCode.vue";
+// import LoginQrCode from "./components/LoginQrCode.vue";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { bg, avatar, illustration } from "./utils/static";
@@ -66,7 +66,7 @@ const {
 const { VITE_ENABLE_TENANT } = import.meta.env;
 
 const ruleForm = reactive({
-  tenant: "admin",
+  // tenant: "admin",
   username: "admin",
   password: "admin123",
   verifyCode: ""
@@ -134,7 +134,7 @@ watch(
 
 <template>
   <div class="select-none">
-    <img :src="bg" class="wave" />
+    <!-- <img :src="bg" class="wave" /> -->
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch
@@ -211,11 +211,11 @@ watch(
     </div>
 
     <div class="login-container">
-      <div class="img">
+      <div class="flex items-end h-screen">
         <component :is="toRaw(illustration)" />
       </div>
-      <div class="login-box">
-        <div class="login-form">
+      <div class="login-box flex justify-center items-center">
+        <div class="login-form text-center">
           <avatar class="avatar" />
           <Motion>
             <h2 class="outline-none">
@@ -233,7 +233,7 @@ watch(
             :rules="loginRules"
             size="large"
           >
-            <Motion v-if="VITE_ENABLE_TENANT === 'true'">
+            <!-- <Motion v-if="VITE_ENABLE_TENANT === 'true'">
               <el-form-item
                 :rules="[
                   {
@@ -251,7 +251,7 @@ watch(
                   :prefix-icon="useRenderIcon(Tenant)"
                 />
               </el-form-item>
-            </Motion>
+            </Motion> -->
 
             <Motion :delay="100">
               <el-form-item
@@ -351,7 +351,7 @@ watch(
               </el-form-item>
             </Motion>
 
-            <Motion :delay="300">
+            <!-- <Motion :delay="300">
               <el-form-item>
                 <div class="w-full h-[20px] flex justify-between items-center">
                   <el-button
@@ -365,10 +365,10 @@ watch(
                   </el-button>
                 </div>
               </el-form-item>
-            </Motion>
+            </Motion> -->
           </el-form>
 
-          <Motion v-if="currentPage === 0" :delay="350">
+          <!-- <Motion v-if="currentPage === 0" :delay="350">
             <el-form-item>
               <el-divider>
                 <p class="text-gray-500 text-xs">第三方登录</p>
@@ -387,19 +387,23 @@ watch(
                 </span>
               </div>
             </el-form-item>
-          </Motion>
+          </Motion> -->
           <!-- 手机号登录  -->
-          <LoginPhone v-if="currentPage === 1" />
+          <!-- <LoginPhone v-if="currentPage === 1" /> -->
           <!-- 二维码登录  -->
-          <LoginQrCode v-if="currentPage === 2" />
+          <!-- <LoginQrCode v-if="currentPage === 2" /> -->
           <!-- 注册 -->
-          <LoginRegist v-if="currentPage === 3" />
+          <!-- <LoginRegist v-if="currentPage === 3" /> -->
           <!-- 忘记密码 -->
           <LoginUpdate v-if="currentPage === 4" />
         </div>
       </div>
+      <div class="flex items-end h-screen">
+        <component :is="toRaw(illustration)" />
+      </div>
     </div>
-    <div
+
+    <!-- <div
       class="w-full flex-c absolute bottom-3 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(220,220,242,0.8)]"
     >
       Copyright © 2024-admin
@@ -410,7 +414,7 @@ watch(
       >
         &nbsp;{{ title }}
       </a>
-    </div>
+    </div> -->
   </div>
 </template>
 
