@@ -7,17 +7,12 @@ import {
   routerArrays,
   storageLocal
 } from "@/store/globalUtils";
-import {
-  type UserResult,
-  type RefreshTokenResult,
-  getLogin,
-  refreshTokenApi
-} from "@/views/comm/login/api/user";
+import { getLogin, refreshTokenApi } from "../api";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
 
 export const useUserStore = defineStore({
-  id: "pure-user",
+  id: "userInfo",
   state: (): userType => ({
     // 头像
     avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
@@ -78,16 +73,15 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserResult>((resolve, reject) => {
-        getLogin(data)
-          .then(data => {
-            if (data?.success) setToken(data.data);
-            resolve(data);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      try {
+        const response = await getLogin(data);
+        if (response?.success) {
+          setToken(response.data);
+        }
+        return response;
+      } catch (error) {
+        throw error;
+      }
     },
     /** 前端登出（不调用接口） */
     logOut() {
@@ -101,18 +95,15 @@ export const useUserStore = defineStore({
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
-      return new Promise<RefreshTokenResult>((resolve, reject) => {
-        refreshTokenApi(data)
-          .then(data => {
-            if (data) {
-              setToken(data.data);
-              resolve(data);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      try {
+        const response = await refreshTokenApi(data);
+        if (response) {
+          setToken(response.data);
+        }
+        return response;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 });

@@ -21,13 +21,16 @@ import { buildHierarchyTree } from "@/utils/tree";
 import { userKey, type DataInfo } from "@/utils/auth";
 import { type menuType, routerArrays } from "@/layout/types";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/views/comm/permission/store/permission";
+import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
 const IFrame = () => import("@/views/comm/frame/frame.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const routFile = import.meta.env.VITE_ROUTER_TYPE;
 let modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 if (routFile == "trader") {
   modulesRoutes = import.meta.glob("/src/views/trader/**/*.{vue,tsx}");
+}
+if (routFile == "admin") {
+  modulesRoutes = import.meta.glob("/src/views/admin/**/*.{vue,tsx}");
 }
 
 import { getAsyncRoutes } from "./api";

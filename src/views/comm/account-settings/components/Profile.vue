@@ -2,7 +2,7 @@
 import { reactive, ref } from "vue";
 import { formUpload } from "./api";
 import { message } from "@/utils/message";
-import { type UserInfo, getMine } from "@/views/comm/login/api/user";
+import { type UserInfo, getMine } from "@/views/comm/login/api";
 import type { FormInstance, FormRules } from "element-plus";
 import ReCropperPreview from "@/components/ReCropperPreview";
 import { createFormData, deviceDetection } from "@pureadmin/utils";

@@ -51,7 +51,19 @@ watch(
       xAxis: [
         {
           type: "category",
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          data: [
+            "00",
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10"
+          ],
           axisLabel: {
             fontSize: "0.875rem"
           },
@@ -67,7 +79,7 @@ watch(
             fontSize: "0.875rem"
           },
           splitLine: {
-            show: false // 去网格线
+            show: true // 去网格线
           }
           // name: "单位: 个"
         }
@@ -75,21 +87,21 @@ watch(
       series: [
         {
           name: "需求人数",
-          type: "bar",
-          barWidth: 10,
-          itemStyle: {
-            color: "#41b6ff",
-            borderRadius: [10, 10, 0, 0]
+          type: "line", // 设置为折线图
+          smooth: true, // 启用平滑曲线
+          lineStyle: {
+            width: 3, // 设置线条宽度
+            color: "#41b6ff" // 设置线条颜色
           },
           data: props.requireData
         },
         {
           name: "提问数量",
-          type: "bar",
-          barWidth: 10,
-          itemStyle: {
-            color: "#e86033ce",
-            borderRadius: [10, 10, 0, 0]
+          type: "line", // 设置为折线图
+          smooth: true, // 启用平滑曲线
+          lineStyle: {
+            width: 3, // 设置线条宽度
+            color: "#e86033ce" // 设置线条颜色
           },
           data: props.questionData
         }

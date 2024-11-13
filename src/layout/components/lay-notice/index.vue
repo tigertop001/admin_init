@@ -14,7 +14,7 @@ notices.value.map(v => (noticesNum.value += v.list.length));
 
 const getLabel = computed(
   () => item =>
-    t(item.name) + (item.list.length > 0 ? `(${item.list.length})` : "")
+    item.name + (item.list.length > 0 ? `(${item.list.length})` : "")
 );
 </script>
 

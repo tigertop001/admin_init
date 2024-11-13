@@ -20,6 +20,13 @@
   .el-timeline-item {
     margin: 0 6px;
   }
+
+  .el-card__body {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    height: 100%;
+  }
 }
 
 .main-content {

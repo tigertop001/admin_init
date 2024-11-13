@@ -4,15 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "NODE_OPTIONS=--max-old-space-size=4096 vite --mode dev",
+    "dev": "VITE_ROUTER_TYPE=trader NODE_OPTIONS=--max-old-space-size=4096 vite --mode dev",
+    "adev": "VITE_ROUTER_TYPE=admin NODE_OPTIONS=--max-old-space-size=4096 vite --mode admindev",
     "serve": "pnpm dev",
     "build:dev": "rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode dev",
     "build:test": "rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode test",
     "build:prod": "rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode prod",
-    "build:trdev": "VITE_ROUTER_TYPE=trader rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode dev",
-    "build:trtest": "VITE_ROUTER_TYPE=trader rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode test",
-    "build:trprod": "VITE_ROUTER_TYPE=trader rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode prod",
-    "build:staging": "rimraf dist && vite build --mode staging --mode prod",
     "report": "rimraf dist && vite build --mode prod",
     "preview": "vite preview --mode prod",
     "preview:build": "pnpm build && vite preview --mode prod",
@@ -24,7 +21,11 @@
     "lint:stylelint": "stylelint --cache --fix \"**/*.{html,vue,css,scss}\" --cache-location node_modules/.cache/stylelint/",
     "lint": "pnpm lint:eslint && pnpm lint:prettier && pnpm lint:stylelint",
     "prepare": "husky",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "build:trdev": "VITE_ROUTER_TYPE=trader rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode dev",
+    "build:trtest": "VITE_ROUTER_TYPE=trader rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode test",
+    "build:trprod": "VITE_ROUTER_TYPE=trader rimraf dist && NODE_OPTIONS=--max-old-space-size=8192 vite build && generate-version-file --mode prod",
+    "build:staging": "rimraf dist && vite build --mode staging --mode prod"
   },
   "keywords": [
     "vue-pure-admin",

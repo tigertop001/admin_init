@@ -2,8 +2,6 @@ import { tableData } from "../../data";
 import { delay } from "@pureadmin/utils";
 import { ref, onMounted, reactive } from "vue";
 import type { PaginationProps } from "@pureadmin/table";
-import ThumbUp from "@iconify-icons/ri/thumb-up-line";
-import Hearts from "@iconify-icons/ri/hearts-line";
 import Empty from "./empty.svg?component";
 
 export function useColumns() {
@@ -41,23 +39,7 @@ export function useColumns() {
       label: "解决数量",
       prop: "resolveNumber"
     },
-    {
-      sortable: true,
-      label: "用户满意度",
-      minWidth: 100,
-      prop: "satisfaction",
-      cellRenderer: ({ row }) => (
-        <div class="flex justify-center w-full">
-          <span class="flex items-center w-[60px]">
-            <span class="ml-auto mr-2">{row.satisfaction}%</span>
-            <iconifyIconOffline
-              icon={row.satisfaction > 98 ? Hearts : ThumbUp}
-              color="#e85f33"
-            />
-          </span>
-        </div>
-      )
-    },
+
     {
       sortable: true,
       label: "统计日期",
