@@ -96,6 +96,7 @@ watchEffect(() => {
                   <ChartLine
                     :data="parseFloat(v as string) || 0"
                     :maxData="maxValues[index]"
+                    :dataVal="k"
                   />
                 </p>
               </div>
@@ -110,6 +111,7 @@ watchEffect(() => {
                   <ChartLine
                     :data="parseFloat(v as string) || 0"
                     :maxData="maxValues[index]"
+                    :dataVal="k"
                   />
                 </p>
               </div>
@@ -128,6 +130,7 @@ watchEffect(() => {
               <ChartLine
                 :data="parseFloat(v as string) || 0"
                 :maxData="maxValues[index]"
+                :dataVal="k"
               />
             </p>
           </template>

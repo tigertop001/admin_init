@@ -10,6 +10,10 @@ const props = defineProps({
   maxData: {
     type: Number,
     required: true
+  },
+  dataVal: {
+    type: String,
+    required: true
   }
 });
 
@@ -64,6 +68,16 @@ const textColor = computed(() => {
   const darken = (colorValue: number) => Math.max(0, colorValue - 120);
   return `rgb(${darken(r)}, ${darken(g)}, ${darken(b)})`;
 });
+
+// 判断 dataVal 是否包含 '率' 字符
+const displayData = computed(() => {
+  // 如果 dataVal 包含 '率'，则返回 data 后面加上 "%"
+  if (props.dataVal.includes("率")) {
+    return `${props.data}%`;
+  }
+  // 否则只显示 data
+  return props.data.toString();
+});
 </script>
 
 <template>
@@ -75,7 +89,7 @@ const textColor = computed(() => {
     }"
     class="h-[20px] rounded flex items-center pl-2 animate-width"
   >
-    {{ props.data }}
+    {{ displayData }}
   </div>
 </template>
 
