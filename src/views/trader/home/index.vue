@@ -4,10 +4,16 @@ import ReCol from "@/components/ReCol";
 import { useDark } from "./utils";
 import WelcomeTable from "./components/table/index.vue";
 import { ReNormalCountTo } from "@/components/ReCountTo";
-import { ChartBar, ChartLine, ChartRound } from "./components/charts";
+import { ChartBar, ChartLine, OnlineCount } from "./components/charts";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
 import { barChartData } from "./data";
 import { useUserStoreHook } from "./store/home";
+import register from "@iconify-icons/ri/user-add-fill";
+import recharge from "@iconify-icons/ri/money-cny-circle-fill";
+import withdraw from "@iconify-icons/ep/wallet-filled";
+import active from "@iconify-icons/ri/price-tag-3-fill";
+import bet from "@iconify-icons/ri/file-list-fill";
+import monthData0 from "@iconify-icons/ri/contrast-2-fill";
 
 defineOptions({
   name: "Welcome"
@@ -29,12 +35,19 @@ const optionsBasis: Array<OptionsType> = [
 const homeStore = useUserStoreHook();
 // 响应式引用存储图表数据
 const chartData = ref(null);
+const onlineSummaryData = ref(null);
+const onlineData = ref(null);
 
 // 在组件挂载时获取数据
 onMounted(async () => {
-  await homeStore.getHomeData(); // 调用 store 中的请求方法
-  chartData.value = homeStore.homeData; // 假设 store 中的数据结构是 homeData.chartData
-  console.log("-----chartData.value---", chartData.value);
+  await homeStore.getHomeData();
+  chartData.value = homeStore.homeData;
+  await homeStore.getOnlineSummary();
+  onlineSummaryData.value = homeStore.onlineSummaryData;
+  console.log("-----onlineSummaryData.value---", onlineSummaryData.value);
+  await homeStore.getOnline();
+  onlineData.value = homeStore.onlineSummaryData;
+  console.log("-----onlineData.value---", onlineData.value);
 });
 
 // 计算每个对象中的最大值
@@ -52,8 +65,24 @@ const maxValues = computed(() => {
 
   return result;
 });
-watchEffect(() => {
-  console.log("maxValues---", maxValues.value);
+
+// 创建一个映射对象，根据 index 映射到对应的图标
+const iconMap = {
+  register: register,
+  recharge: recharge,
+  withdraw: withdraw,
+  active: active,
+  bet: bet,
+  monthData0: monthData0
+};
+
+const iconColors = computed(() => {
+  return [
+    `rgba(255, 219, 183, ${isDark.value ? 0.5 : 0.9})`, // 根据 isDark 变更透明度
+    `rgba(184, 225, 255, ${isDark.value ? 0.5 : 0.9})`,
+    `rgba(209, 232, 209, ${isDark.value ? 0.5 : 0.9})`,
+    `rgba(230, 211, 242, ${isDark.value ? 0.5 : 0.9})`
+  ];
 });
 </script>
 
@@ -81,7 +110,7 @@ watchEffect(() => {
           }
         }"
       >
-        <el-card class="line-card h-[200px] flex flex-col justify-between">
+        <el-card class="line-card h-[160px] flex flex-col justify-between">
           <template v-if="Object.keys(item).length > 5">
             <div class="flex flex-row justify-between w-full h-full">
               <div class="flex flex-col w-1/2 h-full justify-between">
@@ -119,6 +148,12 @@ watchEffect(() => {
           </template>
 
           <template v-else>
+            <IconifyIconOffline
+              :icon="iconMap[index]"
+              :color="iconColors[key % iconColors.length]"
+              width="48"
+              class="absolute top-[10px] right-[30px]"
+            />
             <p
               v-for="[k, v] in Object.entries(item)"
               :key="k"
@@ -131,11 +166,13 @@ watchEffect(() => {
                 :data="parseFloat(v as string) || 0"
                 :maxData="maxValues[index]"
                 :dataVal="k"
+                class="mr-[80px]"
               />
             </p>
           </template>
         </el-card>
       </re-col>
+
       <re-col
         v-motion
         class="mb-[18px]"
@@ -154,15 +191,23 @@ watchEffect(() => {
         }"
       >
         <el-card class="bar-card" shadow="never">
-          <div class="flex justify-between">
+          <div class="flex justify-between border-b border-gray-200 pb-3">
             <span class="text-md font-medium">分析概览</span>
             <Segmented v-model="curWeek" :options="optionsBasis" />
           </div>
-          <div class="flex justify-between items-start mt-3">
-            <ChartBar
-              :requireData="barChartData[curWeek].requireData"
-              :questionData="barChartData[curWeek].questionData"
-            />
+          <div
+            class="flex w-full justify-between items-start mt-3 h-full flex-1"
+          >
+            <div class="w-xs h-full">
+              <OnlineCount :data="onlineSummaryData" />
+            </div>
+            <div class="flex-1">
+              <p>{{ optionsBasis[curWeek].label }}</p>
+              <ChartBar
+                :requireData="barChartData[curWeek].requireData"
+                :questionData="barChartData[curWeek].questionData"
+              />
+            </div>
           </div>
         </el-card>
       </re-col>
