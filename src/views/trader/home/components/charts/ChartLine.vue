@@ -104,8 +104,4 @@ const displayData = computed(() => {
     width: v-bind(chartwidth);
   }
 }
-
-.animate-width {
-  animation: width-grow 1s ease-in-out forwards;
-}
 </style>
