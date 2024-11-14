@@ -82,15 +82,14 @@ const displayData = computed(() => {
 
 <template>
   <div
+    ref="chartRef"
     :style="{
       width: chartWidth,
       backgroundColor: chartColor,
       color: textColor
     }"
-    class="h-[20px] rounded flex items-center pl-2 animate-width"
-  >
-    {{ displayData }}
-  </div>
+    class="h-[20px] pt-[6px] bg-gray-200 rounded animate-width"
+  />
 </template>
 
 <style scoped>
@@ -100,11 +99,11 @@ const displayData = computed(() => {
   }
 
   to {
-    width: 100%;
+    width: v-bind(chartwidth);
   }
 }
 
 .animate-width {
-  animation: widthGrow 1s ease-in-out forwards;
+  animation: width-grow 1s ease-in-out forwards;
 }
 </style>
