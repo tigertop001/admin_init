@@ -88,8 +88,10 @@ const displayData = computed(() => {
       backgroundColor: chartColor,
       color: textColor
     }"
-    class="h-[20px] pt-[6px] bg-gray-200 rounded animate-width"
-  />
+    class="h-[20px] rounded flex items-center pl-2 animate-width"
+  >
+    {{ displayData }}
+  </div>
 </template>
 
 <style scoped>
