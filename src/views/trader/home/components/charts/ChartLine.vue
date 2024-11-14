@@ -101,7 +101,7 @@ const displayData = computed(() => {
   }
 
   to {
-    width: v-bind(chartwidth);
+    width: v-bind("chartWidth");
   }
 }
 
