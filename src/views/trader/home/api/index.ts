@@ -1,5 +1,5 @@
 import { http } from "@/utils/http";
-
+import type { OnlineParams } from "../types/home";
 export const getHomeDataApi = () => {
   return http.request<Result>(
     "get",
@@ -12,9 +12,10 @@ export const getOnlineSummaryApi = () => {
     "/mock/6732dee691c574cfa14065dc/home/onlineSummary"
   );
 };
-export const getOnlineApi = () => {
+export const getOnlineApi = (params: OnlineParams = {}) => {
   return http.request<Result>(
     "get",
-    "/mock/6732dee691c574cfa14065dc/home/online"
+    "/mock/6732dee691c574cfa14065dc/home/online",
+    { params }
   );
 };

@@ -16,25 +16,12 @@ import bet from "@iconify-icons/ri/file-list-fill";
 import monthData0 from "@iconify-icons/ri/contrast-2-fill";
 
 defineOptions({
-  name: "Welcome"
+  name: "Home"
 });
 
 const { isDark } = useDark();
 
 let curWeek = ref(1); // 0上周、1本周
-let curDate = ref(1); // 0今日、昨日
-watchEffect(() => {
-  console.log("--curWeek-", curWeek);
-});
-const optionsDate: Array<OptionsType> = [
-  {
-    label: "今日",
-    icon: bet
-  },
-  {
-    label: "昨日"
-  }
-];
 const optionsBasis: Array<OptionsType> = [
   {
     label: "在线会员"
@@ -138,7 +125,7 @@ const iconColors = computed(() => {
                   :key="k"
                   class="flex items-center justify-start"
                 >
-                  <span class="w-[100px] text-left text-[14px] flex-shrink-0">{{
+                  <span class="w-[85px] text-left text-[14px] flex-shrink-0">{{
                     k
                   }}</span>
                   <ChartLine
@@ -153,9 +140,9 @@ const iconColors = computed(() => {
                 <p
                   v-for="[k, v] in Object.entries(item).slice(5)"
                   :key="k"
-                  class="flex items-center justify-start flex-shrink-0"
+                  class="flex items-center justify-start flex-shrink-0 pl-4"
                 >
-                  <span class="w-[100px] text-left text-[14px]">{{ k }}</span>
+                  <span class="w-[85px] text-left text-[14px]">{{ k }}</span>
                   <ChartLine
                     :data="parseFloat(v as string) || 0"
                     :maxData="maxValues[index]"
@@ -178,7 +165,7 @@ const iconColors = computed(() => {
               :key="k"
               class="flex items-center justify-start"
             >
-              <span class="w-[100px] text-left text-[14px] flex-shrink-0">{{
+              <span class="w-[85px] text-left text-[14px] flex-shrink-0">{{
                 k
               }}</span>
               <ChartLine
@@ -214,11 +201,6 @@ const iconColors = computed(() => {
             class="flex justify-between items-center border-b border-gray-200 pb-3"
           >
             <span class="text-md font-medium">分析概览{{ curWeek }}</span>
-            <Segmented
-              v-model="curDate"
-              :options="optionsDate"
-              class="ml-auto"
-            />
             <Segmented
               v-model="curWeek"
               :options="optionsBasis"

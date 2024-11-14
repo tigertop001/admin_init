@@ -36,17 +36,18 @@ watch(
         }
       },
       grid: {
-        top: "20px",
+        top: "50px", // 根据 legend 位置调整
         left: "50px",
-        right: 0
+        right: "0px" // 如果 legend 在右侧，需要留出空间
       },
       legend: {
-        data: ["需求人数", "提问数量"],
+        data: ["昨天", "今天"],
         textStyle: {
           color: "#606266",
           fontSize: "0.875rem"
         },
-        bottom: 0
+        top: 0, // 改为顶部
+        right: 0 // 靠右对齐
       },
       xAxis: [
         {
@@ -62,7 +63,20 @@ watch(
             "07",
             "08",
             "09",
-            "10"
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23"
           ],
           axisLabel: {
             fontSize: "0.875rem"
@@ -86,7 +100,7 @@ watch(
       ],
       series: [
         {
-          name: "需求人数",
+          name: "昨天",
           type: "line", // 设置为折线图
           smooth: true, // 启用平滑曲线
           lineStyle: {
@@ -96,7 +110,7 @@ watch(
           data: props.requireData
         },
         {
-          name: "提问数量",
+          name: "今天",
           type: "line", // 设置为折线图
           smooth: true, // 启用平滑曲线
           lineStyle: {
