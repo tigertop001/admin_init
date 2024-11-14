@@ -21,27 +21,36 @@ defineOptions({
 
 const { isDark } = useDark();
 
-let curWeek = ref(1); // 0上周、1本周
+let type = ref(1); // 0上周、1本周
 const optionsBasis: Array<OptionsType> = [
   {
-    label: "在线会员"
+    label: "在线会员",
+    value: "online"
   },
   {
-    label: "充值"
+    label: "充值",
+    value: "recharge"
   },
   {
-    label: "提款"
+    label: "提款",
+    value: "withdraw"
   },
   {
-    label: "注册"
+    label: "注册",
+    value: "register"
   },
   {
-    label: "平台盈亏"
+    label: "平台盈亏",
+    value: "profit"
   },
   {
-    label: "打码"
+    label: "打码",
+    value: "bet"
   }
 ];
+const handleSegmentedChange = ({ index, option }) => {
+  homeStore.getOnline({ type: optionsBasis[type.value].value });
+};
 
 // 获取 store 实例
 const homeStore = useUserStoreHook();
@@ -52,7 +61,7 @@ const onlineData = ref(null);
 onMounted(async () => {
   await homeStore.getHomeData();
   await homeStore.getOnlineSummary();
-  await homeStore.getOnline();
+  await homeStore.getOnline({ type: optionsBasis[type.value].value });
   onlineData.value = homeStore.onlineData;
 });
 
@@ -84,7 +93,7 @@ const iconMap = {
 
 const iconColors = computed(() => {
   return [
-    `rgba(255, 219, 183, ${isDark.value ? 0.5 : 0.9})`, // 根据 isDark 变更透明度
+    `rgba(255, 219, 183, ${isDark.value ? 0.5 : 0.9})`,
     `rgba(184, 225, 255, ${isDark.value ? 0.5 : 0.9})`,
     `rgba(209, 232, 209, ${isDark.value ? 0.5 : 0.9})`,
     `rgba(230, 211, 242, ${isDark.value ? 0.5 : 0.9})`
@@ -200,11 +209,12 @@ const iconColors = computed(() => {
           <div
             class="flex justify-between items-center border-b border-gray-200 pb-3"
           >
-            <span class="text-md font-medium">分析概览{{ curWeek }}</span>
+            <span class="text-md font-medium">分析概览</span>
             <Segmented
-              v-model="curWeek"
+              v-model="type"
               :options="optionsBasis"
               class="ml-[20px]"
+              @change="handleSegmentedChange"
             />
           </div>
           <div
@@ -214,10 +224,10 @@ const iconColors = computed(() => {
               <OnlineCount :data="homeStore.onlineSummaryData" />
             </div>
             <div class="flex-1">
-              <p>{{ optionsBasis[curWeek].label }}</p>
+              <p>{{ optionsBasis[type].label }}</p>
               <ChartBar
-                :requireData="barChartData[curWeek].requireData"
-                :questionData="barChartData[curWeek].questionData"
+                :requireData="homeStore.onlineData.day0"
+                :questionData="homeStore.onlineData.day1"
               />
             </div>
           </div>

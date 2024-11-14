@@ -8,7 +8,10 @@ export const homeUserStore = defineStore({
   state: () => ({
     homeData: {},
     onlineSummaryData: {},
-    onlineData: {}
+    onlineData: {
+      day0: [],
+      day1: []
+    }
   }),
   actions: {
     async getHomeData() {
@@ -31,6 +34,8 @@ export const homeUserStore = defineStore({
       try {
         const response = await getOnlineApi(params);
         this.onlineData = response.data; // 将数据保存到 state 中
+        console.log("this.onlineData", this.onlineData.day0);
+        console.log("this.onlineData", this.onlineData.day1);
       } catch (error) {
         console.error("获取数据失败:", error);
       }
