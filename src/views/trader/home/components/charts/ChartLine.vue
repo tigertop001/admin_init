@@ -88,7 +88,7 @@ const displayData = computed(() => {
       backgroundColor: chartColor,
       color: textColor
     }"
-    class="h-[20px] rounded flex items-center pl-2 animate-width"
+    class="h-[20px] rounded flex text-[14px] items-center pl-2 animate-width"
   >
     {{ displayData }}
   </div>

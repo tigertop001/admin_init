@@ -22,32 +22,51 @@ defineOptions({
 const { isDark } = useDark();
 
 let curWeek = ref(1); // 0上周、1本周
-const optionsBasis: Array<OptionsType> = [
+let curDate = ref(1); // 0今日、昨日
+watchEffect(() => {
+  console.log("--curWeek-", curWeek);
+});
+const optionsDate: Array<OptionsType> = [
   {
-    label: "上周"
+    label: "今日",
+    icon: bet
   },
   {
-    label: "本周"
+    label: "昨日"
+  }
+];
+const optionsBasis: Array<OptionsType> = [
+  {
+    label: "在线会员"
+  },
+  {
+    label: "充值"
+  },
+  {
+    label: "提款"
+  },
+  {
+    label: "注册"
+  },
+  {
+    label: "平台盈亏"
+  },
+  {
+    label: "打码"
   }
 ];
 
 // 获取 store 实例
 const homeStore = useUserStoreHook();
 // 响应式引用存储图表数据
-const chartData = ref(null);
-const onlineSummaryData = ref(null);
 const onlineData = ref(null);
 
 // 在组件挂载时获取数据
 onMounted(async () => {
   await homeStore.getHomeData();
-  chartData.value = homeStore.homeData;
   await homeStore.getOnlineSummary();
-  onlineSummaryData.value = homeStore.onlineSummaryData;
-  console.log("-----onlineSummaryData.value---", onlineSummaryData.value);
   await homeStore.getOnline();
-  onlineData.value = homeStore.onlineSummaryData;
-  console.log("-----onlineData.value---", onlineData.value);
+  onlineData.value = homeStore.onlineData;
 });
 
 // 计算每个对象中的最大值
@@ -55,9 +74,9 @@ const maxValues = computed(() => {
   const result: Record<string, number> = {};
 
   // 在访问之前先检查 chartData 是否有效
-  if (chartData.value) {
-    Object.keys(chartData.value).forEach(key => {
-      const values = Object.values(chartData.value[key]);
+  if (homeStore.homeData) {
+    Object.keys(homeStore.homeData).forEach(key => {
+      const values = Object.values(homeStore.homeData[key]);
       const maxValue = Math.max(...values.map(v => parseFloat(v as string)));
       result[key] = maxValue;
     });
@@ -90,7 +109,7 @@ const iconColors = computed(() => {
   <div>
     <el-row :gutter="24" justify="start">
       <re-col
-        v-for="(item, index, key) in chartData"
+        v-for="(item, index, key) in homeStore.homeData"
         :key="index"
         v-motion
         class="mb-[18px]"
@@ -191,15 +210,26 @@ const iconColors = computed(() => {
         }"
       >
         <el-card class="bar-card" shadow="never">
-          <div class="flex justify-between border-b border-gray-200 pb-3">
-            <span class="text-md font-medium">分析概览</span>
-            <Segmented v-model="curWeek" :options="optionsBasis" />
+          <div
+            class="flex justify-between items-center border-b border-gray-200 pb-3"
+          >
+            <span class="text-md font-medium">分析概览{{ curWeek }}</span>
+            <Segmented
+              v-model="curDate"
+              :options="optionsDate"
+              class="ml-auto"
+            />
+            <Segmented
+              v-model="curWeek"
+              :options="optionsBasis"
+              class="ml-[20px]"
+            />
           </div>
           <div
             class="flex w-full justify-between items-start mt-3 h-full flex-1"
           >
             <div class="w-xs h-full">
-              <OnlineCount :data="onlineSummaryData" />
+              <OnlineCount :data="homeStore.onlineSummaryData" />
             </div>
             <div class="flex-1">
               <p>{{ optionsBasis[curWeek].label }}</p>
