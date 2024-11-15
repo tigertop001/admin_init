@@ -1,28 +1,29 @@
 <script setup lang="ts">
+import { reactive } from "vue";
 import { useColumns } from "./columns";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-
-const { loading, columns, dataList, pagination, Empty, onCurrentChange } =
-  useColumns();
+const props = defineProps({
+  dataList: {
+    type: Array,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true
+  }
+});
+const { rrColumns, wrColumns, pfColumns, prColumns, Empty } = useColumns();
+const columnsMap = {
+  rechargeRank: rrColumns,
+  withdrawRank: wrColumns,
+  profitRank: pfColumns,
+  proxyRank: prColumns
+};
+const columns = reactive(columnsMap[props.type] || []);
 </script>
 
 <template>
-  <pure-table
-    row-key="id"
-    alignWhole="center"
-    showOverflowTooltip
-    :loading="loading"
-    :loading-config="{ background: 'transparent' }"
-    :data="
-      dataList.slice(
-        (pagination.currentPage - 1) * pagination.pageSize,
-        pagination.currentPage * pagination.pageSize
-      )
-    "
-    :columns="columns"
-    :pagination="pagination"
-    @page-current-change="onCurrentChange"
-  >
+  <pure-table :data="dataList" :columns="columns">
     <template #empty>
       <el-empty description="暂无数据" :image-size="60">
         <template #image>
@@ -30,19 +31,10 @@ const { loading, columns, dataList, pagination, Empty, onCurrentChange } =
         </template>
       </el-empty>
     </template>
-    <template #operation="{ row }">
-      <el-button
-        plain
-        circle
-        size="small"
-        :title="`查看序号为${row.id}的详情`"
-        :icon="useRenderIcon('ri:search-line')"
-      />
-    </template>
   </pure-table>
 </template>
 
-<style lang="scss">
+<!-- <style lang="scss">
 .pure-table-filter {
   .el-table-filter__list {
     min-width: 80px;
@@ -57,4 +49,4 @@ const { loading, columns, dataList, pagination, Empty, onCurrentChange } =
 
 <style lang="scss" scoped>
 @import url("./styles/index.scss"); // 样式通过 scoped 限制
-</style>
+</style> -->

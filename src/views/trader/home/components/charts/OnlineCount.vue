@@ -6,6 +6,10 @@ const props = defineProps({
   data: {
     type: Object,
     required: true
+  },
+  curday: {
+    type: Number,
+    required: true
   }
 });
 // 定义字段与对应中文标签的映射

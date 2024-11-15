@@ -6,14 +6,11 @@ import WelcomeTable from "./components/table/index.vue";
 import { ReNormalCountTo } from "@/components/ReCountTo";
 import { ChartBar, ChartLine, OnlineCount } from "./components/charts";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
-import { barChartData } from "./data";
-import { useUserStoreHook } from "./store/home";
+import { useUserStoreHook } from "./store";
 import register from "@iconify-icons/ri/user-add-fill";
 import recharge from "@iconify-icons/ri/money-cny-circle-fill";
 import withdraw from "@iconify-icons/ep/wallet-filled";
 import active from "@iconify-icons/ri/price-tag-3-fill";
-import bet from "@iconify-icons/ri/file-list-fill";
-import monthData0 from "@iconify-icons/ri/contrast-2-fill";
 
 defineOptions({
   name: "Home"
@@ -21,7 +18,7 @@ defineOptions({
 
 const { isDark } = useDark();
 
-let type = ref(1); // 0上周、1本周
+const type = ref(1); // 0在线会员、1充值、2提款、3注册、4注册、5平台赢亏、6打码
 const optionsBasis: Array<OptionsType> = [
   {
     label: "在线会员",
@@ -55,14 +52,14 @@ const handleSegmentedChange = ({ index, option }) => {
 // 获取 store 实例
 const homeStore = useUserStoreHook();
 // 响应式引用存储图表数据
-const onlineData = ref(null);
+// const onlineData = ref(null);
 
 // 在组件挂载时获取数据
 onMounted(async () => {
   await homeStore.getHomeData();
-  await homeStore.getOnlineSummary();
+  await homeStore.getOnlineSummary({ date: curday.value });
   await homeStore.getOnline({ type: optionsBasis[type.value].value });
-  onlineData.value = homeStore.onlineData;
+  await homeStore.getRankingList();
 });
 
 // 计算每个对象中的最大值
@@ -86,9 +83,7 @@ const iconMap = {
   register: register,
   recharge: recharge,
   withdraw: withdraw,
-  active: active,
-  bet: bet,
-  monthData0: monthData0
+  active: active
 };
 
 const iconColors = computed(() => {
@@ -99,6 +94,34 @@ const iconColors = computed(() => {
     `rgba(230, 211, 242, ${isDark.value ? 0.5 : 0.9})`
   ];
 });
+
+const rankingList = computed(() => [
+  {
+    title: "充值排行榜",
+    data: homeStore.rankingListData.rechargeRank,
+    type: "rechargeRank"
+  },
+  {
+    title: "提现排行榜",
+    data: homeStore.rankingListData.withdrawRank,
+    type: "withdrawRank"
+  },
+  {
+    title: "输赢排行榜",
+    data: homeStore.rankingListData.profitRank,
+    type: "profitRank"
+  },
+  {
+    title: "代理发展排行榜",
+    data: homeStore.rankingListData.proxyRank,
+    type: "proxyRank"
+  }
+]);
+
+const curday = ref(1); // 0昨天、1今天
+const handleDayChange = async (value: number) => {
+  await homeStore.getOnlineSummary({ date: curday.value });
+};
 </script>
 
 <template>
@@ -205,27 +228,35 @@ const iconColors = computed(() => {
           }
         }"
       >
-        <el-card class="bar-card" shadow="never">
+        <el-card class="bar-card">
           <div
             class="flex justify-between items-center border-b border-gray-200 pb-3"
           >
-            <span class="text-md font-medium">分析概览</span>
-            <Segmented
-              v-model="type"
-              :options="optionsBasis"
-              class="ml-[20px]"
-              @change="handleSegmentedChange"
-            />
+            <span class="text-md font-medium">在线会员情况</span>
           </div>
           <div
             class="flex w-full justify-between items-start mt-3 h-full flex-1"
           >
             <div class="w-xs h-full">
-              <OnlineCount :data="homeStore.onlineSummaryData" />
+              <el-radio-group v-model="curday" @change="handleDayChange">
+                <el-radio :value="0">昨天</el-radio>
+                <el-radio :value="1">今天</el-radio>
+              </el-radio-group>
+              <OnlineCount
+                :data="homeStore.onlineSummaryData"
+                :curday="curday"
+              />
             </div>
             <div class="flex-1">
-              <p>{{ optionsBasis[type].label }}</p>
+              <!-- <p>{{ optionsBasis[type].label }}</p> -->
+              <Segmented
+                v-model="type"
+                :options="optionsBasis"
+                class="ml-[20px] relative z-10"
+                @change="handleSegmentedChange"
+              />
               <ChartBar
+                class="mt-[-20px]"
                 :requireData="homeStore.onlineData.day0"
                 :questionData="homeStore.onlineData.day1"
               />
@@ -251,11 +282,38 @@ const iconColors = computed(() => {
           }
         }"
       >
-        <el-card shadow="never" class="h-[580px]">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">数据统计</span>
-          </div>
-          <WelcomeTable class="mt-3" />
+        <el-card>
+          <el-row :gutter="24" justify="start">
+            <!-- 遍历排行榜数据 -->
+            <re-col
+              v-for="(rankData, index) in rankingList"
+              :key="index"
+              v-motion
+              class="mb-[18px]"
+              :value="6"
+              :md="12"
+              :sm="12"
+              :xs="24"
+              :initial="{
+                opacity: 0,
+                y: 100
+              }"
+              :enter="{
+                opacity: 1,
+                y: 0
+              }"
+              :class="{
+                'px-4': index !== 0 && index !== rankingList.length - 1
+              }"
+            >
+              <p class="text-md font-medium pl-3">{{ rankData.title }}</p>
+              <WelcomeTable
+                class="mt-3"
+                :dataList="rankData.data"
+                :type="rankData.type"
+              />
+            </re-col>
+          </el-row>
         </el-card>
       </re-col>
     </el-row>

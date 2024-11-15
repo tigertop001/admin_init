@@ -47,7 +47,8 @@ watch(
           fontSize: "0.875rem"
         },
         top: 0, // 改为顶部
-        right: 0 // 靠右对齐
+        left: 400, // 靠右对齐
+        padding: [0, 0, 0, 0]
       },
       xAxis: [
         {
@@ -79,7 +80,8 @@ watch(
             "23"
           ],
           axisLabel: {
-            fontSize: "0.875rem"
+            fontSize: "0.75rem",
+            width: 250 // 设置宽度
           },
           axisPointer: {
             type: "shadow"
@@ -90,7 +92,11 @@ watch(
         {
           type: "value",
           axisLabel: {
-            fontSize: "0.875rem"
+            fontSize: "0.8rem",
+            width: 250,
+            rotate: 0, // 控制标签旋转角度
+            margin: 12, // 控制标签与轴的距离
+            align: "center" // 对齐方式
           },
           splitLine: {
             show: true // 去网格线
@@ -130,5 +136,5 @@ watch(
 </script>
 
 <template>
-  <div ref="chartRef" style="width: 100%; height: 365px" />
+  <div ref="chartRef" style="width: 100%; height: 400px" />
 </template>
