@@ -41,11 +41,22 @@ export default [
   {
     path: "/account-settings",
     name: "AccountSettings",
-    component: () => import("@/views/comm/account-settings/index.vue"),
+    component: Layout,
     meta: {
+      icon: "ep:home-filled",
       title: "账户设置",
-      showLink: false,
       rank: 104
-    }
+    },
+    children: [
+      {
+        path: "/account-settings",
+        name: "AccountSettings",
+        component: () => import("@/views/comm/account-settings/index.vue"),
+        meta: {
+          title: "账户设置",
+          showLink: false
+        }
+      }
+    ]
   }
 ] satisfies Array<RouteConfigsTable>;

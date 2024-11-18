@@ -4,11 +4,10 @@ export type UserResult = {
   success: boolean;
   data: {
     /** 头像 */
-    avatar: string;
+    // avatar: string;
     /** 用户名 */
     username: string;
     /** 昵称 */
-    nickname: string;
     /** 当前登录用户的角色 */
     roles: Array<string>;
     /** 按钮级别权限 */
@@ -19,6 +18,10 @@ export type UserResult = {
     refreshToken: string;
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
+    /** 是否需要谷歌验证器验证 */
+    needGoogleAuth: boolean;
+    /** 是否需要绑定谷歌验证器 */
+    needBindGoogle: boolean;
   };
 };
 
@@ -31,16 +34,19 @@ export type RefreshTokenResult = {
     refreshToken: string;
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
+    /** 是否需要进行谷歌验证器验证 */
+    needGoogleAuth: boolean;
+    /** 是否是首次登录需要绑定谷歌验证器 */
+    needBindGoogle: boolean;
   };
 };
 
 export type UserInfo = {
-  /** 头像 */
-  avatar: string;
+  // /** 头像 */
+  // avatar: string;
   /** 用户名 */
   username: string;
   /** 昵称 */
-  nickname: string;
   /** 邮箱 */
   email: string;
   /** 联系电话 */
@@ -61,6 +67,32 @@ export const getLogin = (data?: object) => {
     "/mock/672b55c8cb7443249e0150fe/account/login",
     { data }
   );
+};
+
+/** 获取谷歌验证器二维码 */
+export const getGoogleAuthQrCodeApi = (data?: object) => {
+  return http.request<{
+    success: boolean;
+    data: {
+      qrCodeUrl: string;
+      secretKey: string;
+    };
+  }>("post", "/api/auth/google/generate", { data });
+};
+
+/** 验证谷歌验证码 */
+export const verifyGoogleCodeApi = (data: {
+  username: string;
+  code: string;
+}) => {
+  return http.request<{
+    success: boolean;
+    data: {
+      accessToken: string;
+      refreshToken: string;
+      expires: Date;
+    };
+  }>("post", "/api/auth/google/verify", { data });
 };
 
 /** 刷新`token` */
@@ -86,6 +118,15 @@ export const getMineLogs = (data?: object) => {
   return http.request<ResultTable>(
     "get",
     "/mock/672b55c8cb7443249e0150fe/account/mine-logs",
+    { data }
+  );
+};
+
+/** 获取验证码类型 */
+export const getLogInfoApi = (data?: object) => {
+  return http.request<ResultTable>(
+    "get",
+    "/mock/672b55c8cb7443249e0150fe/account/logininfo",
     { data }
   );
 };

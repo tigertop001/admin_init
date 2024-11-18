@@ -7,19 +7,36 @@ import {
   routerArrays,
   storageLocal
 } from "@/store/globalUtils";
-import { getLogin, refreshTokenApi } from "../api";
+import {
+  getLogin,
+  refreshTokenApi,
+  getGoogleAuthQrCodeApi,
+  verifyGoogleCodeApi,
+  getLogInfoApi
+} from "../api";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
+
+type TempLoginData = {
+  // avatar: string;
+  username: string;
+  roles: Array<string>;
+  permissions: Array<string>;
+  accessToken: string;
+  refreshToken: string;
+  expires: Date;
+  VerifiType: 0; // 验证码类型 0 图形验证码，1 谷歌验证码
+  needGoogleAuth: boolean;
+  needBindGoogle: boolean;
+};
 
 export const useUserStore = defineStore({
   id: "userInfo",
   state: (): userType => ({
-    // 头像
-    avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
+    // // 头像
+    // avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
     // 用户名
     username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
-    // 昵称
-    nickname: storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "",
     // 页面级别权限
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
     // 按钮级别权限
@@ -32,20 +49,22 @@ export const useUserStore = defineStore({
     // 是否勾选了登录页的免登录
     isRemembered: false,
     // 登录页的免登录存储几天，默认7天
-    loginDay: 7
+    loginDay: 7,
+    // 新增谷歌验证相关状态
+    needGoogleAuth: true,
+    needBindGoogle: true,
+    googleQrCode: "",
+    googleSecretKey: "",
+    tempLoginData: null // 存储第一步登录成功的数据
   }),
   actions: {
-    /** 存储头像 */
-    SET_AVATAR(avatar: string) {
-      this.avatar = avatar;
-    },
+    // /** 存储头像 */
+    // SET_AVATAR(avatar: string) {
+    //   this.avatar = avatar;
+    // },
     /** 存储用户名 */
     SET_USERNAME(username: string) {
       this.username = username;
-    },
-    /** 存储昵称 */
-    SET_NICKNAME(nickname: string) {
-      this.nickname = nickname;
     },
     /** 存储角色 */
     SET_ROLES(roles: Array<string>) {
@@ -71,18 +90,119 @@ export const useUserStore = defineStore({
     SET_LOGINDAY(value: number) {
       this.loginDay = Number(value);
     },
-    /** 登入 */
-    async loginByUsername(data) {
+
+    /** 验证码类型 */
+    SET_GOOGLE_SECRET_KEY(value: string) {
+      this.googleSecretKey = value;
+    },
+
+    /** 存储是否需要谷歌验证 */
+    SET_NEED_GOOGLE_AUTH(value: boolean) {
+      this.needGoogleAuth = value;
+    },
+
+    /** 存储是否需要绑定谷歌验证器 */
+    SET_NEED_BIND_GOOGLE(value: boolean) {
+      this.needBindGoogle = value;
+    },
+
+    /** 存储谷歌验证器二维码 */
+    SET_GOOGLE_QR_CODE(value: string) {
+      this.googleQrCode = value;
+    },
+
+    /** 存储谷歌验证器密钥 */
+    SET_VERIFITYPE(value: string) {
+      this.googleSecretKey = value;
+    },
+
+    /** 存储临时登录数据 */
+    SET_TEMP_LOGIN_DATA(value: TempLoginData | null) {
+      this.tempLoginData = value;
+    },
+    // /** 登入 */
+    // async loginByUsername(data) {
+    //   try {
+    //     const response = await getLogin(data);
+    //     if (response?.success) {
+    //       setToken(response.data);
+    //     }
+    //     return response;
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // },
+    /** 登录流程 */
+    async loginByUsername(data: { username: string; password: string }) {
       try {
         const response = await getLogin(data);
         if (response?.success) {
-          setToken(response.data);
+          if (response.data.needGoogleAuth) {
+            // 需要谷歌验证
+            this.SET_NEED_GOOGLE_AUTH(true);
+            this.SET_TEMP_LOGIN_DATA(response.data);
+
+            if (response.data.needBindGoogle) {
+              // 首次登录需要绑定谷歌验证器
+              this.SET_NEED_BIND_GOOGLE(true);
+              const qrResponse = await getGoogleAuthQrCodeApi({
+                username: data.username
+              });
+              console.log(
+                "---getGoogleAuthQrCode-001--",
+                qrResponse.data.qrCodeUrl
+              );
+              console.log(
+                "---getGoogleAuthQrCode-002--",
+                qrResponse.data.secretKey
+              );
+              if (qrResponse.success) {
+                this.SET_GOOGLE_QR_CODE(qrResponse.data.qrCodeUrl);
+                this.SET_GOOGLE_SECRET_KEY(qrResponse.data.secretKey);
+              }
+            }
+            return response;
+          } else {
+            // 不需要谷歌验证，直接登录成功
+            setToken(response.data);
+          }
         }
         return response;
       } catch (error) {
         throw error;
       }
     },
+    // async loginByUsername(data) {
+    //   try {
+    //     const response = await getLogin(data);
+    //     if (response?.success) {
+    //       if (response.data?.needGoogleAuth) {
+    //         // 需要谷歌验证
+    //         this.SET_NEED_GOOGLE_AUTH(true);
+    //         this.SET_TEMP_LOGIN_DATA(response.data);
+
+    //         if (response.data?.needBindGoogle) {
+    //           // 首次登录需要绑定谷歌验证器
+    //           this.SET_NEED_BIND_GOOGLE(true);
+    //           const qrResponse = await getGoogleAuthQrCode({
+    //             username: data.username
+    //           });
+    //           if (qrResponse.success) {
+    //             this.SET_GOOGLE_QR_CODE(qrResponse.data.qrCodeUrl);
+    //             this.SET_GOOGLE_SECRET_KEY(qrResponse.data.secretKey);
+    //           }
+    //         }
+    //         return response;
+    //       } else {
+    //         // 不需要谷歌验证，直接登录成功
+    //         setToken(response.data);
+    //       }
+    //     }
+    //     return response;
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // },
     /** 前端登出（不调用接口） */
     logOut() {
       this.username = "";
@@ -99,6 +219,43 @@ export const useUserStore = defineStore({
         const response = await refreshTokenApi(data);
         if (response) {
           setToken(response.data);
+        }
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+    /** 验证谷歌验证码 */
+    async verifyGoogleAuthCode(code: string) {
+      try {
+        const response = await verifyGoogleCodeApi({
+          username: this.tempLoginData?.username,
+          code
+        });
+
+        if (response.success) {
+          const loginData = {
+            ...this.tempLoginData,
+            ...response.data
+          };
+          setToken(loginData);
+          // 清理临时数据
+          this.SET_TEMP_LOGIN_DATA(null);
+          this.SET_NEED_GOOGLE_AUTH(false);
+          this.SET_NEED_BIND_GOOGLE(false);
+          this.SET_GOOGLE_QR_CODE("");
+          this.SET_GOOGLE_SECRET_KEY("");
+        }
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+    /** 获取验证码类型 */
+    async getLogInfo() {
+      try {
+        const response = await getLogInfoApi();
+        if (response.success) {
         }
         return response;
       } catch (error) {

@@ -8,7 +8,7 @@ import { ref, toRaw, watch, onMounted, nextTick } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { getParentPaths, findRouteByPath } from "@/router/utils";
 import { useTranslationLang } from "../../hooks/useTranslationLang";
-import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 import LaySidebarExtraIcon from "../lay-sidebar/components/SidebarExtraIcon.vue";
 import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
 

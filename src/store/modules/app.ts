@@ -9,7 +9,7 @@ import {
 import { getConfig, responsiveStorageNameSpace } from "@/config";
 
 export const useAppStore = defineStore({
-  id: "pure-app",
+  id: "app",
   state: (): appType => ({
     sidebar: {
       opened:

@@ -21,6 +21,7 @@ import ArrowUp from "@iconify-icons/ep/arrow-up-bold";
 import EpArrowDown from "@iconify-icons/ep/arrow-down-bold";
 import ArrowLeft from "@iconify-icons/ep/arrow-left-bold";
 import ArrowRight from "@iconify-icons/ep/arrow-right-bold";
+import circleFill from "@/assets/svg/circle-fill.svg?component";
 
 const attrs = useAttrs();
 const { layout, isCollapse, tooltipEffect, getDivStyle } = useNav();
@@ -119,11 +120,12 @@ function resolvePath(routePath) {
       :style="getNoDropdownStyle"
       v-bind="attrs"
     >
-      <div
+      <!-- <div
         v-if="toRaw(item.meta.icon)"
         class="sub-menu-icon"
         :style="getSubMenuIconStyle"
       >
+        <circleFill class="icon" />
         <component
           :is="
             useRenderIcon(
@@ -131,6 +133,22 @@ function resolvePath(routePath) {
                 (item.meta && toRaw(item.meta.icon))
             )
           "
+        />
+      </div> -->
+      <div
+        v-if="toRaw(item.meta.icon)"
+        class="sub-menu-icon"
+        :style="getSubMenuIconStyle"
+      >
+        <circleFill v-if="item.meta.title !== '首页'" class="icon" />
+        <component
+          :is="
+            useRenderIcon(
+              toRaw(onlyOneChild.meta.icon) ||
+                (item.meta && toRaw(item.meta.icon))
+            )
+          "
+          v-else
         />
       </div>
       <el-text

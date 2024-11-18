@@ -21,7 +21,7 @@ import { buildHierarchyTree } from "@/utils/tree";
 import { userKey, type DataInfo } from "@/utils/auth";
 import { type menuType, routerArrays } from "@/layout/types";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 const IFrame = () => import("@/views/comm/frame/frame.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const routFile = import.meta.env.VITE_ROUTER_TYPE;

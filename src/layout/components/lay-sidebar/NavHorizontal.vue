@@ -7,7 +7,7 @@ import { responsiveStorageNameSpace } from "@/config";
 import { ref, nextTick, computed, onMounted } from "vue";
 import { storageLocal, isAllEmpty } from "@pureadmin/utils";
 import { useTranslationLang } from "../../hooks/useTranslationLang";
-import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 import LaySidebarItem from "../lay-sidebar/components/SidebarItem.vue";
 import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
 

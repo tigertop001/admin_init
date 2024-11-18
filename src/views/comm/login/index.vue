@@ -39,7 +39,7 @@ defineOptions({
 });
 
 const imgCode = ref("");
-const loginDay = ref(7);
+// const loginDay = ref(true);
 const router = useRouter();
 const loading = ref(false);
 const checked = ref(false);
@@ -69,35 +69,93 @@ const ruleForm = reactive({
   // tenant: "admin",
   username: "admin",
   password: "admin123",
-  verifyCode: ""
+  verifyCode: "",
+  googleCode: "" // 新增谷歌验证码字段
 });
 
+// 从 store 中获取谷歌验证相关状态
+const needGoogleAuth = computed(() => useUserStoreHook().needGoogleAuth);
+const needBindGoogle = computed(() => useUserStoreHook().needBindGoogle);
+const googleQrCode = computed(() => useUserStoreHook().googleQrCode);
+const googleSecretKey = computed(() => useUserStoreHook().googleSecretKey);
+
+// 修改登录逻辑
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate(valid => {
+  await formEl.validate(async valid => {
     if (valid) {
       loading.value = true;
-      useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
-        .then(res => {
-          if (res.success) {
-            return initRouter().then(() => {
+      try {
+        if (needGoogleAuth.value && ruleForm.googleCode) {
+          // 验证谷歌验证码
+          const verifyRes = await useUserStoreHook().verifyGoogleAuthCode(
+            ruleForm.googleCode
+          );
+          if (verifyRes.success) {
+            // 验证成功，跳转到首页
+            await initRouter();
+            disabled.value = true;
+            await router.push(getTopMenu(true).path);
+            message("登录成功", { type: "success" });
+          } else {
+            message("谷歌验证码验证失败", { type: "error" });
+          }
+        } else {
+          // 第一步登录
+          const loginRes = await useUserStoreHook().loginByUsername({
+            username: ruleForm.username,
+            password: ruleForm.password
+          });
+
+          if (loginRes.success) {
+            if (!loginRes.data.needGoogleAuth) {
+              // 不需要谷歌验证，直接登录成功
+              await initRouter();
               disabled.value = true;
-              router
-                .push(getTopMenu(true).path)
-                .then(() => {
-                  message("登录成功", { type: "success" });
-                })
-                .finally(() => (disabled.value = false));
-            });
+              await router.push(getTopMenu(true).path);
+              message("登录成功", { type: "success" });
+            }
+            // 需要谷歌验证的情况会由 store 处理状态，等待用户输入验证码
           } else {
             message("登录失败", { type: "error" });
           }
-        })
-        .finally(() => (loading.value = false));
+        }
+      } catch (error) {
+        message("登录失败", { type: "error" });
+      } finally {
+        loading.value = false;
+        disabled.value = false;
+      }
     }
   });
 };
+
+// const onLogin = async (formEl: FormInstance | undefined) => {
+//   if (!formEl) return;
+//   await formEl.validate(valid => {
+//     if (valid) {
+//       loading.value = true;
+//       useUserStoreHook()
+//         .loginByUsername({ username: ruleForm.username, password: "admin123" })
+//         .then(res => {
+//           if (res.success) {
+//             return initRouter().then(() => {
+//               disabled.value = true;
+//               router
+//                 .push(getTopMenu(true).path)
+//                 .then(() => {
+//                   message("登录成功", { type: "success" });
+//                 })
+//                 .finally(() => (disabled.value = false));
+//             });
+//           } else {
+//             message("登录失败", { type: "error" });
+//           }
+//         })
+//         .finally(() => (loading.value = false));
+//     }
+//   });
+// };
 
 const immediateDebounce: any = debounce(
   formRef => onLogin(formRef),
@@ -121,15 +179,12 @@ useEventListener(
 );
 
 // 监听并更新 store 中的状态，避免不必要的深度监听
-watch(
-  [imgCode, checked, loginDay],
-  ([imgCodeValue, checkedValue, loginDayValue]) => {
-    const userStore = useUserStoreHook();
-    userStore.SET_VERIFYCODE(imgCodeValue);
-    userStore.SET_ISREMEMBERED(checkedValue);
-    userStore.SET_LOGINDAY(loginDayValue);
-  }
-);
+watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
+  const userStore = useUserStoreHook();
+  userStore.SET_VERIFYCODE(imgCodeValue);
+  userStore.SET_ISREMEMBERED(checkedValue);
+  // userStore.SET_LOGINDAY(loginDayValue);
+});
 </script>
 
 <template>
@@ -299,30 +354,46 @@ watch(
                 </el-input>
               </el-form-item>
             </Motion>
+            <!-- 谷歌验证码输入框 -->
+            <Motion v-if="needGoogleAuth" :delay="200">
+              <el-form-item prop="googleCode">
+                <el-input
+                  v-model="ruleForm.googleCode"
+                  clearable
+                  placeholder="请输入谷歌验证码"
+                  :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
+                />
+              </el-form-item>
+            </Motion>
+
+            <!-- 首次登录-绑定谷歌验证器 -->
+            <Motion v-if="needBindGoogle" :delay="250">
+              <el-alert
+                type="info"
+                :closable="false"
+                title="首次登录需要绑定谷歌验证器"
+                description="请使用谷歌验证器APP扫描下方二维码"
+              />
+              <div v-if="googleQrCode" class="qr-code-container mt-4 mb-4">
+                <img :src="googleQrCode" alt="Google Authenticator QR Code" />
+                <p class="mt-2 text-sm text-gray-500">
+                  密钥: {{ googleSecretKey }}
+                </p>
+              </div>
+            </Motion>
 
             <Motion :delay="250">
               <el-form-item>
-                <div class="w-full h-[20px] flex justify-between items-center">
+                <div
+                  class="w-full h-[20px] flex justify-between items-center mt-4"
+                >
                   <el-checkbox v-model="checked">
                     <span class="flex">
-                      <select
-                        v-model="loginDay"
-                        :style="{
-                          width: loginDay < 10 ? '10px' : '16px',
-                          outline: 'none',
-                          background: 'none',
-                          appearance: 'none'
-                        }"
-                      >
-                        <option value="1">1</option>
-                        <option value="7">7</option>
-                        <option value="30">30</option>
-                      </select>
-                      天内免登录
+                      记住密码
                       <IconifyIconOffline
                         v-tippy="{
                           content:
-                            '勾选并登录后，规定天数内无需输入用户名和密码会自动登入系统',
+                            '勾选并登录后，清除缓存前无需输入用户名和密码会自动登入系统',
                           placement: 'top'
                         }"
                         :icon="Info"

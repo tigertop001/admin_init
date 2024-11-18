@@ -6,7 +6,7 @@ import { getConfig } from "@/config";
 import { buildHierarchyTree } from "@/utils/tree";
 import remainingRouter from "./modules/remaining";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 import { isUrl, openLink, storageLocal, isAllEmpty } from "@pureadmin/utils";
 import {
   ascending,

@@ -3,7 +3,7 @@ import { initRouter } from "@/router/utils";
 import { storageLocal } from "@pureadmin/utils";
 import { type CSSProperties, ref, computed } from "vue";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
-import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 
 defineOptions({
   name: "PermissionPage"

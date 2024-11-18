@@ -13,7 +13,7 @@ import { useAppStoreHook } from "@/store/modules/app";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { useGlobal, isAllEmpty } from "@pureadmin/utils";
 import { useEpThemeStoreHook } from "@/store/modules/epTheme";
-import { usePermissionStoreHook } from "@/views/admin/permission/store/permission";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
 
@@ -47,9 +47,7 @@ export function useNav() {
 
   /** 昵称（如果昵称为空则显示用户名） */
   const username = computed(() => {
-    return isAllEmpty(useUserStoreHook()?.nickname)
-      ? useUserStoreHook()?.username
-      : useUserStoreHook()?.nickname;
+    return isAllEmpty(useUserStoreHook());
   });
 
   /** 设置国际化选中后的样式 */
