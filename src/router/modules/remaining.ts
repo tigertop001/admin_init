@@ -48,8 +48,8 @@ export default [
     },
     children: [
       {
-        path: "/account-settings",
-        name: "AccountSettings",
+        path: "index",
+        name: "AccountSettingsIndex",
         component: () => import("@/views/comm/account-settings/index.vue"),
         meta: {
           title: "账户设置",

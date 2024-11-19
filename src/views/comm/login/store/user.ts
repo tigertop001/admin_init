@@ -23,6 +23,7 @@ type TempLoginData = {
   accessToken: string;
   refreshToken: string;
   expires: Date;
+  // needGoogleAuth: boolean;
 };
 
 export const useUserStore = defineStore({
@@ -87,10 +88,13 @@ export const useUserStore = defineStore({
             // 需要谷歌验证
             // this.SET_NEED_GOOGLE_AUTH(true);
             this.SET_TEMP_LOGIN_DATA(response.data);
+            setToken(response.data);
+            console.log("---001");
             return response;
           } else {
             // 不需要谷歌验证，直接登录成功
             setToken(response.data);
+            console.log("---002");
           }
         }
         return response;
@@ -167,6 +171,10 @@ export const useUserStore = defineStore({
           setToken(loginData);
           // 清理临时数据
           this.SET_TEMP_LOGIN_DATA(null);
+          // this.SET_NEED_GOOGLE_AUTH(false);
+          // this.SET_NEED_BIND_GOOGLE(false);
+          // this.SET_GOOGLE_QR_CODE("");
+          // this.SET_GOOGLE_SECRET_KEY("");
         }
         return response;
       } catch (error) {
