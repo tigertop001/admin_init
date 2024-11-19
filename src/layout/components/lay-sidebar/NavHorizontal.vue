@@ -25,7 +25,6 @@ const showLogo = ref(
 );
 
 const {
-  t,
   route,
   locale,
   translationCh,

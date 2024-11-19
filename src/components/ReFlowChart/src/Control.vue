@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: "catData"): void;
+  (_event: "catData"): void;
 }>();
 
 const controlButton3 = ref();

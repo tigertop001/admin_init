@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 import { useGlobal } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 
@@ -14,7 +13,6 @@ withDefaults(defineProps<Props>(), {
   isActive: false
 });
 
-const { t } = useI18n();
 const { tooltipEffect } = useNav();
 
 const iconClass = computed(() => {
@@ -25,7 +23,7 @@ const { $storage } = useGlobal<GlobalPropertiesApi>();
 const themeColor = computed(() => $storage.layout?.themeColor);
 
 const emit = defineEmits<{
-  (e: "toggleClick"): void;
+  (_e: "toggleClick"): void;
 }>();
 
 const toggleClick = () => {

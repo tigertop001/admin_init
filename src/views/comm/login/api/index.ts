@@ -18,10 +18,10 @@ export type UserResult = {
     refreshToken: string;
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
-    /** 是否需要谷歌验证器验证 */
-    needGoogleAuth: boolean;
-    /** 是否需要绑定谷歌验证器 */
-    needBindGoogle: boolean;
+    // /** 是否需要谷歌验证器验证 */
+    // needGoogleAuth: boolean;
+    // /** 是否需要绑定谷歌验证器 */
+    // needBindGoogle: boolean;
   };
 };
 
@@ -34,10 +34,6 @@ export type RefreshTokenResult = {
     refreshToken: string;
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
-    /** 是否需要进行谷歌验证器验证 */
-    needGoogleAuth: boolean;
-    /** 是否是首次登录需要绑定谷歌验证器 */
-    needBindGoogle: boolean;
   };
 };
 
@@ -61,7 +57,7 @@ export type UserInfoResult = {
 };
 
 /** 登录 */
-export const getLogin = (data?: object) => {
+export const getLoginApi = (data?: object) => {
   return http.request<UserResult>(
     "post",
     "/mock/672b55c8cb7443249e0150fe/account/login",
@@ -69,32 +65,27 @@ export const getLogin = (data?: object) => {
   );
 };
 
-/** 获取谷歌验证器二维码 */
-export const getGoogleAuthQrCodeApi = (data?: object) => {
-  return http.request<{
-    success: boolean;
-    data: {
-      qrCodeUrl: string;
-      secretKey: string;
-    };
-  }>("post", "/api/auth/google/generate", { data });
-};
+// /** 获取谷歌验证器二维码 */
+// export const getGoogleAuthQrCodeApi = (data?: object) => {
+//   return http.request<{
+//     success: boolean;
+//     data: {
+//       qrCodeUrl: string;
+//       secretKey: string;
+//     };
+//   }>("post", "/api/auth/google/generate", { data });
+// };
 
 /** 验证谷歌验证码 */
-export const verifyGoogleCodeApi = (data: {
-  username: string;
-  code: string;
-}) => {
-  return http.request<{
-    success: boolean;
-    data: {
-      accessToken: string;
-      refreshToken: string;
-      expires: Date;
-    };
-  }>("post", "/api/auth/google/verify", { data });
+export const verifyGoogleCodeApi = (data?: object) => {
+  return http.request<RefreshTokenResult>(
+    "post",
+    "/mock/672b55c8cb7443249e0150fe/account/auth/google/verify",
+    {
+      data
+    }
+  );
 };
-
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>(

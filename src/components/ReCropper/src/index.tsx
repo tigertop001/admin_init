@@ -1,12 +1,16 @@
+// 样式导入
 import "./circled.css";
-import Cropper from "cropperjs";
+
+// 类型导入
+import type { CSSProperties, PropType } from "vue";
+import type Cropper from "cropperjs";
+
+// 第三方库导入
+import CropperImpl from "cropperjs";
 import { ElUpload } from "element-plus";
-import type { CSSProperties } from "vue";
 import { useEventListener } from "@vueuse/core";
-import { longpress } from "@/directives/longpress";
 import { useTippy, directive as tippy } from "vue-tippy";
 import {
-  type PropType,
   ref,
   unref,
   computed,
@@ -21,6 +25,9 @@ import {
   downloadByBase64,
   useResizeObserver
 } from "@pureadmin/utils";
+
+// 内部模块导入
+import { longpress } from "@/directives/longpress";
 import {
   Reload,
   Upload,
@@ -146,7 +153,7 @@ export default defineComponent({
     async function init() {
       const imgEl = unref(imgElRef);
       if (!imgEl) return;
-      cropper.value = new Cropper(imgEl, {
+      cropper.value = new CropperImpl(imgEl, {
         ...defaultOptions,
         ready: () => {
           isReady.value = true;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watchEffect } from "vue";
+import { computed } from "vue";
 
 // 接收父组件传递过来的 props
 const props = defineProps({

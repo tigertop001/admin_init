@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useDark } from "@pureadmin/utils";
-const { isDark } = useDark();
 const props = defineProps({
   data: {
     type: Object,

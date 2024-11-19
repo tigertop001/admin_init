@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ListItem } from "../data";
-import { ref, PropType, nextTick } from "vue";
+import { ref, nextTick } from "vue";
+import type { PropType } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
 import { deviceDetection } from "@pureadmin/utils";
 

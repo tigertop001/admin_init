@@ -1,5 +1,3 @@
-// import { $t } from "@/plugins/i18n";
-
 const operates = [
   {
     title: "手机登录"

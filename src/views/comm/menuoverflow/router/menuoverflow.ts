@@ -1,4 +1,3 @@
-// import { $t } from "@/plugins/i18n";
 import { menuoverflow } from "@/router/enums";
 
 export default {

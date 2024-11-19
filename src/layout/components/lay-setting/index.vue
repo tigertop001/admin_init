@@ -9,7 +9,6 @@ import {
   onUnmounted,
   onBeforeMount
 } from "vue";
-import { useI18n } from "vue-i18n";
 import { emitter } from "@/utils/mitt";
 import LayPanel from "../lay-panel/index.vue";
 import { useNav } from "@/layout/hooks/useNav";
@@ -27,7 +26,6 @@ import DayIcon from "@/assets/svg/day.svg?component";
 import DarkIcon from "@/assets/svg/dark.svg?component";
 import SystemIcon from "@/assets/svg/system.svg?component";
 
-const { t } = useI18n();
 const { device } = useNav();
 const { isDark } = useDark();
 const { $storage } = useGlobal<GlobalPropertiesApi>();
@@ -330,7 +328,7 @@ onUnmounted(() => removeMatchMedia);
 <template>
   <LayPanel>
     <div class="p-5">
-      <p :class="pClass">{{ t("panel.pureOverallStyle") }}</p>
+      <p :class="pClass">整体风格</p>
       <Segmented
         resize
         class="select-none"
@@ -424,7 +422,7 @@ onUnmounted(() => removeMatchMedia);
       </ul>
 
       <span v-if="useAppStoreHook().getViewportWidth > 1280">
-        <p :class="['mt-5', pClass]">{{ t("panel.pureStretch") }}</p>
+        <p :class="['mt-5', pClass]">页宽</p>
         <Segmented
           resize
           class="mb-2 select-none"

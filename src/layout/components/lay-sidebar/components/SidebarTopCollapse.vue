@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import MenuFold from "@iconify-icons/ri/menu-fold-fill";
 import MenuUnfold from "@iconify-icons/ri/menu-unfold-fill";
 
@@ -11,10 +10,8 @@ withDefaults(defineProps<Props>(), {
   isActive: false
 });
 
-const { t } = useI18n();
-
 const emit = defineEmits<{
-  (e: "toggleClick"): void;
+  (_e: "toggleClick"): void;
 }>();
 
 const toggleClick = () => {

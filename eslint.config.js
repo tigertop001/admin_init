@@ -6,6 +6,7 @@ import pluginPrettier from "eslint-plugin-prettier";
 import { defineFlatConfig } from "eslint-define-config";
 import * as parserTypeScript from "@typescript-eslint/parser";
 import pluginTypeScript from "@typescript-eslint/eslint-plugin";
+import pluginImport from "eslint-plugin-import";
 
 export default defineFlatConfig([
   {
@@ -52,7 +53,8 @@ export default defineFlatConfig([
       }
     },
     plugins: {
-      prettier: pluginPrettier
+      prettier: pluginPrettier,
+      import: pluginImport
     },
     rules: {
       ...configPrettier.rules,
@@ -70,7 +72,10 @@ export default defineFlatConfig([
         {
           endOfLine: "auto"
         }
-      ]
+      ],
+      "import/no-duplicates": "warn",
+      "import/no-unresolved": "off",
+      "import/named": "warn"
     }
   },
   {
@@ -158,7 +163,9 @@ export default defineFlatConfig([
       ...pluginVue.configs["vue3-essential"].rules,
       ...pluginVue.configs["vue3-recommended"].rules,
       "no-undef": "off",
-      "no-unused-vars": "off",
+      "no-unused-vars": "warn",
+      "vue/no-unused-vars": "warn",
+      "no-empty": "warn",
       "vue/no-v-html": "off",
       "vue/require-default-prop": "off",
       "vue/require-explicit-emits": "off",

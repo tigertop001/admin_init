@@ -31,7 +31,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: "scrollEnd"): void;
+  (_e: "scrollEnd"): void;
 }>();
 
 const xPos = ref<number>(0);

@@ -26,7 +26,6 @@ const showLogo = ref(
 
 const {
   title,
-  device,
   pureApp,
   getLogo,
   isCollapse,

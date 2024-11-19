@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { useStorage } from "@vueuse/core";
-import { ref, computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { checkVersion } from "version-rocket";
 import en from "element-plus/es/locale/lang/en";
 import ja from "element-plus/es/locale/lang/ja";
@@ -17,9 +17,6 @@ import zhCn from "element-plus/es/locale/lang/zh-cn";
 import zhTw from "element-plus/es/locale/lang/zh-tw";
 import plusEn from "plus-pro-components/es/locale/lang/en";
 import plusZhCn from "plus-pro-components/es/locale/lang/zh-cn";
-import Service from "@iconify-icons/ri/user-heart-line";
-import Book from "@iconify-icons/ri/book-open-line";
-import Max from "@iconify-icons/ri/vip-diamond-line";
 import { ReDialog } from "@/components/ReDialog";
 // import ReFloatButton from "@/components/ReFloatButton";
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import Motion from "./utils/motion";
 import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
@@ -9,18 +8,13 @@ import { debounce } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import { useEventListener } from "@vueuse/core";
 import type { FormInstance } from "element-plus";
-// import { $t, transformI18n } from "@/plugins/i18n";
-import { operates, thirdParty } from "./utils/enums";
 import { useLayout } from "@/layout/hooks/useLayout";
-// import LoginPhone from "./components/LoginPhone.vue";
-// import LoginRegist from "./components/LoginRegist.vue";
 import LoginUpdate from "./components/LoginUpdate.vue";
-// import LoginQrCode from "./components/LoginQrCode.vue";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { initRouter, getTopMenu } from "@/router/utils";
-import { bg, avatar, illustration } from "./utils/static";
+import { logo, lgam, rgam } from "./utils/static";
 import { ReImageVerify } from "@/components/ReImageVerify";
-import { ref, toRaw, reactive, watch, computed } from "vue";
+import { ref, reactive, watch, computed, onMounted } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
@@ -32,14 +26,12 @@ import Lock from "@iconify-icons/ri/lock-fill";
 import Check from "@iconify-icons/ep/check";
 import User from "@iconify-icons/ri/user-3-fill";
 import Info from "@iconify-icons/ri/information-line";
-import Tenant from "@iconify-icons/ri/home-gear-line";
 
 defineOptions({
   name: "Login"
 });
 
 const imgCode = ref("");
-// const loginDay = ref(true);
 const router = useRouter();
 const loading = ref(false);
 const checked = ref(false);
@@ -47,7 +39,6 @@ const disabled = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const currentPage = computed(() => useUserStoreHook().currentPage);
 
-const { t } = useI18n();
 const { initStorage } = useLayout();
 initStorage();
 
@@ -63,21 +54,20 @@ const {
   translationJa,
   translationKo
 } = useTranslationLang();
-const { VITE_ENABLE_TENANT } = import.meta.env;
 
 const ruleForm = reactive({
-  // tenant: "admin",
   username: "admin",
   password: "admin123",
   verifyCode: "",
   googleCode: "" // 新增谷歌验证码字段
 });
 
-// 从 store 中获取谷歌验证相关状态
-const needGoogleAuth = computed(() => useUserStoreHook().needGoogleAuth);
-const needBindGoogle = computed(() => useUserStoreHook().needBindGoogle);
-const googleQrCode = computed(() => useUserStoreHook().googleQrCode);
-const googleSecretKey = computed(() => useUserStoreHook().googleSecretKey);
+// // 从 store 中获取谷歌验证相关状态
+const needGoogleAuth = 1; // 是否需要谷歌验证
+
+onMounted(async () => {
+  await useUserStoreHook().getLogInfo();
+});
 
 // 修改登录逻辑
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -86,7 +76,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       try {
-        if (needGoogleAuth.value && ruleForm.googleCode) {
+        if (needGoogleAuth && ruleForm.googleCode) {
           // 验证谷歌验证码
           const verifyRes = await useUserStoreHook().verifyGoogleAuthCode(
             ruleForm.googleCode
@@ -108,7 +98,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           });
 
           if (loginRes.success) {
-            if (!loginRes.data.needGoogleAuth) {
+            if (!needGoogleAuth) {
               // 不需要谷歌验证，直接登录成功
               await initRouter();
               disabled.value = true;
@@ -120,7 +110,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
             message("登录失败", { type: "error" });
           }
         }
-      } catch (error) {
+      } catch {
         message("登录失败", { type: "error" });
       } finally {
         loading.value = false;
@@ -129,33 +119,6 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     }
   });
 };
-
-// const onLogin = async (formEl: FormInstance | undefined) => {
-//   if (!formEl) return;
-//   await formEl.validate(valid => {
-//     if (valid) {
-//       loading.value = true;
-//       useUserStoreHook()
-//         .loginByUsername({ username: ruleForm.username, password: "admin123" })
-//         .then(res => {
-//           if (res.success) {
-//             return initRouter().then(() => {
-//               disabled.value = true;
-//               router
-//                 .push(getTopMenu(true).path)
-//                 .then(() => {
-//                   message("登录成功", { type: "success" });
-//                 })
-//                 .finally(() => (disabled.value = false));
-//             });
-//           } else {
-//             message("登录失败", { type: "error" });
-//           }
-//         })
-//         .finally(() => (loading.value = false));
-//     }
-//   });
-// };
 
 const immediateDebounce: any = debounce(
   formRef => onLogin(formRef),
@@ -183,7 +146,6 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
   const userStore = useUserStoreHook();
   userStore.SET_VERIFYCODE(imgCodeValue);
   userStore.SET_ISREMEMBERED(checkedValue);
-  // userStore.SET_LOGINDAY(loginDayValue);
 });
 </script>
 
@@ -266,12 +228,13 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
     </div>
 
     <div class="login-container">
-      <div class="flex items-end h-screen">
-        <component :is="toRaw(illustration)" />
+      <div class="flex items-center justify-right h-screen">
+        <img :src="lgam" class="w-2/3" />
       </div>
       <div class="login-box flex justify-center items-center">
         <div class="login-form text-center">
-          <avatar class="avatar" />
+          <!-- <avatar class="avatar" /> -->
+          <img :src="logo" class="w-1/3" />
           <Motion>
             <h2 class="outline-none">
               <TypeIt
@@ -288,26 +251,6 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
             :rules="loginRules"
             size="large"
           >
-            <!-- <Motion v-if="VITE_ENABLE_TENANT === 'true'">
-              <el-form-item
-                :rules="[
-                  {
-                    required: true,
-                    message: '租户名',
-                    trigger: 'blur'
-                  }
-                ]"
-                prop="tenant"
-              >
-                <el-input
-                  v-model="ruleForm.tenant"
-                  clearable
-                  placeholder="租户名"
-                  :prefix-icon="useRenderIcon(Tenant)"
-                />
-              </el-form-item>
-            </Motion> -->
-
             <Motion :delay="100">
               <el-form-item
                 :rules="[
@@ -365,23 +308,6 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
                 />
               </el-form-item>
             </Motion>
-
-            <!-- 首次登录-绑定谷歌验证器 -->
-            <Motion v-if="needBindGoogle" :delay="250">
-              <el-alert
-                type="info"
-                :closable="false"
-                title="首次登录需要绑定谷歌验证器"
-                description="请使用谷歌验证器APP扫描下方二维码"
-              />
-              <div v-if="googleQrCode" class="qr-code-container mt-4 mb-4">
-                <img :src="googleQrCode" alt="Google Authenticator QR Code" />
-                <p class="mt-2 text-sm text-gray-500">
-                  密钥: {{ googleSecretKey }}
-                </p>
-              </div>
-            </Motion>
-
             <Motion :delay="250">
               <el-form-item>
                 <div
@@ -421,71 +347,14 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
                 </el-button>
               </el-form-item>
             </Motion>
-
-            <!-- <Motion :delay="300">
-              <el-form-item>
-                <div class="w-full h-[20px] flex justify-between items-center">
-                  <el-button
-                    v-for="(item, index) in operates"
-                    :key="index"
-                    class="w-full mt-4"
-                    size="default"
-                    @click="useUserStoreHook().SET_CURRENTPAGE(index + 1)"
-                  >
-                    {{ t(item.title) }}
-                  </el-button>
-                </div>
-              </el-form-item>
-            </Motion> -->
           </el-form>
-
-          <!-- <Motion v-if="currentPage === 0" :delay="350">
-            <el-form-item>
-              <el-divider>
-                <p class="text-gray-500 text-xs">第三方登录</p>
-              </el-divider>
-              <div class="w-full flex justify-evenly">
-                <span
-                  v-for="(item, index) in thirdParty"
-                  :key="index"
-                  :title="t(item.title)"
-                >
-                  <IconifyIconOnline
-                    :icon="`ri:${item.icon}-fill`"
-                    width="20"
-                    class="cursor-pointer text-gray-500 hover:text-blue-400"
-                  />
-                </span>
-              </div>
-            </el-form-item>
-          </Motion> -->
-          <!-- 手机号登录  -->
-          <!-- <LoginPhone v-if="currentPage === 1" /> -->
-          <!-- 二维码登录  -->
-          <!-- <LoginQrCode v-if="currentPage === 2" /> -->
-          <!-- 注册 -->
-          <!-- <LoginRegist v-if="currentPage === 3" /> -->
-          <!-- 忘记密码 -->
           <LoginUpdate v-if="currentPage === 4" />
         </div>
       </div>
-      <div class="flex items-end h-screen">
-        <component :is="toRaw(illustration)" />
+      <div class="flex items-center h-screen">
+        <img :src="rgam" class="w-2/3" />
       </div>
     </div>
-
-    <!-- <div
-      class="w-full flex-c absolute bottom-3 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(220,220,242,0.8)]"
-    >
-      Copyright © 2024-admin
-      <a
-        class="hover:text-primary"
-        href="https://github.com/pure-admin"
-        target="_blank"
-      >
-        &nbsp;{{ title }}
-      </a>
-    </div> -->
   </div>
 </template>
 

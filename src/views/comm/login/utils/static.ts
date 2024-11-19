@@ -1,5 +1,6 @@
 import bg from "@/assets/login/bg.png";
-import avatar from "@/assets/login/avatar.svg?component";
-import illustration from "@/assets/login/illustration.svg?component";
+import logo from "@/assets/login/logo.png";
+import lgam from "@/assets/login/lgam.png";
+import rgam from "@/assets/login/rgam.png";
 
-export { bg, avatar, illustration };
+export { bg, logo, rgam, lgam };

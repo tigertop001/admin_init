@@ -1,18 +1,16 @@
 <script setup lang="ts">
-// import { useI18n } from "vue-i18n";
 import LayFrame from "../lay-frame/index.vue";
 import LayFooter from "../lay-footer/index.vue";
 import { useTags } from "@/layout/hooks/useTag";
 import { useGlobal, isNumber } from "@pureadmin/utils";
 import BackTopIcon from "@/assets/svg/back_top.svg?component";
-import { h, computed, Transition, defineComponent } from "vue";
+import { h, computed, defineComponent } from "vue";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 
 const props = defineProps({
   fixedHeader: Boolean
 });
 
-// const { t } = useI18n();
 const { showModel } = useTags();
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
 
@@ -20,11 +18,11 @@ const isKeepAlive = computed(() => {
   return $config?.KeepAlive;
 });
 
-const transitions = computed(() => {
-  return route => {
-    return route.meta.transition;
-  };
-});
+// const transitions = computed(() => {
+//   return route => {
+//     return route.meta.transition;
+//   };
+// });
 
 const hideTabs = computed(() => {
   return $storage?.configure.hideTabs;
@@ -82,10 +80,10 @@ const transitionMain = defineComponent({
     }
   },
   render() {
-    const transitionName =
-      transitions.value(this.route)?.name || "fade-transform";
-    const enterTransition = transitions.value(this.route)?.enterTransition;
-    const leaveTransition = transitions.value(this.route)?.leaveTransition;
+    // const transitionName =
+    //   transitions.value(this.route)?.name || "fade-transform";
+    // const enterTransition = transitions.value(this.route)?.enterTransition;
+    // const leaveTransition = transitions.value(this.route)?.leaveTransition;
     return h(
       "div",
       {},

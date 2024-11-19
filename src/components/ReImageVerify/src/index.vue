@@ -11,7 +11,7 @@ interface Props {
 }
 
 interface Emits {
-  (e: "update:code", code: string): void;
+  (_e: "update:code", _value: string): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +28,7 @@ watch(
     setImgCode(newValue);
   }
 );
+
 watch(imgCode, newValue => {
   emit("update:code", newValue);
 });

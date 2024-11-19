@@ -30,7 +30,6 @@ const {
 } = useNav();
 
 const {
-  t,
   locale,
   translationCh,
   translationTw,

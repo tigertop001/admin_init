@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useColumns } from "./columns";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 const props = defineProps({
   dataList: {
     type: Array,

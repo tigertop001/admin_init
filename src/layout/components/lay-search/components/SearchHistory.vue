@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Sortable from "sortablejs";
-import { useI18n } from "vue-i18n";
 import SearchHistoryItem from "./SearchHistoryItem.vue";
 import type { optionsItem, dragItem, Props } from "../types";
 import { useEpThemeStoreHook } from "@/store/modules/epTheme";
@@ -8,11 +7,11 @@ import { useResizeObserver, isArray, delay } from "@pureadmin/utils";
 import { ref, watch, nextTick, computed, getCurrentInstance } from "vue";
 
 interface Emits {
-  (e: "update:value", val: string): void;
-  (e: "enter"): void;
-  (e: "collect", val: optionsItem): void;
-  (e: "delete", val: optionsItem): void;
-  (e: "drag", val: dragItem): void;
+  (_e: "update:value", _val: string): void;
+  (_e: "enter"): void;
+  (_e: "collect", _val: optionsItem): void;
+  (_e: "delete", _val: optionsItem): void;
+  (_e: "drag", _val: dragItem): void;
 }
 
 const historyRef = ref();
@@ -20,7 +19,6 @@ const innerHeight = ref();
 /** 判断是否停止鼠标移入事件处理 */
 const stopMouseEvent = ref(false);
 
-const { t } = useI18n();
 const emit = defineEmits<Emits>();
 const instance = getCurrentInstance()!;
 const props = withDefaults(defineProps<Props>(), {});

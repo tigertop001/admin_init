@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { useNav } from "@/layout/hooks/useNav";
 import MdiKeyboardEsc from "@/assets/svg/keyboard_esc.svg?component";
 import EnterOutlined from "@/assets/svg/enter_outlined.svg?component";
@@ -10,7 +9,6 @@ withDefaults(defineProps<{ total: number }>(), {
   total: 0
 });
 
-const { t } = useI18n();
 const { device } = useNav();
 </script>
 

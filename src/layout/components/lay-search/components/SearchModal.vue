@@ -1,27 +1,26 @@
 <script setup lang="ts">
 import { match } from "pinyin-pro";
-import { useI18n } from "vue-i18n";
 import { getConfig } from "@/config";
 import { useRouter } from "vue-router";
 import SearchResult from "./SearchResult.vue";
 import SearchFooter from "./SearchFooter.vue";
 import { useNav } from "@/layout/hooks/useNav";
 import SearchHistory from "./SearchHistory.vue";
-import { transformI18n, $t } from "@/plugins/i18n";
 import type { optionsItem, dragItem } from "../types";
 import { ref, computed, shallowRef, watch } from "vue";
 import { useDebounceFn, onKeyStroke } from "@vueuse/core";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import { cloneDeep, isAllEmpty, storageLocal } from "@pureadmin/utils";
 import SearchIcon from "@iconify-icons/ri/search-line";
-
+import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
+const { locale } = useTranslationLang();
 interface Props {
   /** 弹窗显隐 */
   value: boolean;
 }
 
 interface Emits {
-  (e: "update:value", val: boolean): void;
+  (_e: "update:value", _val: boolean): void;
 }
 
 const { device } = useNav();
@@ -29,7 +28,6 @@ const emit = defineEmits<Emits>();
 const props = withDefaults(defineProps<Props>(), {});
 
 const router = useRouter();
-const { t, locale } = useI18n();
 
 const HISTORY_TYPE = "history";
 const COLLECT_TYPE = "collect";
@@ -110,13 +108,13 @@ function search() {
   const flatMenusData = flatTree(menusData.value);
   resultOptions.value = flatMenusData.filter(menu =>
     keyword.value
-      ? transformI18n(menu.meta?.title)
+      ? menu.meta?.title
           .toLocaleLowerCase()
           .includes(keyword.value.toLocaleLowerCase().trim()) ||
         (locale.value === "zh" &&
           !isAllEmpty(
             match(
-              transformI18n(menu.meta?.title).toLocaleLowerCase(),
+              menu.meta?.title.toLocaleLowerCase(),
               keyword.value.toLocaleLowerCase().trim()
             )
           ))

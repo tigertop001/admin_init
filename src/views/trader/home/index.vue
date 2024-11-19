@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watchEffect } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ReCol from "@/components/ReCol";
 import { useDark } from "./utils";
 import WelcomeTable from "./components/table/index.vue";
-import { ReNormalCountTo } from "@/components/ReCountTo";
 import { ChartBar, ChartLine, OnlineCount } from "./components/charts";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
 import { useUserStoreHook } from "./store";
@@ -45,7 +44,7 @@ const optionsBasis: Array<OptionsType> = [
     value: "bet"
   }
 ];
-const handleSegmentedChange = ({ index, option }) => {
+const handleSegmentedChange = () => {
   homeStore.getOnline({ type: optionsBasis[type.value].value });
 };
 
@@ -119,7 +118,7 @@ const rankingList = computed(() => [
 ]);
 
 const curday = ref(1); // 0昨天、1今天
-const handleDayChange = async (value: number) => {
+const handleDayChange = async () => {
   await homeStore.getOnlineSummary({ date: curday.value });
 };
 </script>

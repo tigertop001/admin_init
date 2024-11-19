@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { CSSProperties } from "vue";
+import { ref, computed, watch } from "vue";
 import { IconJson } from "@/components/ReIcon/data";
 import { cloneDeep, isAllEmpty } from "@pureadmin/utils";
-import { ref, computed, CSSProperties, watch } from "vue";
 import Search from "@iconify-icons/ri/search-eye-line";
 
-type ParameterCSSProperties = (item?: string) => CSSProperties | undefined;
+type ParameterCSSProperties = (_iconName: string) => CSSProperties | undefined;
 
 defineOptions({
   name: "IconSelect"
@@ -50,16 +51,17 @@ const pageList = computed(() =>
 );
 
 const iconItemStyle = computed((): ParameterCSSProperties => {
-  return item => {
-    if (inputValue.value === currentActiveType.value + item) {
+  return (_iconName: string) => {
+    // 明确指定参数类型
+    if (inputValue.value === currentActiveType.value + _iconName) {
       return {
         borderColor: "var(--el-color-primary)",
         color: "var(--el-color-primary)"
       };
     }
+    return undefined; // 明确返回 undefined
   };
 });
-
 function setVal() {
   currentActiveType.value = inputValue.value.substring(
     0,
@@ -109,11 +111,13 @@ watch(
     ).length),
   { immediate: true }
 );
+
 watch(
   () => inputValue.value,
   val => val && setVal(),
   { immediate: true }
 );
+
 watch(
   () => filterValue.value,
   () => (currentPage.value = 1)

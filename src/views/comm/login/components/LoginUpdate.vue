@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { ref, reactive } from "vue";
 import Motion from "../utils/motion";
 import { message } from "@/utils/message";
 import { updateRules } from "../utils/rule";
 import type { FormInstance } from "element-plus";
 import { useVerifyCode } from "../utils/verifyCode";
-// import { $t, transformI18n } from "@/plugins/i18n";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import Lock from "@iconify-icons/ri/lock-fill";
 import Iphone from "@iconify-icons/ep/iphone";
 
-const { t } = useI18n();
 const loading = ref(false);
 const ruleForm = reactive({
   phone: "",

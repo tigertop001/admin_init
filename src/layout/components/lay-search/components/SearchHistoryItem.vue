@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { optionsItem } from "../types";
-import { transformI18n } from "@/plugins/i18n";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import StarIcon from "@iconify-icons/ep/star";
 import CloseIcon from "@iconify-icons/ep/close";
@@ -10,8 +9,8 @@ interface Props {
 }
 
 interface Emits {
-  (e: "collectItem", val: optionsItem): void;
-  (e: "deleteItem", val: optionsItem): void;
+  (_e: "collectItem", _val: optionsItem): void;
+  (_e: "deleteItem", _val: optionsItem): void;
 }
 
 const emit = defineEmits<Emits>();
@@ -29,7 +28,7 @@ function handleDelete(item) {
 <template>
   <component :is="useRenderIcon(item.meta?.icon)" />
   <span class="history-item-title">
-    {{ transformI18n(item.meta?.title) }}
+    {{ item.meta?.title }}
   </span>
   <IconifyIconOffline
     v-show="item.type === 'history'"

@@ -39,17 +39,16 @@ export type setType = {
 };
 
 export type userType = {
-  avatar?: string;
+  // avatar?: string;
   username?: string;
   roles?: Array<string>;
   permissions?: Array<string>;
   verifyCode?: string;
-  currentPage?: number;
-  isRemembered?: boolean;
-  loginDay?: number;
-  needGoogleAuth?: boolean;
-  needBindGoogle?: boolean;
-  googleQrCode?: string;
-  googleSecretKey?: string;
+  currentPage?: number; //  0 登入页， 4 忘记密码
+  isRemembered?: boolean; // 是否记住密码
+  // needGoogleAuth?: boolean;
+  // needBindGoogle?: boolean;
+  // googleQrCode?: string; // 谷歌二维码
+  // googleSecretKey?: string; // 谷歌密钥
   tempLoginData?: any | null;
 };

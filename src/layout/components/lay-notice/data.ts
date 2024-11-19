@@ -1,5 +1,3 @@
-// import { $t } from "@/plugins/i18n";
-
 export interface ListItem {
   avatar: string;
   title: string;

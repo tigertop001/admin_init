@@ -22,7 +22,6 @@ const menuRef = ref();
 const defaultActive = ref(null);
 
 const {
-  t,
   route,
   locale,
   translationCh,
