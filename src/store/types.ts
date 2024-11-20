@@ -51,4 +51,5 @@ export type userType = {
   // googleQrCode?: string; // 谷歌二维码
   // googleSecretKey?: string; // 谷歌密钥
   tempLoginData?: any | null;
+  verifiType?: number; //  0 验证码， 1 谷歌验证
 };

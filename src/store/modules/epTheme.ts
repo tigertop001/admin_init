@@ -3,7 +3,7 @@ import { store, storageLocal } from "../globalUtils";
 import { getConfig, responsiveStorageNameSpace } from "@/config";
 
 export const useEpThemeStore = defineStore({
-  id: "pure-epTheme",
+  id: "epTheme",
   state: () => ({
     epThemeColor:
       storageLocal().getItem<StorageConfigs>(

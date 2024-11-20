@@ -23,140 +23,102 @@ type TempLoginData = {
   accessToken: string;
   refreshToken: string;
   expires: Date;
-  // needGoogleAuth: boolean;
 };
 
 export const useUserStore = defineStore({
   id: "userInfo",
   state: (): userType => ({
-    // 用户名
+    // 用户名，若用户未登录，默认为空
     username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
-    // 页面级别权限
+    // 用户角色列表，用户在系统中的角色
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
-    // 按钮级别权限
+    // 按钮级别权限列表，控制用户能够访问的具体操作权限
     permissions:
       storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [],
-    // 前端生成的验证码（按实际需求替换）
+    // 前端生成的验证码，通常是图形验证码，用于登录时验证
     verifyCode: "",
-    // 判断登录页面显示哪个组件（0：登录（默认）、4：忘记密码）
+    // 判断登录页面当前展示的组件，默认为登录页面（0：登录，1：其他页面）
     currentPage: 0,
-    // 是否勾选了登录页的免登录
+    // 是否勾选记住密码（免登录）
     isRemembered: false,
-    // 存储第一步登录成功的数据
-    tempLoginData: null
+    // 存储临时登录数据，通常在第一次登录时存储
+    tempLoginData: null,
+    // 验证码类型（0：图形验证码，1：谷歌验证码）
+    verifiType: 0
   }),
   actions: {
-    /** 存储用户名 */
+    /** 设置用户名 */
     SET_USERNAME(username: string) {
       this.username = username;
     },
-    /** 存储角色 */
+    /** 设置角色列表 */
     SET_ROLES(roles: Array<string>) {
       this.roles = roles;
     },
-    /** 存储按钮级别权限 */
+    /** 设置按钮级别权限 */
     SET_PERMS(permissions: Array<string>) {
       this.permissions = permissions;
     },
-    /** 存储前端生成的验证码 */
+    /** 设置验证码（图形验证码） */
     SET_VERIFYCODE(verifyCode: string) {
       this.verifyCode = verifyCode;
     },
-    /** 存储登录页面显示哪个组件 */
+    /** 设置当前显示的登录组件（用于控制登录页面的显示逻辑） */
     SET_CURRENTPAGE(value: number) {
       this.currentPage = value;
     },
-    /** 存储是否勾选了登录页的免登录 */
+    /** 设置是否勾选了记住密码（免登录） */
     SET_ISREMEMBERED(bool: boolean) {
       this.isRemembered = bool;
     },
-
-    /** 验证码类型 //  0 图形验证码，1 谷歌验证码 */
+    /** 设置验证码类型（0：图形验证码，1：谷歌验证码） */
     SET_VERIFITYPE(value: string) {
-      this.verifiType = value;
+      this.verifiType = value; // 1为谷歌验证码，0为图形验证码
     },
     /** 存储临时登录数据 */
     SET_TEMP_LOGIN_DATA(value: TempLoginData | null) {
       this.tempLoginData = value;
     },
-    /** 登录流程 */
+    /** 通过用户名和密码登录 */
     async loginByUsername(data: { username: string; password: string }) {
       try {
         const response = await getLoginApi(data);
         if (response?.success) {
-          if (1) {
-            // 需要谷歌验证
-            // this.SET_NEED_GOOGLE_AUTH(true);
-            this.SET_TEMP_LOGIN_DATA(response.data);
-            setToken(response.data);
-            console.log("---001");
-            return response;
-          } else {
-            // 不需要谷歌验证，直接登录成功
-            setToken(response.data);
-            console.log("---002");
-          }
+          setToken(response.data); // 登录成功后存储 token
+          return response;
+        } else {
+          throw new Error(response?.message || "登录失败");
         }
-        return response;
       } catch (error) {
-        throw error;
+        console.error("登录失败:", error); // 捕获并打印错误信息
+        throw error; // 将错误抛出以便外部处理
       }
     },
-    // async loginByUsername(data) {
-    //   try {
-    //     const response = await getLogin(data);
-    //     if (response?.success) {
-    //       if (response.data?.needGoogleAuth) {
-    //         // 需要谷歌验证
-    //         this.SET_NEED_GOOGLE_AUTH(true);
-    //         this.SET_TEMP_LOGIN_DATA(response.data);
-
-    //         if (response.data?.needBindGoogle) {
-    //           // 首次登录需要绑定谷歌验证器
-    //           this.SET_NEED_BIND_GOOGLE(true);
-    //           const qrResponse = await getGoogleAuthQrCode({
-    //             username: data.username
-    //           });
-    //           if (qrResponse.success) {
-    //             this.SET_GOOGLE_QR_CODE(qrResponse.data.qrCodeUrl);
-    //             this.SET_GOOGLE_SECRET_KEY(qrResponse.data.secretKey);
-    //           }
-    //         }
-    //         return response;
-    //       } else {
-    //         // 不需要谷歌验证，直接登录成功
-    //         setToken(response.data);
-    //       }
-    //     }
-    //     return response;
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    // },
-    /** 前端登出（不调用接口） */
+    /** 用户登出 */
     logOut() {
+      // 清除用户信息、权限、token，并跳转到登录页面
       this.username = "";
       this.roles = [];
       this.permissions = [];
-      removeToken();
-      useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
-      resetRouter();
-      router.push("/login");
+      removeToken(); // 清除 token
+      useMultiTagsStoreHook().handleTags("equal", [...routerArrays]); // 重置多标签页
+      resetRouter(); // 重置路由
+      router.push("/login"); // 跳转到登录页
     },
-    /** 刷新`token` */
+    /** 刷新 token */
     async handRefreshToken(data) {
       try {
         const response = await refreshTokenApi(data);
         if (response) {
-          setToken(response.data);
+          setToken(response.data); // 更新 token
         }
         return response;
       } catch (error) {
-        throw error;
+        throw error; // 错误处理
       }
     },
     /** 验证谷歌验证码 */
-    async verifyGoogleAuthCode(code: string) {
+    async verifyGoogleAuthCode(code: any) {
       try {
         const response = await verifyGoogleCodeApi({
           username: this.tempLoginData?.username,
@@ -168,27 +130,31 @@ export const useUserStore = defineStore({
             ...this.tempLoginData,
             ...response.data
           };
-          setToken(loginData);
-          // 清理临时数据
+          setToken(loginData); // 设置新的 token
+          // 清除临时登录数据
           this.SET_TEMP_LOGIN_DATA(null);
-          // this.SET_NEED_GOOGLE_AUTH(false);
-          // this.SET_NEED_BIND_GOOGLE(false);
-          // this.SET_GOOGLE_QR_CODE("");
-          // this.SET_GOOGLE_SECRET_KEY("");
         }
         return response;
       } catch (error) {
-        throw error;
+        throw error; // 错误处理
       }
     },
-    /** 获取验证码类型 */
-    async getLogInfo() {
+    /** 获取登录信息（包括验证码类型等） */
+    async getLogInfo(params) {
       try {
-        const response = await getLogInfoApi();
-        if (response.success) {
+        const response = await getLogInfoApi(params);
+        if (response?.success) {
+          // 获取验证码类型并存储
+          console.log(
+            "response.data?.verifiType-----",
+            response.data?.verifiType
+          );
+          this.SET_VERIFITYPE(response.data?.verifiType); // 默认值为图形验证码
+          return response;
         }
-        return response;
+        throw new Error("获取登录信息失败");
       } catch (error) {
+        console.error("获取登录信息失败:", error); // 捕获并打印错误信息
         throw error;
       }
     }

@@ -2,6 +2,7 @@ import { http } from "@/utils/http";
 
 export type UserResult = {
   success: boolean;
+  message: string;
   data: {
     /** 头像 */
     // avatar: string;
@@ -27,6 +28,7 @@ export type UserResult = {
 
 export type RefreshTokenResult = {
   success: boolean;
+  message: string;
   data: {
     /** `token` */
     accessToken: string;
@@ -53,6 +55,7 @@ export type UserInfo = {
 
 export type UserInfoResult = {
   success: boolean;
+  message: string;
   data: UserInfo;
 };
 
@@ -114,10 +117,11 @@ export const getMineLogs = (data?: object) => {
 };
 
 /** 获取验证码类型 */
-export const getLogInfoApi = (data?: object) => {
-  return http.request<ResultTable>(
+export const getLogInfoApi = (params?: object) => {
+  console.log("---data---", params);
+  return http.request<CommResult>(
     "get",
     "/mock/672b55c8cb7443249e0150fe/account/logininfo",
-    { data }
+    { params }
   );
 };

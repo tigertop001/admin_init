@@ -30,14 +30,14 @@ import Info from "@iconify-icons/ri/information-line";
 defineOptions({
   name: "Login"
 });
-
+const userStore = useUserStoreHook();
 const imgCode = ref("");
 const router = useRouter();
 const loading = ref(false);
 const checked = ref(false);
 const disabled = ref(false);
 const ruleFormRef = ref<FormInstance>();
-const currentPage = computed(() => useUserStoreHook().currentPage);
+const currentPage = computed(() => userStore.currentPage);
 
 const { initStorage } = useLayout();
 initStorage();
@@ -58,15 +58,13 @@ const {
 const ruleForm = reactive({
   username: "admin",
   password: "admin123",
-  verifyCode: "",
-  googleCode: "" // 新增谷歌验证码字段
+  verifyCode: "", // 验证码
+  captcha: null // 谷歌验证码字段
 });
-
-// // 从 store 中获取谷歌验证相关状态
-const needGoogleAuth = 1; // 是否需要谷歌验证
-
 onMounted(async () => {
-  await useUserStoreHook().getLogInfo();
+  const params = { domain: window.location.hostname };
+  await userStore.getLogInfo(params);
+  console.log(typeof userStore.verifiType, "---serStore.verifiType-");
 });
 
 // 修改登录逻辑
@@ -76,39 +74,26 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       try {
-        if (needGoogleAuth && ruleForm.googleCode) {
-          // 验证谷歌验证码
-          const verifyRes = await useUserStoreHook().verifyGoogleAuthCode(
-            ruleForm.googleCode
-          );
-          if (verifyRes.success) {
-            // 验证成功，跳转到首页
-            await initRouter();
-            disabled.value = true;
-            await router.push(getTopMenu(true).path);
-            message("登录成功", { type: "success" });
-          } else {
-            message("谷歌验证码验证失败", { type: "error" });
-          }
-        } else {
-          // 第一步登录
-          const loginRes = await useUserStoreHook().loginByUsername({
-            username: ruleForm.username,
-            password: ruleForm.password
+        // 第一步登录
+        const params = { ...ruleForm, remember: checked.value };
+        if (userStore.verifiType == 1) {
+          const res = await userStore.verifyGoogleAuthCode({
+            code: ruleForm.captcha
           });
-
-          if (loginRes.success) {
-            if (!needGoogleAuth) {
-              // 不需要谷歌验证，直接登录成功
-              await initRouter();
-              disabled.value = true;
-              await router.push(getTopMenu(true).path);
-              message("登录成功", { type: "success" });
-            }
-            // 需要谷歌验证的情况会由 store 处理状态，等待用户输入验证码
-          } else {
-            message("登录失败", { type: "error" });
+          if (!res.success) {
+            message("验证码验证失败，请检查验证码", { type: "error" });
+            loading.value = false;
+            return;
           }
+        }
+        const loginRes = await userStore.loginByUsername(params);
+        if (loginRes.success) {
+          await initRouter();
+          disabled.value = true;
+          await router.push(getTopMenu(true).path);
+          message("登录成功", { type: "success" });
+        } else {
+          message("登录失败", { type: "error" });
         }
       } catch {
         message("登录失败", { type: "error" });
@@ -143,7 +128,6 @@ useEventListener(
 
 // 监听并更新 store 中的状态，避免不必要的深度监听
 watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
-  const userStore = useUserStoreHook();
   userStore.SET_VERIFYCODE(imgCodeValue);
   userStore.SET_ISREMEMBERED(checkedValue);
 });
@@ -151,7 +135,6 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
 
 <template>
   <div class="select-none">
-    <!-- <img :src="bg" class="wave" /> -->
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch
@@ -233,7 +216,6 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
       </div>
       <div class="login-box flex justify-center items-center">
         <div class="login-form text-center">
-          <!-- <avatar class="avatar" /> -->
           <img :src="logo" class="w-1/3" />
           <Motion>
             <h2 class="outline-none">
@@ -283,12 +265,12 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
               </el-form-item>
             </Motion>
 
-            <Motion :delay="200">
+            <Motion v-if="userStore.verifiType == 0" :delay="200">
               <el-form-item prop="verifyCode">
                 <el-input
                   v-model="ruleForm.verifyCode"
                   clearable
-                  placeholder="验证码"
+                  placeholder="请输入验证码"
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
                 >
                   <template v-slot:append>
@@ -298,10 +280,10 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
               </el-form-item>
             </Motion>
             <!-- 谷歌验证码输入框 -->
-            <Motion v-if="needGoogleAuth" :delay="200">
-              <el-form-item prop="googleCode">
+            <Motion v-else :delay="200">
+              <el-form-item prop="captcha">
                 <el-input
-                  v-model="ruleForm.googleCode"
+                  v-model="ruleForm.captcha"
                   clearable
                   placeholder="请输入谷歌验证码"
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
@@ -330,7 +312,7 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
                   <el-button
                     link
                     type="primary"
-                    @click="useUserStoreHook().SET_CURRENTPAGE(4)"
+                    @click="userStore.SET_CURRENTPAGE(4)"
                   >
                     忘记密码?
                   </el-button>

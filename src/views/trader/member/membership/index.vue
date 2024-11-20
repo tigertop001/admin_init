@@ -1,5 +1,10 @@
+<script setup lang="ts">
+import Search from "./form/search.vue";
+</script>
 <template>
-  <div class="main">tee</div>
+  <el-card shadow="never" :body-style="{ height: 'calc(100vh - 125px)' }">
+    <Search />
+  </el-card>
 </template>
 
 <style scoped lang="scss">

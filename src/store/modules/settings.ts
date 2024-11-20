@@ -3,7 +3,7 @@ import { type setType, store } from "../globalUtils";
 import { getConfig } from "@/config";
 
 export const useSettingStore = defineStore({
-  id: "pure-setting",
+  id: "setting",
   state: (): setType => ({
     title: getConfig().Title,
     fixedHeader: getConfig().FixedHeader,

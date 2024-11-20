@@ -42,32 +42,14 @@ const loginRules = reactive<FormRules>({
       },
       trigger: "blur"
     }
-  ]
-});
-
-/** 手机登录校验 */
-const phoneRules = reactive<FormRules>({
-  phone: [
-    {
-      validator: (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error("请输入手机号码"));
-        } else if (!isPhone(value)) {
-          callback(new Error("请输入正确的手机号码格式"));
-        } else {
-          callback();
-        }
-      },
-      trigger: "blur"
-    }
   ],
-  verifyCode: [
+  captcha: [
     {
       validator: (rule, value, callback) => {
         if (value === "") {
-          callback(new Error("请输入验证码"));
+          callback(new Error("请输入6位数字谷歌身份验证码"));
         } else if (!REGEXP_SIX.test(value)) {
-          callback(new Error("请输入6位数字验证码"));
+          callback(new Error("请输入6位数字谷歌身份验证码"));
         } else {
           callback();
         }
@@ -125,4 +107,4 @@ const updateRules = reactive<FormRules>({
   ]
 });
 
-export { loginRules, phoneRules, updateRules };
+export { loginRules, updateRules };

@@ -215,14 +215,16 @@ declare global {
    */
   type Result = {
     success: boolean;
+    message: string;
     data?: Array<any>;
   };
 
-  /**E
+  /**
    * 全局 ResultTable 类型
    */
   type ResultTable = {
     success: boolean;
+    message: string;
     data?: {
       /** 列表数据 */
       list: Array<any>;
@@ -233,6 +235,14 @@ declare global {
       /** 当前页数 */
       currentPage?: number;
     };
+  };
+  /**
+   * 通用 Result 类型
+   */
+  export type CommResult = {
+    success: boolean;
+    message: string;
+    data: any;
   };
 }
 
