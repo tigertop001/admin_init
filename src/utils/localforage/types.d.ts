@@ -162,5 +162,5 @@ export interface ProxyStorage {
 
 export interface ExpiresData<T> {
   data: T;
-  expires: number;
+  expireAt: number;
 }

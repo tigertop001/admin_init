@@ -215,7 +215,7 @@ declare global {
    */
   type Result = {
     success: boolean;
-    message: string;
+    msg: string;
     data?: Array<any>;
   };
 
@@ -224,17 +224,9 @@ declare global {
    */
   type ResultTable = {
     success: boolean;
-    message: string;
-    data?: {
-      /** 列表数据 */
-      list: Array<any>;
-      /** 总条目数 */
-      total?: number;
-      /** 每页显示条目个数 */
-      pageSize?: number;
-      /** 当前页数 */
-      currentPage?: number;
-    };
+    msg: string;
+    total?: number;
+    data?: Array<any>;
   };
   /**
    * 通用 Result 类型

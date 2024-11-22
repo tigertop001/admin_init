@@ -20,9 +20,9 @@ type TempLoginData = {
   username: string;
   roles: Array<string>;
   permissions: Array<string>;
-  accessToken: string;
+  token: string;
   refreshToken: string;
-  expires: Date;
+  expireAt: Date;
 };
 
 export const useUserStore = defineStore({

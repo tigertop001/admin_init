@@ -1,29 +1,9 @@
 import { http } from "@/utils/http";
-import type { OnlineParams } from "../types/home";
-export const getHomeDataApi = () => {
-  return http.request<Result>(
+import type { OnlineParams } from "../types";
+export const getMembershipListApi = (params: OnlineParams = {}) => {
+  return http.request<ResultTable>(
     "get",
-    "/mock/6732dee691c574cfa14065dc/home/home"
-  );
-};
-export const getOnlineSummaryApi = (params: OnlineParams = {}) => {
-  return http.request<Result>(
-    "get",
-    "/mock/6732dee691c574cfa14065dc/home/onlineSummary",
-    { params }
-  );
-};
-export const getOnlineApi = (params: OnlineParams = {}) => {
-  return http.request<Result>(
-    "get",
-    "/mock/6732dee691c574cfa14065dc/home/online",
-    { params }
-  );
-};
-export const getRankingListApi = (params: OnlineParams = {}) => {
-  return http.request<Result>(
-    "get",
-    "/mock/6732dee691c574cfa14065dc/home/rankingList",
+    "/mock/6740733ee0641e1205ae5b92/member/membership/list",
     { params }
   );
 };

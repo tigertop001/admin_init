@@ -14,6 +14,8 @@ import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import Check from "@iconify-icons/ep/check";
 
+import { useDark } from "@pureadmin/utils";
+const { isDark } = useDark();
 const {
   layout,
   device,
@@ -149,7 +151,7 @@ const {
         </template>
       </el-dropdown>
       <span
-        class="set-icon navbar-bg-hover"
+        :class="['set-icon navbar-bg-hover', isDark ? 'text-gray-300' : '']"
         title="打开系统配置"
         @click="onPanel"
       >

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
+import { useDark } from "@pureadmin/utils";
 
 const screenIcon = ref();
 const { toggle, isFullscreen, Fullscreen, ExitFullscreen } = useNav();
+const { isDark } = useDark();
 
 isFullscreen.value = !!(
   document.fullscreenElement ||
@@ -24,7 +26,11 @@ watch(
 </script>
 
 <template>
-  <span class="fullscreen-icon navbar-bg-hover" @click="toggle">
+  <span
+    class="fullscreen-icon navbar-bg-hover"
+    :class="isDark ? 'text-gray-300' : ''"
+    @click="toggle"
+  >
     <IconifyIconOffline :icon="screenIcon" />
   </span>
 </template>

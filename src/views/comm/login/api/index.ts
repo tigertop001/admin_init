@@ -14,11 +14,11 @@ export type UserResult = {
     /** 按钮级别权限 */
     permissions: Array<string>;
     /** `token` */
-    accessToken: string;
-    /** 用于调用刷新`accessToken`的接口时所需的`token` */
+    token: string;
+    /** 用于调用刷新`token`的接口时所需的`token` */
     refreshToken: string;
-    /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expires: Date;
+    /** `token`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
+    expireAt: Date;
     // /** 是否需要谷歌验证器验证 */
     // needGoogleAuth: boolean;
     // /** 是否需要绑定谷歌验证器 */
@@ -31,11 +31,11 @@ export type RefreshTokenResult = {
   message: string;
   data: {
     /** `token` */
-    accessToken: string;
-    /** 用于调用刷新`accessToken`的接口时所需的`token` */
+    token: string;
+    /** 用于调用刷新`token`的接口时所需的`token` */
     refreshToken: string;
-    /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expires: Date;
+    /** `token`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
+    expireAt: Date;
   };
 };
 
@@ -107,14 +107,14 @@ export const getMine = (data?: object) => {
   );
 };
 
-/** 账户设置-个人安全日志 */
-export const getMineLogs = (data?: object) => {
-  return http.request<ResultTable>(
-    "get",
-    "/mock/672b55c8cb7443249e0150fe/account/mine-logs",
-    { data }
-  );
-};
+// /** 账户设置-个人安全日志 */
+// export const getMineLogs = (data?: object) => {
+//   return http.request<ResultTable>(
+//     "get",
+//     "/mock/672b55c8cb7443249e0150fe/account/mine-logs",
+//     { data }
+//   );
+// };
 
 /** 获取验证码类型 */
 export const getLogInfoApi = (params?: object) => {

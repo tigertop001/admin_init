@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { getTopMenu } from "@/router/utils";
 import { useNav } from "@/layout/hooks/useNav";
+import Logo from "@/assets/svg/logo.svg?component";
+import { useDark } from "@pureadmin/utils";
 
 defineProps({
   collapse: Boolean
 });
 
-const { title, getLogo } = useNav();
+const { title } = useNav();
+const { isDark } = useDark();
 </script>
 
 <template>
@@ -19,7 +22,15 @@ const { title, getLogo } = useNav();
         class="sidebar-logo-link"
         :to="getTopMenu()?.path ?? '/'"
       >
-        <img :src="getLogo()" alt="logo" class="w-8" />
+        <div class="w-10 h-full flex items-center justify-center">
+          <Logo
+            :style="{
+              fill: isDark ? 'rgb(209 213 219)' : 'rgb(59 130 246)',
+              color: isDark ? 'rgb(209 213 219)' : 'rgb(59 130 246)',
+              width: '30px'
+            }"
+          />
+        </div>
         <span class="sidebar-title">{{ title }}</span>
       </router-link>
       <router-link
@@ -29,7 +40,14 @@ const { title, getLogo } = useNav();
         class="sidebar-logo-link"
         :to="getTopMenu()?.path ?? '/'"
       >
-        <img :src="getLogo()" alt="logo" class="w-7 ml-2" />
+        <div class="w-8 h-8 ml-2 flex items-center justify-center">
+          <Logo
+            :style="{
+              fill: isDark ? 'rgb(209 213 219)' : 'rgb(59 130 246)',
+              color: isDark ? 'rgb(209 213 219)' : 'rgb(59 130 246)'
+            }"
+          />
+        </div>
         <span class="sidebar-title">{{ title }}</span>
       </router-link>
     </transition>

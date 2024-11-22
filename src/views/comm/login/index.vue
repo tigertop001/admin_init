@@ -18,6 +18,9 @@ import { ref, reactive, watch, computed, onMounted } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import { getOperatingSystem } from "@/utils/osUtils";
+
+const osInfo = getOperatingSystem(); // 获取系统信息
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
@@ -58,13 +61,14 @@ const {
 const ruleForm = reactive({
   username: "admin",
   password: "admin123",
-  verifyCode: "", // 验证码
-  captcha: null // 谷歌验证码字段
+  code: "", // 验证码
+  captcha: null, // 谷歌验证码字段
+  deviceType: osInfo.code // 设备操作系统类型
 });
+
 onMounted(async () => {
   const params = { domain: window.location.hostname };
   await userStore.getLogInfo(params);
-  console.log(typeof userStore.verifiType, "---serStore.verifiType-");
 });
 
 // 修改登录逻辑
@@ -74,8 +78,31 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       try {
-        // 第一步登录
+        // // 第一步登录
+        // const params = { ...ruleForm, remember: checked.value };
+        // if (userStore.verifiType == 1) {
+        //   const res = await userStore.verifyGoogleAuthCode({
+        //     code: ruleForm.captcha
+        //   });
+        //   if (!res.success) {
+        //     message("验证码验证失败，请检查验证码", { type: "error" });
+        //     loading.value = false;
+        //     return;
+        //   }
+        // }
+        // 动态构建登录参数，移除不需要的字段
         const params = { ...ruleForm, remember: checked.value };
+
+        // 根据 verifiType 来移除不需要的字段
+        if (userStore.verifiType === 0) {
+          // 当 verifiType 为 0 时，移除 captcha 字段
+          delete params.captcha;
+        } else if (userStore.verifiType === 1) {
+          // 当 verifiType 为 1 时，移除 code 字段
+          delete params.code;
+        }
+
+        // 验证谷歌验证码
         if (userStore.verifiType == 1) {
           const res = await userStore.verifyGoogleAuthCode({
             code: ruleForm.captcha
@@ -86,6 +113,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
             return;
           }
         }
+
         const loginRes = await userStore.loginByUsername(params);
         if (loginRes.success) {
           await initRouter();
@@ -266,9 +294,9 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
             </Motion>
 
             <Motion v-if="userStore.verifiType == 0" :delay="200">
-              <el-form-item prop="verifyCode">
+              <el-form-item prop="code">
                 <el-input
-                  v-model="ruleForm.verifyCode"
+                  v-model="ruleForm.code"
                   clearable
                   placeholder="请输入验证码"
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
