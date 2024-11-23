@@ -83,11 +83,11 @@ export const useUserStore = defineStore({
     async loginByUsername(data: { username: string; password: string }) {
       try {
         const response = await getLoginApi(data);
-        if (response?.success) {
+        if (response?.code === 0) {
           setToken(response.data); // 登录成功后存储 token
           return response;
         } else {
-          throw new Error(response?.message || "登录失败");
+          throw new Error(response?.msg || "登录失败");
         }
       } catch (error) {
         console.error("登录失败:", error); // 捕获并打印错误信息
@@ -143,7 +143,7 @@ export const useUserStore = defineStore({
     async getLogInfo(params) {
       try {
         const response = await getLogInfoApi(params);
-        if (response?.success) {
+        if (response?.code === 0) {
           // 获取验证码类型并存储
           console.log(
             "response.data?.verifiType-----",

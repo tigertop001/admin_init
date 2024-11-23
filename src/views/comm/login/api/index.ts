@@ -1,30 +1,30 @@
 import { http } from "@/utils/http";
 
-export type UserResult = {
-  success: boolean;
-  message: string;
-  data: {
-    /** 头像 */
-    // avatar: string;
-    /** 用户名 */
-    username: string;
-    /** 昵称 */
-    /** 当前登录用户的角色 */
-    roles: Array<string>;
-    /** 按钮级别权限 */
-    permissions: Array<string>;
-    /** `token` */
-    token: string;
-    /** 用于调用刷新`token`的接口时所需的`token` */
-    refreshToken: string;
-    /** `token`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expireAt: Date;
-    // /** 是否需要谷歌验证器验证 */
-    // needGoogleAuth: boolean;
-    // /** 是否需要绑定谷歌验证器 */
-    // needBindGoogle: boolean;
-  };
-};
+// export type UserResult = {
+//   success: boolean;
+//   message: string;
+//   data: {
+//     /** 头像 */
+//     // avatar: string;
+//     /** 用户名 */
+//     username: string;
+//     /** 昵称 */
+//     /** 当前登录用户的角色 */
+//     roles: Array<string>;
+//     /** 按钮级别权限 */
+//     permissions: Array<string>;
+//     /** `token` */
+//     token: string;
+//     /** 用于调用刷新`token`的接口时所需的`token` */
+//     refreshToken: string;
+//     /** `token`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
+//     expireAt: Date;
+//     // /** 是否需要谷歌验证器验证 */
+//     // needGoogleAuth: boolean;
+//     // /** 是否需要绑定谷歌验证器 */
+//     // needBindGoogle: boolean;
+//   };
+// };
 
 export type RefreshTokenResult = {
   success: boolean;
@@ -61,7 +61,7 @@ export type UserInfoResult = {
 
 /** 登录 */
 export const getLoginApi = (data?: object) => {
-  return http.request<UserResult>(
+  return http.request<Result>(
     "post",
     "/mock/672b55c8cb7443249e0150fe/account/login",
     { data }
@@ -119,7 +119,7 @@ export const getMine = (data?: object) => {
 /** 获取验证码类型 */
 export const getLogInfoApi = (params?: object) => {
   console.log("---data---", params);
-  return http.request<CommResult>(
+  return http.request<Result>(
     "get",
     "/mock/672b55c8cb7443249e0150fe/account/logininfo",
     { params }

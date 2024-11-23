@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { ref, h, computed } from "vue";
-import "plus-pro-components/es/components/search/style/css";
+/**
+ * 导入依赖
+ */
+import { ref, h, computed, type PropType } from "vue";
 import { type PlusColumn, PlusSearch } from "plus-pro-components";
-// import AccountTypeField from "./AccountTypeField.vue";
+import "plus-pro-components/es/components/search/style/css";
+
+/**
+ * 导入组件和图标
+ */
 import AccountTypeField, {
   type SearchField
 } from "@/components/CgDropDownSearch";
@@ -15,11 +21,12 @@ import {
   Upload
 } from "@element-plus/icons-vue";
 
-type UserType = "member" | "supAgent" | "inviter";
-
-const props = defineProps({
+/**
+ * Props 定义
+ */
+const { exportExcel, exportData } = defineProps({
   exportExcel: {
-    type: Function as PropType<() => void>,
+    type: Function as PropType<(_data: any[]) => void>,
     required: true
   },
   exportData: {
@@ -28,6 +35,47 @@ const props = defineProps({
   }
 });
 
+/**
+ * Emits 定义
+ */
+const emit = defineEmits<{
+  (_e: "update:param", _param: Record<string, any>): void;
+  (_e: "search", _values: any): void;
+  (_e: "reset"): void;
+  (_e: "update:isShowUnfold", _value: boolean): void;
+  (_e: "add"): void; // 添会员事件
+}>();
+
+/**
+ * 搜索条件配置
+ */
+// 下拉选项配置
+const searchOptions = {
+  member: [
+    { label: "UID", value: "uid", typename: "会员" },
+    { label: "账号", value: "username", typename: "会员" }
+  ],
+  supAgent: [
+    { label: "UID", value: "sUid", typename: "上级代理" },
+    { label: "账号", value: "supName", typename: "上级代理" }
+  ],
+  inviter: [
+    { label: "UID", value: "initUid", typename: "邀请人" },
+    { label: "账号", value: "initName", typename: "邀请人" }
+  ]
+};
+
+// 字段映射配置
+const fieldMapping = {
+  member: { idKey: "memberId", nameKey: "member" },
+  supAgent: { idKey: "agentId", nameKey: "agentMember" },
+  inviter: { idKey: "inviterId", nameKey: "inviterMember" }
+};
+
+/**
+ * 状态管理
+ */
+// 搜索状态
 const searchState = ref({
   member: { content: "", type: "uid", label: "UID" },
   supAgent: { content: "", type: "sUid", label: "UID" },
@@ -38,18 +86,18 @@ const searchState = ref({
   loginEndTime: ""
 });
 
+/**
+ * 类型定义
+ */
+type UserType = "member" | "supAgent" | "inviter";
+
+// 搜索参数计算
 const param = computed(() => {
   const result: Record<string, string> = {
     startTime: searchState.value.startTime,
     endTime: searchState.value.endTime,
     loginStartTime: searchState.value.loginStartTime,
     loginEndTime: searchState.value.loginEndTime
-  };
-
-  const fieldMapping = {
-    member: { idKey: "memberId", nameKey: "member" },
-    supAgent: { idKey: "agentId", nameKey: "agentMember" },
-    inviter: { idKey: "inviterId", nameKey: "inviterMember" }
   };
 
   Object.entries(fieldMapping).forEach(([key, { idKey, nameKey }]) => {
@@ -61,63 +109,48 @@ const param = computed(() => {
   return result;
 });
 
-const options = [
-  { label: "UID", value: "uid", typename: "会员" },
-  { label: "账号", value: "username", typename: "会员" }
-];
-
-const supOptions = [
-  { label: "UID", value: "sUid", typename: "上级代理" },
-  { label: "账号", value: "supName", typename: "上级代理" }
-];
-
-const initOptions = [
-  { label: "UID", value: "initUid", typename: "邀请人" },
-  { label: "账号", value: "initName", typename: "邀请人" }
-];
-
+/**
+ * 表单字段配置
+ */
 const columns: PlusColumn[] = [
   {
     label: "会员",
     prop: "member",
     valueType: "input",
-    renderField: () => {
-      return h(AccountTypeField, {
+    renderField: () =>
+      h(AccountTypeField, {
         modelValue: searchState.value.member,
-        options: options,
+        options: searchOptions.member,
         "onUpdate:modelValue": (newValue: SearchField) => {
           searchState.value.member = newValue;
         }
-      });
-    }
+      })
   },
   {
     label: "上级代理",
     prop: "supAgent",
     valueType: "input",
-    renderField: () => {
-      return h(AccountTypeField, {
+    renderField: () =>
+      h(AccountTypeField, {
         modelValue: searchState.value.supAgent,
-        options: supOptions,
+        options: searchOptions.supAgent,
         "onUpdate:modelValue": (newValue: SearchField) => {
           searchState.value.supAgent = newValue;
         }
-      });
-    }
+      })
   },
   {
     label: "邀请人",
     prop: "inviter",
     valueType: "input",
-    renderField: () => {
-      return h(AccountTypeField, {
+    renderField: () =>
+      h(AccountTypeField, {
         modelValue: searchState.value.inviter,
-        options: initOptions,
+        options: searchOptions.inviter,
         "onUpdate:modelValue": (newValue: SearchField) => {
           searchState.value.inviter = newValue;
         }
-      });
-    }
+      })
   },
   {
     label: "注册时间",
@@ -141,13 +174,9 @@ const columns: PlusColumn[] = [
   }
 ];
 
-const emit = defineEmits<{
-  (_e: "update:param", _param: Record<string, any>): void;
-  (_e: "search", _values: any): void;
-  (_e: "reset"): void;
-  (_e: "update:isShowUnfold", _value: boolean): void; // 用来通知父组件展开状态的变化
-}>();
-
+/**
+ * 事件处理方法
+ */
 const handleSearch = (values: any) => {
   emit("update:param", param.value);
   emit("search", values);
@@ -166,20 +195,22 @@ const handleReset = () => {
   emit("reset");
 };
 
-// 在这里手动管理 isShowUnfold 的状态
-// const isShowUnfold = ref(false);
-// const handleUnfold = () => {
-//   isShowUnfold.value = !isShowUnfold.value;
-//   emit("update:isShowUnfold", isShowUnfold.value); // 通知父组件状态变化
-// };
+/**
+ * 添加会员处理
+ */
+const handleAdd = () => {
+  emit("add");
+};
 </script>
 
 <template>
   <PlusSearch
     v-model="searchState"
     :columns="columns"
-    label-position="right"
     :defaultValues="searchState"
+    label-position="right"
+    :hasFooter="true"
+    :showNumber="2"
     :col-props="{
       xs: 24,
       sm: 12,
@@ -191,28 +222,28 @@ const handleReset = () => {
       gutter: 20,
       justify: 'start'
     }"
-    :hasFooter="true"
-    :showNumber="2"
     @search="handleSearch"
     @reset="handleReset"
   >
+    <!-- 底部操作按钮 -->
     <template
       #footer="{ handleReset, handleSearch, handleUnfold, isShowUnfold }"
     >
       <div class="flex">
-        <el-button type="primary" :icon="Search" @click="handleSearch"
-          >搜索</el-button
-        >
-        <el-button :icon="Refresh" @click="handleReset">重置</el-button>
+        <el-button type="primary" :icon="Search" @click="handleSearch">
+          搜索
+        </el-button>
+        <el-button :icon="Refresh" @click="handleReset"> 重置 </el-button>
         <el-button
           type="primary"
           :icon="Upload"
-          @click="props.exportExcel(props.exportData)"
-          >导出数据</el-button
+          @click="() => exportExcel(exportData)"
         >
-        <el-button type="primary" :icon="Plus" @click="handleSearch"
-          >添加会员</el-button
-        >
+          导出数据
+        </el-button>
+        <el-button type="primary" :icon="Plus" @click="handleAdd">
+          添加会员
+        </el-button>
         <el-button
           :icon="isShowUnfold ? ArrowUp : ArrowDown"
           link

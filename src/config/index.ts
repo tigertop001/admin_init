@@ -32,7 +32,7 @@ export const getPlatformConfig = async (app: App): Promise<undefined> => {
     const response: Result = await platformConfig();
     let $config = app.config.globalProperties.$config;
     // 自动注入系统配置
-    if (app && $config && response.success === true) {
+    if (app && $config && response.code === 0) {
       $config = Object.assign($config, response.data);
       app.config.globalProperties.$config = $config;
       // 设置全局配置

@@ -2,7 +2,6 @@
 
 import type { ECharts } from "echarts";
 import type { TableColumns } from "@pureadmin/table";
-
 /**
  * 全局类型声明，无需引入直接在 `.vue` 、`.ts` 、`.tsx` 文件使用即可获得类型提示
  */
@@ -211,31 +210,25 @@ declare global {
   }
 
   /**
-   * 全局 Result 类型
+   * 分页数据格式
    */
-  type Result = {
-    success: boolean;
-    msg: string;
-    data?: Array<any>;
-  };
-
+  interface PageInfo<T> {
+    list: T[];
+    total: number;
+  }
   /**
-   * 全局 ResultTable 类型
+   * 统一的响应类型
    */
-  type ResultTable = {
-    success: boolean;
+  interface Result<T = any> {
+    code: number;
     msg: string;
-    total?: number;
-    data?: Array<any>;
-  };
-  /**
-   * 通用 Result 类型
-   */
-  export type CommResult = {
-    success: boolean;
-    message: string;
-    data: any;
-  };
+    data: T extends PageInfo<any>
+      ? PageInfo<T extends PageInfo<infer R> ? R : never>
+      : T;
+  }
+  // 使用方式
+  type PageResponse<T> = Result<PageInfo<T>>; // 分页数据
+  type DataResponse<T> = Result<T>;
 }
 
 // 使文件成为模块化文件，避免编译错误

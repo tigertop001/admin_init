@@ -115,7 +115,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         }
 
         const loginRes = await userStore.loginByUsername(params);
-        if (loginRes.success) {
+        if (loginRes?.code === 0) {
           await initRouter();
           disabled.value = true;
           await router.push(getTopMenu(true).path);

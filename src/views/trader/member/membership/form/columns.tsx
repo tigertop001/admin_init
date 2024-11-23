@@ -3,17 +3,35 @@ import type {
   AdaptiveConfig,
   PaginationProps
 } from "@pureadmin/table";
-import { ref, onMounted, reactive } from "vue";
-import { delay } from "@pureadmin/utils";
-import { message } from "@/utils/message";
-import { ExcelExporter } from "@/components/CgExportExcel"; // 导入封装的组件
+import { ref, reactive } from "vue";
+import { ExcelExporter } from "@/components/CgExportExcel";
 
-import { useMembership } from "../store"; // 确保这个导入是正确的
-
+/**
+ * 会员列表相关配置和方法
+ * @param handleTagClick - 会员标识点击处理函数
+ */
 export function useColumns(handleTagClick?: (tag: string) => void) {
+  /**
+   * 基础数据
+   */
   const dataList = ref([]);
   const loading = ref(true);
-  const columns: TableColumnList = [
+
+  /**
+   * 账号状态映射配置
+   */
+  const statusMap = {
+    0: { text: "正常", color: "text-green-600" },
+    1: { text: "资金冻结", color: "text-orange-400" },
+    2: { text: "禁止登录", color: "text-orange-600" },
+    3: { text: "封禁", color: "text-red-700" },
+    4: { text: "黑名单", color: "text-gray-400" }
+  };
+
+  /**
+   * 表格列配置
+   */
+  const columns = [
     {
       label: "UID/账号/会员标识",
       prop: "date",
@@ -38,17 +56,13 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
       label: "真实姓名",
       prop: "real_name",
       width: 180,
-      formatter: row => {
-        return `${row.real_name || "--"}`;
-      }
+      formatter: row => `${row.real_name || "--"}`
     },
     {
       label: "上级代理UID/上级代理账号",
       prop: "address",
       width: 200,
-      formatter: row => {
-        return `${row.parent_id || "--"}/${row.invite_member || "--"}`;
-      }
+      formatter: row => `${row.parent_id || "--"}/${row.invite_member || "--"}`
     },
     {
       label: "邀请人UID/账号",
@@ -65,77 +79,54 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
       label: "账户钱包余额",
       prop: "available_balance",
       width: 150,
-      formatter: row => {
-        return `${row.available_balance || "--"}/${row.reg_source}次`;
-      }
+      formatter: row => `${row.available_balance || "--"}/${row.reg_source}次`
     },
     {
       label: "存款总额/次",
       prop: "subtract",
       width: 150,
-      formatter: row => {
-        return `${row.subtract || "--"}/${row.reg_source}次`;
-      }
+      formatter: row => `${row.subtract || "--"}/${row.reg_source}次`
     },
     {
       label: "提款总额/次",
       prop: "third_money",
       width: 150,
-      formatter: row => {
-        return `${row.invite_memberid || "--"}/${row.reg_source}次`;
-      }
+      formatter: row => `${row.invite_memberid || "--"}/${row.reg_source}次`
     },
     {
       label: "存取款差额",
       prop: "total_recharge_amount",
       width: 150,
-      formatter: row => {
-        return `${row.total_recharge_amount || "--"}`;
-      }
+      formatter: row => `${row.total_recharge_amount || "--"}`
     },
     {
       label: "注册时间/ip",
       prop: "reg_time",
       width: 180,
-      formatter: row => {
-        return `${row.reg_time || "--"}`;
-      }
+      formatter: row => `${row.reg_time || "--"}`
     },
     {
       label: "最后登陆时间/IP",
       prop: "reg_ip",
       width: 180,
-      formatter: row => {
-        return `${row.reg_ip || "--"}`;
-      }
+      formatter: row => `${row.reg_ip || "--"}`
     },
     {
       label: "账号状态",
       prop: "memberStatus",
       width: 180,
       cellRenderer: ({ row }) => {
-        // 状态映射配置
-        const statusMap = {
-          0: { text: "正常", color: "text-green-600" },
-          1: { text: "资金冻结", color: "text-orange-400" },
-          2: { text: "禁止登录", color: "text-orange-600" },
-          3: { text: "封禁", color: "text-red-700" },
-          4: { text: "黑名单", color: "text-gray-400" }
-        };
         const status = statusMap[row.memberStatus] || {
           text: "--",
           color: "text-gray-400"
         };
-
         return <span class={`${status.color} font-medium`}>{status.text}</span>;
       }
     },
     {
       label: "会员层级",
       prop: "member_type",
-      formatter: row => {
-        return `${row.member_type || "--"}`;
-      }
+      formatter: row => `${row.member_type || "--"}`
     },
     {
       label: "操作",
@@ -145,7 +136,9 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
     }
   ];
 
-  /** 分页配置 */
+  /**
+   * 分页配置
+   */
   const pagination = reactive<PaginationProps>({
     pageSize: 10,
     currentPage: 1,
@@ -155,7 +148,9 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
     background: true
   });
 
-  /** 加载动画配置 */
+  /**
+   * 加载动画配置
+   */
   const loadingConfig = reactive<LoadingConfig>({
     text: "正在加载第一页...",
     viewBox: "-10, -10, 50, 50",
@@ -169,34 +164,43 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
           L 15 15
         " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
       `
-    // svg: "",
-    // background: rgba(220, 190, 29, 0.6)
   });
 
-  /** 撑满内容区自适应高度相关配置 */
+  /**
+   * 自适应高度配置
+   */
   const adaptiveConfig: AdaptiveConfig = {
-    /** 表格距离页面底部的偏移量，默认值为 `96` */
     offsetBottom: 110,
-    /** 是否固定表头，默认值为 `true`（如果不想固定表头，fixHeader设置为false并且表格要设置table-layout="auto"） */
     fixHeader: false
-    /** 页面 `resize` 时的防抖时间，默认值为 `60` ms */
-    // timeout: 60
-    /** 表头的 `z-index`，默认值为 `100` */
-    // zIndex: 100
   };
 
-  function onSizeChange(val) {
-    console.log("onSizeChange", val);
-  }
+  /**
+   * 分页方法
+   */
+  // 切换每页显示数量
+  const onSizeChange = (val: number) => {
+    pagination.pageSize = val;
+    pagination.currentPage = 1;
+    return {
+      page: pagination.currentPage,
+      pageSize: val
+    };
+  };
 
-  function onCurrentChange(val) {
+  // 切换页码
+  const onCurrentChange = (val: number) => {
+    pagination.currentPage = val;
     loadingConfig.text = `正在加载第${val}页...`;
     loading.value = true;
-    delay(600).then(() => {
-      loading.value = false;
-    });
-  }
+    return {
+      page: val,
+      pageSize: pagination.pageSize
+    };
+  };
 
+  /**
+   * 数据处理方法
+   */
   // 导出excel表
   const exportExcel = (data: any[]) => {
     ExcelExporter.exportToExcel({
@@ -206,23 +210,12 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
     });
   };
 
-  onMounted(async () => {
-    const store = useMembership(); // 获取 store 实例
-    const param = {}; // 你可以在这里传入需要的参数
-    // 使用 await 获取数据并进行处理
-    const res = await store.fetchMembershipList(param);
-    // 确保 res 是 ResultTable 类型，并从中提取 data 数组
-    if (res && res.data) {
-      dataList.value = res.data; // 提取 res.data 数组并赋值给 dataList
-      pagination.total = res.total || 0; // 确保 total 存在
-    } else {
-      dataList.value = []; // 如果没有数据，赋空数组
-      pagination.total = 0; // 如果没有数据，总数为 0
-      message("未找到数据", { type: "error" });
-    }
-    // 停止加载动画
+  // 设置表格数据
+  const setData = (data: any[], total: number) => {
+    dataList.value = data;
+    pagination.total = total;
     loading.value = false;
-  });
+  };
 
   return {
     loading,
@@ -233,6 +226,7 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
     adaptiveConfig,
     onSizeChange,
     onCurrentChange,
-    exportExcel
+    exportExcel,
+    setData
   };
 }
