@@ -5,7 +5,6 @@ import type {
 } from "@pureadmin/table";
 import { ref, onMounted, reactive } from "vue";
 import { delay } from "@pureadmin/utils";
-// import { utils, writeFile } from "xlsx";
 import { message } from "@/utils/message";
 import { ExcelExporter } from "@/components/CgExportExcel"; // 导入封装的组件
 
@@ -112,9 +111,23 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
     },
     {
       label: "账号状态",
-      prop: "reg_source",
-      formatter: row => {
-        return `${row.reg_source || "--"}`;
+      prop: "memberStatus",
+      width: 180,
+      cellRenderer: ({ row }) => {
+        // 状态映射配置
+        const statusMap = {
+          0: { text: "正常", color: "text-green-600" },
+          1: { text: "资金冻结", color: "text-orange-400" },
+          2: { text: "禁止登录", color: "text-orange-600" },
+          3: { text: "封禁", color: "text-red-700" },
+          4: { text: "黑名单", color: "text-gray-400" }
+        };
+        const status = statusMap[row.memberStatus] || {
+          text: "--",
+          color: "text-gray-400"
+        };
+
+        return <span class={`${status.color} font-medium`}>{status.text}</span>;
       }
     },
     {
@@ -184,113 +197,20 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
     });
   }
 
-  // const exportExcel = (data: any[]) => {
-  //   const res = data.map(item => {
-  //     const arr = [];
-  //     columns.forEach(column => {
-  //       arr.push(item[column.prop as string]);
-  //     });
-  //     return arr;
-  //   });
-  //   const titleList = [];
-  //   columns.forEach(column => {
-  //     titleList.push(column.label);
-  //   });
-  //   res.unshift(titleList);
-  //   const workSheet = utils.aoa_to_sheet(res);
-  //   const workBook = utils.book_new();
-  //   utils.book_append_sheet(workBook, workSheet, "数据报表");
-  //   writeFile(workBook, "table.xlsx");
-  //   message("导出成功", {
-  //     type: "success"
-  //   });
-  // };
-
-  // const exportExcel = (data: any[]) => {
-  //   const formatColumnValue = (
-  //     column: TableColumnList[0],
-  //     row: any
-  //   ): string => {
-  //     // 如果有cellRenderer函数，解析其JSX内容
-  //     if (column.cellRenderer) {
-  //       const rendered = column.cellRenderer({ row } as any);
-  //       // 递归提取JSX中的文本内容
-  //       const extractTextContent = (element: any): string => {
-  //         if (!element) return "--";
-  //         if (typeof element === "string") return element;
-  //         if (Array.isArray(element)) {
-  //           return element.map(el => extractTextContent(el)).join("/");
-  //         }
-  //         if (element.children) {
-  //           return extractTextContent(element.children);
-  //         }
-  //         if (element.props?.children) {
-  //           return extractTextContent(element.props.children);
-  //         }
-  //         return "--";
-  //       };
-  //       return extractTextContent(rendered);
-  //     }
-
-  //     // 如果有formatter函数，直接使用
-  //     if (column.formatter) {
-  //       return (column.formatter as (row: any) => string)(row);
-  //     }
-
-  //     // 处理prop包含多个字段的情况
-  //     const props = (column.prop as any)?.split("/") || [];
-  //     if (props.length > 1) {
-  //       return props.map(p => row[p] || "--").join("/");
-  //     }
-
-  //     // 默认返回单个字段值
-  //     return row[column.prop as string] || "--";
-  //   };
-
-  //   const res = data.map(row =>
-  //     columns
-  //       .filter(col => col.prop && col.prop !== "operation")
-  //       .map(col => formatColumnValue(col, row))
-  //   );
-
-  //   const titleList = columns
-  //     .filter(col => col.prop && col.prop !== "operation")
-  //     .map(col => col.label);
-
-  //   res.unshift(titleList);
-
-  //   const workSheet = utils.aoa_to_sheet(res);
-  //   const workBook = utils.book_new();
-  //   utils.book_append_sheet(workBook, workSheet, "数据报表");
-  //   writeFile(workBook, "table.xlsx");
-  //   message("导出成功", { type: "success" });
-  // };
-  // const exportExcel = (data: any[]) => {
-  //   const exporter = ExcelExporter({
-  //     columns,
-  //     data,
-  //     fileName: "会员数据报表" // 可以自定义文件名
-  //   });
-
-  //   exporter();
-  // };
-
   // 导出excel表
   const exportExcel = (data: any[]) => {
-    console.log("---data---", data);
     ExcelExporter.exportToExcel({
       columns,
       data,
       fileName: "会员数据报表"
     });
   };
+
   onMounted(async () => {
     const store = useMembership(); // 获取 store 实例
     const param = {}; // 你可以在这里传入需要的参数
-
     // 使用 await 获取数据并进行处理
     const res = await store.fetchMembershipList(param);
-
     // 确保 res 是 ResultTable 类型，并从中提取 data 数组
     if (res && res.data) {
       dataList.value = res.data; // 提取 res.data 数组并赋值给 dataList
@@ -300,7 +220,6 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
       pagination.total = 0; // 如果没有数据，总数为 0
       message("未找到数据", { type: "error" });
     }
-
     // 停止加载动画
     loading.value = false;
   });

@@ -36,7 +36,7 @@ const handleParamUpdate = (newParam: any) => {
 </script>
 
 <template>
-  <el-card shadow="never" :body-style="{ height: 'calc(100vh - 210px)' }">
+  <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
     <template #header>
       <Search
         :exportExcel="exportExcel"

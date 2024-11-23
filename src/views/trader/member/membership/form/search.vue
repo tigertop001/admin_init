@@ -145,6 +145,7 @@ const emit = defineEmits<{
   (_e: "update:param", _param: Record<string, any>): void;
   (_e: "search", _values: any): void;
   (_e: "reset"): void;
+  (_e: "update:isShowUnfold", _value: boolean): void; // 用来通知父组件展开状态的变化
 }>();
 
 const handleSearch = (values: any) => {
@@ -164,6 +165,13 @@ const handleReset = () => {
   };
   emit("reset");
 };
+
+// 在这里手动管理 isShowUnfold 的状态
+// const isShowUnfold = ref(false);
+// const handleUnfold = () => {
+//   isShowUnfold.value = !isShowUnfold.value;
+//   emit("update:isShowUnfold", isShowUnfold.value); // 通知父组件状态变化
+// };
 </script>
 
 <template>
@@ -196,10 +204,15 @@ const handleReset = () => {
           >搜索</el-button
         >
         <el-button :icon="Refresh" @click="handleReset">重置</el-button>
-        <el-button :icon="Upload" @click="props.exportExcel(props.exportData)"
+        <el-button
+          type="primary"
+          :icon="Upload"
+          @click="props.exportExcel(props.exportData)"
           >导出数据</el-button
         >
-        <el-button :icon="Plus" @click="handleSearch">添加会员</el-button>
+        <el-button type="primary" :icon="Plus" @click="handleSearch"
+          >添加会员</el-button
+        >
         <el-button
           :icon="isShowUnfold ? ArrowUp : ArrowDown"
           link
