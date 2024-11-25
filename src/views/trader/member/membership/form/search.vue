@@ -212,11 +212,11 @@ const handleAdd = () => {
     :hasFooter="true"
     :showNumber="2"
     :col-props="{
-      xs: 24,
-      sm: 12,
-      md: 6,
-      lg: 6,
-      xl: 6
+      xs: { span: 24 },
+      sm: { span: 12 },
+      md: { span: 12 },
+      lg: { span: 8 },
+      xl: { span: 6 }
     }"
     :row-props="{
       gutter: 20,

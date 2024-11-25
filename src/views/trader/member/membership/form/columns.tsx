@@ -42,7 +42,7 @@ export function useColumns(handleTagClick?: (tag: string) => void) {
           {row.tag ? (
             <span
               class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300"
-              onClick={() => handleTagClick?.(row.tag)}
+              onClick={() => handleTagClick?.(row)}
             >
               会员标识
             </span>

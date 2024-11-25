@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { computed } from "vue";
 interface Props {
   visible: boolean;
-  tagInfo?: {
-    tag: string;
-    memberLevel: string;
-    registerTime: string;
-  };
+  currentTag?: Record<string, any>;
 }
 
-defineProps<Props>();
-
+const props = defineProps<Props>();
+const dialogVisible = computed({
+  get: () => props.visible,
+  set: value => emit("update:visible", value)
+});
 const emit = defineEmits<{
   "update:visible": [value: boolean];
 }>();
@@ -17,7 +17,7 @@ const emit = defineEmits<{
 
 <template>
   <el-dialog
-    :model-value="visible"
+    v-model="dialogVisible"
     title="会员标识详情"
     width="400px"
     destroy-on-close
@@ -26,15 +26,7 @@ const emit = defineEmits<{
     <div class="space-y-4">
       <div class="flex items-center">
         <span class="w-24 text-gray-600">会员标识:</span>
-        <span>{{ tagInfo?.tag }}</span>
-      </div>
-      <div class="flex items-center">
-        <span class="w-24 text-gray-600">会员等级:</span>
-        <span>{{ tagInfo?.memberLevel }}</span>
-      </div>
-      <div class="flex items-center">
-        <span class="w-24 text-gray-600">注册时间:</span>
-        <span>{{ tagInfo?.registerTime }}</span>
+        <span>{{ props.currentTag?.tag }}</span>
       </div>
     </div>
     <template #footer>

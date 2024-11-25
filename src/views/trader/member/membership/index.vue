@@ -7,7 +7,7 @@ import { ref, onMounted } from "vue";
 /**
  * 导入组件和工具
  */
-import Search from "./form/Search.vue";
+import Search from "./form/search.vue";
 import MemberTagDialog from "./dialog/memberTag/MemberTagDialog.vue";
 import AddMember from "./dialog/addMember/AddMember.vue";
 import { useColumns } from "./form/columns";
@@ -26,6 +26,7 @@ const currentTag = ref("");
  */
 // 会员标识点击
 const handleTagClick = (tag: string) => {
+  console.log("---tag--", tag);
   currentTag.value = tag;
   dialogVisible.value = true;
 };
@@ -176,7 +177,7 @@ onMounted(() => {
     </pure-table>
 
     <!-- 会员标识详情弹窗 -->
-    <MemberTagDialog v-model:visible="dialogVisible" :tag="currentTag" />
+    <MemberTagDialog v-model:visible="dialogVisible" :currentTag="currentTag" />
 
     <!-- 添加会员弹窗 -->
     <AddMember
