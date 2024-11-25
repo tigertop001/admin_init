@@ -1,12 +1,72 @@
-:deep(.el-table) {
-  --el-table-border: none;
-  --el-table-border-color: transparent;
+// :deep(.el-table) {
+//   --el-table-border: none;
+//   --el-table-border-color: transparent;
 
-  .el-empty__description {
-    margin: 0;
+//   .el-empty__description {
+//     margin: 0;
+//   }
+
+//   .el-scrollbar__bar {
+//     display: none;
+//   }
+// }
+
+:deep(.el-card) {
+  --el-card-border-color: none;
+  --el-card-border-radius: 0;
+
+  overflow: visible;
+
+  &.is-always-shadow {
+    box-shadow: var(--el-box-shadow-light);
   }
 
+  /* 解决概率进度条宽度 */
+  .el-progress--line {
+    width: 85%;
+  }
+
+  /* 解决概率进度条字体大小 */
+  .el-progress-bar__innerText {
+    font-size: 15px;
+  }
+
+  /* 隐藏 el-scrollbar 滚动条 */
   .el-scrollbar__bar {
     display: none;
+  }
+
+  /* el-timeline 每一项上下、左右边距 */
+  .el-timeline-item {
+    margin: 0 6px;
+  }
+
+  /* 卡片头部样式 */
+  .el-card__header {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--el-border-color-light);
+  }
+
+  /* 卡片主体样式 */
+  .el-card__body {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    height: 100%;
+    padding: 20px;
+  }
+}
+
+/* 特定卡片类型的样式 */
+.line-card {
+  :deep(.el-card__body) {
+    height: 100%;
+    padding: 20px;
+  }
+}
+
+.bar-card {
+  :deep(.el-card__body) {
+    padding: 20px;
   }
 }

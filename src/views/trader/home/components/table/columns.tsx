@@ -4,16 +4,20 @@ import { h } from "vue";
 // 定义基础列配置
 const baseColumns = {
   rank: {
-    sortable: true,
+    sortable: false,
     label: "排名",
     prop: "rank",
-    width: 80
+    width: 60,
+    align: "center",
+    headerAlign: "center"
   },
   memberid: {
-    sortable: true,
+    sortable: false,
     label: "会员",
     prop: "memberid",
-    width: 120
+    width: 80,
+    align: "center",
+    headerAlign: "center"
   }
 };
 
@@ -26,9 +30,11 @@ const tableConfigs = {
       baseColumns.rank,
       baseColumns.memberid,
       {
-        sortable: true,
+        sortable: false,
         label: "入款",
         prop: "rechargeAmount",
+        align: "center",
+        headerAlign: "center",
         formatter: ({ rechargeAmount }) => {
           const value = parseFloat(rechargeAmount);
           return h(
@@ -48,9 +54,12 @@ const tableConfigs = {
         }
       },
       {
-        sortable: true,
+        sortable: false,
+        width: 60,
         label: "笔数",
-        prop: "rechargeCount"
+        prop: "rechargeCount",
+        align: "center",
+        headerAlign: "center"
       }
     ]
   },
@@ -61,9 +70,11 @@ const tableConfigs = {
       baseColumns.rank,
       baseColumns.memberid,
       {
-        sortable: true,
+        sortable: false,
         label: "出款",
         prop: "withdrawAmount",
+        align: "center",
+        headerAlign: "center",
         formatter: ({ withdrawAmount }) => {
           const value = parseFloat(withdrawAmount);
           return h(
@@ -83,9 +94,12 @@ const tableConfigs = {
         }
       },
       {
-        sortable: true,
+        sortable: false,
         label: "笔数",
-        prop: "withdrawCount"
+        prop: "withdrawCount",
+        width: 60,
+        align: "center",
+        headerAlign: "center"
       }
     ]
   },
@@ -96,9 +110,11 @@ const tableConfigs = {
       baseColumns.rank,
       baseColumns.memberid,
       {
-        sortable: true,
+        sortable: false,
         label: "输赢",
         prop: "profit",
+        align: "center",
+        headerAlign: "center",
         formatter: ({ profit }) => {
           const value = parseFloat(profit);
           return h(
@@ -118,9 +134,11 @@ const tableConfigs = {
         }
       },
       {
-        sortable: true,
+        sortable: false,
         label: "订单数",
-        prop: "betRecordCount"
+        prop: "betRecordCount",
+        align: "center",
+        headerAlign: "center"
       }
     ]
   },
@@ -131,17 +149,26 @@ const tableConfigs = {
       baseColumns.rank,
       {
         ...baseColumns.memberid,
-        label: "代理"
+        label: "代理",
+        width: 80,
+        align: "center",
+        headerAlign: "center"
       },
       {
-        sortable: true,
+        sortable: false,
         label: "累计下线",
-        prop: "allCount"
+        width: 80,
+        prop: "allCount",
+        align: "center",
+        headerAlign: "center"
       },
       {
-        sortable: true,
+        sortable: false,
         label: "今日新增",
-        prop: "newAddCount"
+        prop: "newAddCount",
+        align: "center",
+        width: 80,
+        headerAlign: "center"
       }
     ]
   }
