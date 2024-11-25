@@ -4,7 +4,7 @@ import { ElDescriptions, ElDescriptionsItem } from "element-plus";
 import { computed } from "vue";
 interface Props {
   visible: boolean;
-  currentTag?: Record<string, any>;
+  currentTag?: Record<string, any> | null; // 修改这里，允许 null 值
 }
 
 const props = defineProps<Props>();

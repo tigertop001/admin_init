@@ -9,6 +9,7 @@ import { createApp, type Directive } from "vue";
 import { useVxeTable } from "@/plugins/vxeTable";
 import { useElementPlus } from "@/plugins/elementPlus";
 import { injectResponsiveStorage } from "@/utils/responsive";
+import "default-passive-events";
 
 import Table from "@pureadmin/table";
 import PureDescriptions from "@pureadmin/descriptions";

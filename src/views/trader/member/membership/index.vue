@@ -8,8 +8,8 @@ import { ref, onMounted } from "vue";
  * 导入组件和工具
  */
 import Search from "./form/search.vue";
-import MemberTagDialog from "./dialog/memberTag/MemberTagDialog.vue";
-import AddMember from "./dialog/addMember/AddMember.vue";
+import MemberTagDialog from "./dialog/member-tag-dialog.vue";
+import AddMember from "./dialog/add-member.vue";
 import { useColumns } from "./form/columns";
 import { useMembership } from "./store";
 import { message } from "@/utils/message";
@@ -20,12 +20,12 @@ import { type FieldValues } from "plus-pro-components";
  */
 // 会员标识弹窗
 const dialogVisible = ref(false);
-const currentTag = ref("");
+const currentTag = ref<Record<string, any> | null>(null);
 /**
  * 事件处理方法
  */
 // 会员标识点击
-const handleTagClick = (tag: string) => {
+const handleTagClick = (tag: Record<string, any>) => {
   console.log("---tag--", tag);
   currentTag.value = tag;
   dialogVisible.value = true;

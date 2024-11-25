@@ -10,7 +10,9 @@ import { ExcelExporter } from "@/components/CgExportExcel";
  * 会员列表相关配置和方法
  * @param handleTagClick - 会员标识点击处理函数
  */
-export function useColumns(handleTagClick?: (tag: string) => void) {
+export function useColumns(
+  handleTagClick?: (tagObj: Record<string, any>) => void
+) {
   /**
    * 基础数据
    */
