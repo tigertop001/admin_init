@@ -11,8 +11,29 @@ import {
 
 export default ({ mode }: ConfigEnv): UserConfigExport => {
   const env = loadEnv(mode, "envs");
-  const { VITE_CDN, VITE_PORT, VITE_COMPRESSION, VITE_PUBLIC_PATH } =
-    wrapperEnv(env);
+  console.log("Build Mode:", mode);
+  console.log("Environment Variables:", {
+    VITE_ROUTER_HISTORY: env.VITE_ROUTER_HISTORY,
+    VITE_PUBLIC_PATH: env.VITE_PUBLIC_PATH
+  });
+
+  const {
+    VITE_ROUTER_HISTORY,
+    VITE_PUBLIC_PATH,
+    VITE_PORT,
+    VITE_CDN,
+    VITE_COMPRESSION
+  } = wrapperEnv(env);
+
+  // 确保这些值存在
+  if (!VITE_ROUTER_HISTORY) {
+    console.warn(
+      "VITE_ROUTER_HISTORY not found in env, using default hash mode"
+    );
+  }
+  if (!VITE_PUBLIC_PATH) {
+    console.warn("VITE_PUBLIC_PATH not found in env, using default root path");
+  }
   return {
     base: VITE_PUBLIC_PATH,
     root,
@@ -20,46 +41,51 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       alias
     },
     envDir: "envs",
-    // 服务端渲染
     server: {
-      // 端口号
       port: VITE_PORT,
       host: "0.0.0.0",
-      // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
         "/api": {
-          target: "http://localhost:3001", // 后端服务器地址
+          target: "http://localhost:3001",
           changeOrigin: true,
           rewrite: path => path
         },
         "/mock": {
           target: "http://0.0.0.0:7300",
-          changeOrigin: true, // 修改源
-          rewrite: path => path // 可选：重写请求路径
+          changeOrigin: true,
+          rewrite: path => path
         }
-      },
-      // 预热文件以提前转换和缓存结果，降低启动期间的初始页面加载时长并防止转换瀑布
-      warmup: {
-        clientFiles: ["./index.html", "./src/{views,components}/*"]
+      }
+    },
+    preview: {
+      port: VITE_PORT,
+      host: "0.0.0.0",
+      proxy: {
+        "/api": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+          rewrite: path => path
+        },
+        "/mock": {
+          target: "http://0.0.0.0:7300",
+          changeOrigin: true,
+          rewrite: path => path
+        }
       }
     },
     plugins: getPluginsList(VITE_CDN, VITE_COMPRESSION),
-    // https://cn.vitejs.dev/config/dep-optimization-options.html#dep-optimization-options
     optimizeDeps: {
       include,
       exclude
     },
     build: {
-      // https://cn.vitejs.dev/guide/build.html#browser-compatibility
       target: "es2015",
-      sourcemap: false,
-      // 消除打包大小超过500kb警告
+      sourcemap: true, // 开启 sourcemap 以便调试
       chunkSizeWarningLimit: 4000,
       rollupOptions: {
         input: {
           index: pathResolve("./index.html", import.meta.url)
         },
-        // 静态资源分类打包
         output: {
           chunkFileNames: "static/js/[name]-[hash].js",
           entryFileNames: "static/js/[name]-[hash].js",

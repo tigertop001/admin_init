@@ -64,22 +64,30 @@ export const remainingPaths = Object.keys(remainingRouter).map(v => {
 });
 
 export const router: Router = createRouter({
-  history: getHistoryMode(import.meta.env.VITE_ROUTER_HISTORY),
+  // 添加防御性检查
+  history: getHistoryMode(import.meta.env.VITE_ROUTER_HISTORY || "hash"),
   routes: constantRoutes.concat(...(remainingRouter as any)),
   strict: true,
   scrollBehavior(to, from, savedPosition) {
     return new Promise(resolve => {
       if (savedPosition) {
-        return savedPosition;
+        resolve(savedPosition);
       } else {
-        if (from.meta.saveSrollTop) {
+        if (from.meta?.saveSrollTop) {
           const top: number =
             document.documentElement.scrollTop || document.body.scrollTop;
           resolve({ left: 0, top });
+        } else {
+          resolve({ left: 0, top: 0 });
         }
       }
     });
   }
+});
+
+// 添加错误处理
+router.onError(error => {
+  console.error("Router Error:", error);
 });
 
 export function resetRouter() {

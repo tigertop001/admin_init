@@ -64,6 +64,7 @@ export const getLoginApi = (data?: object) => {
   return http.request<Result>(
     "post",
     "/mock/672b55c8cb7443249e0150fe/account/login",
+    // "/api/user/login",
     { data }
   );
 };
@@ -87,6 +88,13 @@ export const verifyGoogleCodeApi = (data?: object) => {
     {
       data
     }
+  );
+};
+/** 获取图片验证码 */
+export const getCodeApi = () => {
+  return http.request<Result>(
+    "get",
+    "/mock/672b55c8cb7443249e0150fe/account/user/getCode"
   );
 };
 /** 刷新`token` */

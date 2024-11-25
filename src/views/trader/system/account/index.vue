@@ -1,5 +1,5 @@
 <template>
-  <div class="main">tee</div>
+  <div class="main">tee01</div>
 </template>
 
 <style scoped lang="scss">

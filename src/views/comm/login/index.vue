@@ -14,7 +14,7 @@ import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { logo, lgam, rgam } from "./utils/static";
 import { ReImageVerify } from "@/components/ReImageVerify";
-import { ref, reactive, watch, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
@@ -34,7 +34,7 @@ defineOptions({
   name: "Login"
 });
 const userStore = useUserStoreHook();
-const imgCode = ref("");
+// const imgCode = ref("");
 const router = useRouter();
 const loading = ref(false);
 const checked = ref(false);
@@ -154,11 +154,17 @@ useEventListener(
   { once: true }
 );
 
-// 监听并更新 store 中的状态，避免不必要的深度监听
-watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
-  userStore.SET_VERIFYCODE(imgCodeValue);
-  userStore.SET_ISREMEMBERED(checkedValue);
-});
+const verifyCode = computed(() => userStore.verifyCode);
+// 刷新验证码
+const handleRefresh = async () => {
+  await userStore.getCode();
+};
+// // 监听并更新 store 中的状态，避免不必要的深度监听
+// watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
+//   console.log("---111---", imgCode);
+//   userStore.SET_VERIFYCODE(imgCodeValue);
+//   userStore.SET_ISREMEMBERED(checkedValue);
+// });
 </script>
 
 <template>
@@ -302,7 +308,11 @@ watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
                 >
                   <template v-slot:append>
-                    <ReImageVerify v-model:code="imgCode" />
+                    <!-- <ReImageVerify v-model:code="imgCode" /> -->
+                    <ReImageVerify
+                      :code="verifyCode"
+                      @refresh="handleRefresh"
+                    />
                   </template>
                 </el-input>
               </el-form-item>

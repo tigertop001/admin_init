@@ -58,7 +58,10 @@ const include = [
 const exclude = [
   "@iconify-icons/ep",
   "@iconify-icons/ri",
-  "@pureadmin/theme/dist/browser-utils"
+  "@pureadmin/theme/dist/browser-utils",
+  "@zxcvbn-ts/core",
+  "vue-demi",
+  "@originjs/vite-plugin-require-context"
 ];
 
 export { include, exclude };

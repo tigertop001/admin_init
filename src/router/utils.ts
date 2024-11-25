@@ -297,22 +297,66 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
   return arrRoutes;
 }
 
-function getHistoryMode(routerHistory): RouterHistory {
-  const historyMode = routerHistory.split(",");
-  const leftMode = historyMode[0];
-  const rightMode = historyMode[1];
-  if (historyMode.length === 1) {
-    if (leftMode === "hash") {
-      return createWebHashHistory("");
-    } else if (leftMode === "h5") {
-      return createWebHistory("");
+// function getHistoryMode(routerHistory): RouterHistory {
+//   const historyMode = routerHistory.split(",");
+//   const leftMode = historyMode[0];
+//   const rightMode = historyMode[1];
+//   if (historyMode.length === 1) {
+//     if (leftMode === "hash") {
+//       return createWebHashHistory("");
+//     } else if (leftMode === "h5") {
+//       return createWebHistory("");
+//     }
+//   } else if (historyMode.length === 2) {
+//     if (leftMode === "hash") {
+//       return createWebHashHistory(rightMode);
+//     } else if (leftMode === "h5") {
+//       return createWebHistory(rightMode);
+//     }
+//   }
+// }
+
+function getHistoryMode(routerHistory: string): RouterHistory {
+  // 添加防御性检查
+  if (!routerHistory) {
+    console.warn("No router history mode specified, fallback to hash mode");
+    return createWebHashHistory("");
+  }
+
+  try {
+    const historyMode = routerHistory.split(",");
+    const leftMode = historyMode[0]?.toLowerCase(); // 添加小写转换
+    const rightMode = historyMode[1] || "";
+
+    // 添加日志
+    console.log("History Mode:", {
+      raw: routerHistory,
+      left: leftMode,
+      right: rightMode
+    });
+
+    if (historyMode.length === 1) {
+      if (leftMode === "hash") {
+        return createWebHashHistory("");
+      } else if (leftMode === "h5") {
+        return createWebHistory("");
+      }
+    } else if (historyMode.length === 2) {
+      if (leftMode === "hash") {
+        return createWebHashHistory(rightMode);
+      } else if (leftMode === "h5") {
+        return createWebHistory(rightMode);
+      }
     }
-  } else if (historyMode.length === 2) {
-    if (leftMode === "hash") {
-      return createWebHashHistory(rightMode);
-    } else if (leftMode === "h5") {
-      return createWebHistory(rightMode);
-    }
+
+    // 如果没有匹配的模式，返回默认的 hash 模式
+    console.warn(
+      `Invalid router history mode: ${routerHistory}, fallback to hash mode`
+    );
+    return createWebHashHistory("");
+  } catch (error) {
+    console.error("Error in getHistoryMode:", error);
+    return createWebHashHistory("");
   }
 }
 

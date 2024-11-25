@@ -11,7 +11,8 @@ import {
   getLoginApi,
   refreshTokenApi,
   verifyGoogleCodeApi,
-  getLogInfoApi
+  getLogInfoApi,
+  getCodeApi
 } from "../api";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
@@ -144,12 +145,31 @@ export const useUserStore = defineStore({
       try {
         const response = await getLogInfoApi(params);
         if (response?.code === 0) {
+          if (response.data?.verifiType == 0) {
+            const codres = await this.getCode();
+            console.log("---codres--", codres);
+          }
           // 获取验证码类型并存储
           console.log(
             "response.data?.verifiType-----",
             response.data?.verifiType
           );
           this.SET_VERIFITYPE(response.data?.verifiType); // 默认值为图形验证码
+          return response;
+        }
+        throw new Error("获取登录信息失败");
+      } catch (error) {
+        console.error("获取登录信息失败:", error); // 捕获并打印错误信息
+        throw error;
+      }
+    },
+    /** 获取图片验证码  */
+    async getCode() {
+      try {
+        const response = await getCodeApi();
+        if (response?.code === 0) {
+          console.log("---response.data?.code---", response.data?.code);
+          this.SET_VERIFYCODE(response.data?.code); // 默认值为图形验证码
           return response;
         }
         throw new Error("获取登录信息失败");
