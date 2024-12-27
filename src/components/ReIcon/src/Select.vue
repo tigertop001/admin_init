@@ -84,7 +84,7 @@ function onAfterLeave() {
   filterValue.value = "";
 }
 
-function handleClick({ props }) {
+function onClk({ props }) {
   currentPage.value = 1;
   currentActiveType.value = props.name;
 }
@@ -94,7 +94,7 @@ function onChangeIcon(item) {
   inputValue.value = currentActiveType.value + item;
 }
 
-function onCurrentChange(page) {
+function onCurChg(page) {
   currentPage.value = page;
 }
 
@@ -154,7 +154,7 @@ watch(
             clearable
           />
 
-          <el-tabs v-model="currentActiveType" @tab-click="handleClick">
+          <el-tabs v-model="currentActiveType" @tab-click="onClk">
             <el-tab-pane
               v-for="(pane, index) in tabsList"
               :key="index"
@@ -199,7 +199,7 @@ watch(
               layout="pager"
               background
               size="small"
-              @current-change="onCurrentChange"
+              @current-change="onCurChg"
             />
             <el-button
               class="justify-end mr-2 ml-2"

@@ -4,7 +4,7 @@ import {
   store,
   storageLocal,
   deviceDetection
-} from "../globalUtils";
+} from "../global-utils";
 
 import { getConfig, responsiveStorageNameSpace } from "@/config";
 

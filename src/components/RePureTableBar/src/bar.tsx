@@ -1,6 +1,6 @@
 import Sortable from "sortablejs";
 import { transformI18n } from "@/plugins/i18n";
-import { useEpThemeStoreHook } from "@/store/modules/epTheme";
+import { useEpThemeStoreHook } from "@/store/modules/ep-theme";
 import {
   type PropType,
   ref,
@@ -38,7 +38,7 @@ const props = {
   },
   /** 需要展示的列 */
   columns: {
-    type: Array as PropType<TableColumnList>,
+    type: Array as PropType<columns>,
     default: () => []
   },
   isExpandAll: {
@@ -148,7 +148,7 @@ export default defineComponent({
       )[0].hide = !val;
     }
 
-    async function onReset() {
+    async function onSrch() {
       checkAll.value = true;
       isIndeterminate.value = false;
       dynamicColumns.value = cloneDeep(props?.columns);
@@ -210,8 +210,8 @@ export default defineComponent({
               }
               return;
             }
-            const currentRow = dynamicColumns.value.splice(oldIndex, 1)[0];
-            dynamicColumns.value.splice(newIndex, 0, currentRow);
+            const curRow = dynamicColumns.value.splice(oldIndex, 1)[0];
+            dynamicColumns.value.splice(newIndex, 0, curRow);
           }
         });
       });
@@ -318,7 +318,7 @@ export default defineComponent({
                     indeterminate={isIndeterminate.value}
                     onChange={value => handleCheckAllChange(value)}
                   />
-                  <el-button type="primary" link onClick={() => onReset()}>
+                  <el-button type="primary" link onClick={() => onSrch()}>
                     重置
                   </el-button>
                 </div>

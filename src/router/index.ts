@@ -5,7 +5,7 @@ import { getConfig } from "@/config";
 // import { transformI18n } from "@/plugins/i18n";
 import { buildHierarchyTree } from "@/utils/tree";
 import remainingRouter from "./modules/remaining";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { useMultiTagsStoreHook } from "@/store/modules/multi-tags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import { isUrl, openLink, storageLocal, isAllEmpty } from "@pureadmin/utils";
 import {

@@ -95,7 +95,7 @@ function eventsCallBack(
   }
 }
 
-function handleClose(
+function onCls(
   options: DialogOptions,
   index: number,
   args = { command: "close" }
@@ -113,7 +113,7 @@ function handleClose(
     v-model="options.visible"
     class="pure-dialog"
     :fullscreen="fullscreen ? true : options?.fullscreen ? true : false"
-    @closed="handleClose(options, index)"
+    @closed="onCls(options, index)"
     @opened="eventsCallBack('open', options, index)"
     @openAutoFocus="eventsCallBack('openAutoFocus', options, index)"
     @closeAutoFocus="eventsCallBack('closeAutoFocus', options, index)"
@@ -163,7 +163,7 @@ function handleClose(
     <component
       v-bind="options?.props"
       :is="options.contentRenderer({ options, index })"
-      @close="args => handleClose(options, index, args)"
+      @close="args => onCls(options, index, args)"
     />
     <!-- footer -->
     <template v-if="!options?.hideFooter" #footer>

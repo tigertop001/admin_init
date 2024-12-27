@@ -14,13 +14,38 @@ import { stringify } from "qs";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 
-// 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
+const API_BASE_CONFIG = JSON.parse(import.meta.env.VITE_API_BASE_URL);
+
+const getBaseUrl = (url: string) => {
+  if (JSON.parse(import.meta.env.VITE_APITYPE) <= 1) {
+    return "/";
+  }
+  // 获取配置中所有的前缀路径
+  const prefixes = Object.keys(API_BASE_CONFIG);
+
+  // 查找匹配的前缀
+  const matchedPrefix = prefixes.find(prefix => url.startsWith(prefix));
+
+  // 如果找到匹配的前缀，返回对应的baseUrl，否则返回默认值
+  if (matchedPrefix) {
+    return API_BASE_CONFIG[matchedPrefix];
+  }
+
+  return "/";
+};
+
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
+  baseURL: "/",
   timeout: 10000,
   headers: {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
+    "X-Device-Type": 1,
+    "X-Tenant-Id": "1000010",
+    "X-Device-Id": "fdfdfdfweq334",
+    "X-Web-Terminal-Id": "WINDOWS",
+    "X-Platform-Id": "B",
     "X-Requested-With": "XMLHttpRequest"
   },
   // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
@@ -28,7 +53,7 @@ const defaultConfig: AxiosRequestConfig = {
     serialize: stringify as unknown as CustomParamsSerializer
   }
 };
-
+console.log("------999, config9---");
 class PureHttp {
   constructor() {
     this.httpInterceptorsRequest();
@@ -51,6 +76,7 @@ class PureHttp {
   private static retryOriginalRequest(config: PureHttpRequestConfig) {
     return new Promise(resolve => {
       PureHttp.requests.push((token: string) => {
+        console.log("-token过期刷新00---", token);
         config.headers["Authorization"] = formatToken(token);
         resolve(config);
       });
@@ -61,9 +87,7 @@ class PureHttp {
   private httpInterceptorsRequest(): void {
     PureHttp.axiosInstance.interceptors.request.use(
       async (config: PureHttpRequestConfig): Promise<any> => {
-        // 开启进度条动画
-        // NProgress.start();
-        // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
+        // 优先判断post/get等方法是否传入回调
         if (typeof config.beforeRequestCallback === "function") {
           config.beforeRequestCallback(config);
           return config;
@@ -72,40 +96,46 @@ class PureHttp {
           PureHttp.initConfig.beforeRequestCallback(config);
           return config;
         }
-        /** 请求白名单，放置一些不需要`token`的接口（通过设置请求白名单，防止`token`过期后再请求造成的死循环问题） */
+
+        /** 请求白名单，放置不需要token的接口 */
         const whiteList = ["/refresh-token", "/login"];
-        return whiteList.some(url => config.url.endsWith(url))
-          ? config
-          : new Promise(resolve => {
-              const data = getToken();
-              if (data) {
-                const now = new Date().getTime();
-                const expired = parseInt(data.expireAt) - now <= 0;
-                if (expired) {
-                  if (!PureHttp.isRefreshing) {
-                    PureHttp.isRefreshing = true;
-                    // token过期刷新
-                    useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.data.token;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });
-                  }
-                  resolve(PureHttp.retryOriginalRequest(config));
-                } else {
-                  config.headers["Authorization"] = formatToken(data.token);
-                  resolve(config);
-                }
-              } else {
-                resolve(config);
-              }
-            });
+        if (whiteList.some(url => config.url.endsWith(url))) {
+          return config;
+        }
+
+        // 获取token
+        const tokenData = getToken();
+        if (!tokenData) return config;
+
+        const now = new Date().getTime();
+        const expired = parseInt(String(tokenData.expireAt)) - now <= 0;
+
+        if (expired) {
+          // token已过期，需要刷新
+          if (!PureHttp.isRefreshing) {
+            PureHttp.isRefreshing = true;
+            try {
+              const res = await useUserStoreHook().handRefreshToken({
+                refreshToken: tokenData.refreshToken
+              });
+              const newToken = res.data.token;
+              // 设置新的token到请求头
+              config.headers["Authorization"] = formatToken(newToken);
+              // 处理队列中的请求
+              PureHttp.requests.forEach(cb => cb(newToken));
+              PureHttp.requests = [];
+            } finally {
+              PureHttp.isRefreshing = false;
+            }
+          }
+          // 将请求添加到队列
+          return PureHttp.retryOriginalRequest(config);
+        } else {
+          // token未过期，直接使用
+          config.headers["Authorization"] = formatToken(tokenData.token);
+        }
+
+        return config;
       },
       error => {
         return Promise.reject(error);
@@ -154,9 +184,9 @@ class PureHttp {
       method,
       url,
       ...param,
-      ...axiosConfig
+      ...axiosConfig,
+      baseURL: getBaseUrl(url)
     } as PureHttpRequestConfig;
-
     // 单独处理自定义请求/响应回调
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance

@@ -4,7 +4,7 @@ const ApiResponse = require("../utils/response");
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader?.startsWith("Bearer ")) {
+  if (!authHeader) {
     return res.status(401).json(ApiResponse.error("未授权访问", 401));
   }
 

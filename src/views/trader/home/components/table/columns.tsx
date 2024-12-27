@@ -1,4 +1,4 @@
-import Empty from "./empty.svg?component";
+import Empty from "@/assets/svg/empty.svg?component";
 import { h } from "vue";
 
 // 定义基础列配置

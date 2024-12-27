@@ -44,7 +44,7 @@ const optionsBasis: Array<OptionsType> = [
     value: "bet"
   }
 ];
-const handleSegmentedChange = () => {
+const onSegChg = () => {
   homeStore.getOnline({ type: optionsBasis[type.value].value });
 };
 
@@ -118,7 +118,7 @@ const rankingList = computed(() => [
 ]);
 
 const curday = ref(1); // 0昨天、1今天
-const handleDayChange = async () => {
+const onDayChg = async () => {
   await homeStore.getOnlineSummary({ date: curday.value });
 };
 </script>
@@ -237,7 +237,7 @@ const handleDayChange = async () => {
             class="flex w-full justify-between items-start mt-3 h-full flex-1"
           >
             <div class="w-xs h-full">
-              <el-radio-group v-model="curday" @change="handleDayChange">
+              <el-radio-group v-model="curday" @change="onDayChg">
                 <el-radio :value="0">昨天</el-radio>
                 <el-radio :value="1">今天</el-radio>
               </el-radio-group>
@@ -252,7 +252,7 @@ const handleDayChange = async () => {
                 v-model="type"
                 :options="optionsBasis"
                 class="ml-[20px] relative z-10"
-                @change="handleSegmentedChange"
+                @change="onSegChg"
               />
               <ChartBar
                 class="mt-[-20px]"

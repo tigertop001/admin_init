@@ -25,7 +25,7 @@ const iconClass = computed(() => {
   ];
 });
 
-const { onReset } = useDataThemeChange();
+const { onSrch } = useDataThemeChange();
 
 onClickOutside(target, (event: any) => {
   if (event.clientX > target.value.offsetLeft) return;
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
           type="danger"
           text
           bg
-          @click="onReset"
+          @click="onSrch"
         >
           清空缓存
         </el-button>

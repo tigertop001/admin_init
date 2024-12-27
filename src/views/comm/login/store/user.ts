@@ -6,7 +6,7 @@ import {
   resetRouter,
   routerArrays,
   storageLocal
-} from "@/store/globalUtils";
+} from "@/store/global-utils";
 import {
   getLoginApi,
   refreshTokenApi,
@@ -14,7 +14,7 @@ import {
   getLogInfoApi,
   getCodeApi
 } from "../api";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { useMultiTagsStoreHook } from "@/store/modules/multi-tags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
 
 type TempLoginData = {
@@ -30,7 +30,7 @@ export const useUserStore = defineStore({
   id: "userInfo",
   state: (): userType => ({
     // 用户名，若用户未登录，默认为空
-    username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
+    username: storageLocal().getItem<DataInfo<number>>(userKey)?.account ?? "",
     // 用户角色列表，用户在系统中的角色
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
     // 按钮级别权限列表，控制用户能够访问的具体操作权限
@@ -44,8 +44,8 @@ export const useUserStore = defineStore({
     isRemembered: false,
     // 存储临时登录数据，通常在第一次登录时存储
     tempLoginData: null,
-    // 验证码类型（0：图形验证码，1：谷歌验证码）
-    verifiType: 0
+    // 验证码类型（1:图片，2:google，3:不用验证码）
+    verifiType: 1
   }),
   actions: {
     /** 设置用户名 */
@@ -81,11 +81,23 @@ export const useUserStore = defineStore({
       this.tempLoginData = value;
     },
     /** 通过用户名和密码登录 */
-    async loginByUsername(data: { username: string; password: string }) {
+    async loginByUsername(data) {
       try {
-        const response = await getLoginApi(data);
+        let response = await getLoginApi(data);
         if (response?.code === 0) {
-          setToken(response.data); // 登录成功后存储 token
+          console.log("---response.data01--", response.data);
+          const res = {
+            ...response.data,
+            roles: ["trader"],
+            permissions: ["*:*:*"],
+            nickname: "小铭01",
+            avatar: "https://avatars.githubusercontent.com/u/44761321",
+            refreshToken: "eyJhbGciOiJIUzUxMiJ9.adminRefresh",
+            expireAt: "2029/11/7 14:36:00",
+            currency: "BRL"
+          };
+          console.log("---response.data02--", response.data);
+          setToken(res); // 登录成功后存储 token
           return response;
         } else {
           throw new Error(response?.msg || "登录失败");
@@ -126,7 +138,7 @@ export const useUserStore = defineStore({
           code
         });
 
-        if (response.success) {
+        if (response.code === 0) {
           const loginData = {
             ...this.tempLoginData,
             ...response.data
@@ -145,16 +157,12 @@ export const useUserStore = defineStore({
       try {
         const response = await getLogInfoApi(params);
         if (response?.code === 0) {
-          if (response.data?.verifiType == 0) {
-            const codres = await this.getCode();
-            console.log("---codres--", codres);
-          }
           // 获取验证码类型并存储
-          console.log(
-            "response.data?.verifiType-----",
-            response.data?.verifiType
-          );
-          this.SET_VERIFITYPE(response.data?.verifiType); // 默认值为图形验证码
+          this.SET_VERIFITYPE(response.data?.codeType); // 默认值为图形验证码
+          if (response.data?.codeType == 1) {
+            await this.getCode({ len: 6 });
+          }
+
           return response;
         }
         throw new Error("获取登录信息失败");
@@ -164,11 +172,10 @@ export const useUserStore = defineStore({
       }
     },
     /** 获取图片验证码  */
-    async getCode() {
+    async getCode(params) {
       try {
-        const response = await getCodeApi();
+        const response = await getCodeApi(params);
         if (response?.code === 0) {
-          console.log("---response.data?.code---", response.data?.code);
           this.SET_VERIFYCODE(response.data?.code); // 默认值为图形验证码
           return response;
         }

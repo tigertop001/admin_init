@@ -66,7 +66,7 @@ export default defineComponent({
       ? toRef(props, "modelValue")
       : ref(0);
 
-    function handleChange({ option, index }, event: Event) {
+    function onChg({ option, index }, event: Event) {
       if (props.disabled || option.disabled) return;
       event.preventDefault();
       isNumber(props.modelValue)
@@ -76,7 +76,7 @@ export default defineComponent({
       emit("change", { index, option });
     }
 
-    function handleMouseenter({ option, index }, event: Event) {
+    function onMEn({ option, index }, event: Event) {
       if (props.disabled) return;
       event.preventDefault();
       curMouseActive.value = index;
@@ -89,7 +89,7 @@ export default defineComponent({
       }
     }
 
-    function handleMouseleave(_, event: Event) {
+    function onMlv(_, event: Event) {
       if (props.disabled) return;
       event.preventDefault();
       curMouseActive.value = -1;
@@ -153,9 +153,9 @@ export default defineComponent({
                     : "rgba(0,0,0,.88)"
                   : ""
             }}
-            onMouseenter={event => handleMouseenter({ option, index }, event)}
-            onMouseleave={event => handleMouseleave({ option, index }, event)}
-            onClick={event => handleChange({ option, index }, event)}
+            onMouseenter={event => onMEn({ option, index }, event)}
+            onMouseleave={event => onMlv({ option, index }, event)}
+            onClick={event => onChg({ option, index }, event)}
           >
             <input type="radio" name="segmented" />
             <div

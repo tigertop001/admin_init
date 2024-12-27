@@ -1,19 +1,56 @@
+<script setup lang="ts">
+/**
+ * 导入依赖
+ */
+import { ref, computed } from "vue";
+
+/**
+ * 导入组件和工具
+ */
+import Rev from "./rev/index.vue";
+import Whitelist from "./whitelist/index.vue";
+
+// 定义选中的 tab 名称
+const actNm = ref("1");
+
+// 定义 tabs 数据
+const tabs = [
+  { label: "充值审核", name: "1", component: Rev },
+  { label: "充值设置", name: "2", component: Whitelist },
+  { label: "充值统计", name: "3", component: Whitelist }
+];
+
+// 点击 tab 时的处理函数
+const onClk = (tab: any) => {
+  console.log("Clicked tab:", tab);
+};
+
+// 根据选中的 tab 动态渲染对应的组件
+const curCmp = computed(() => {
+  const tab = tabs.find(tab => tab.name === actNm.value);
+  return tab ? tab.component : null;
+});
+</script>
+
 <template>
-  <div class="main">tee</div>
+  <el-card shadow="never" :body-style="{ height: 'calc(100vh - 196px)' }">
+    <!-- 将 el-tabs 放到 el-card 的 header 插槽 -->
+    <template #header>
+      <el-tabs v-model="actNm" class="demo-tabs" @tab-click="onClk">
+        <!-- 动态渲染 el-tab-pane -->
+        <el-tab-pane
+          v-for="(tab, index) in tabs"
+          :key="index"
+          :label="tab.label"
+          :name="tab.name"
+        />
+      </el-tabs>
+    </template>
+
+    <!-- 动态渲染选项卡内容 -->
+    <component :is="curCmp" />
+  </el-card>
 </template>
-
-<style scoped lang="scss">
-:deep(.el-dropdown-menu__item i) {
-  margin: 0;
-}
-
-.main-content {
-  margin: 24px 24px 0 !important;
-}
-
-.search-form {
-  :deep(.el-form-item) {
-    margin-bottom: 12px;
-  }
-}
+<style lang="scss" scoped>
+@import url("./styles/index.scss"); // 样式通过 scoped 限制
 </style>

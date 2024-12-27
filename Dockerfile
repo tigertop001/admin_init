@@ -1,20 +1,14 @@
-FROM node:20-alpine as build-stage
+# 使用官方 Nginx 镜像作为基础镜像
+FROM nginx:alpine
 
-WORKDIR /app
-RUN corepack enable
-RUN corepack prepare pnpm@latest --activate
+# 将构建的静态文件复制到 Nginx 默认的静态文件目录
+COPY dist/ /usr/share/nginx/html/
 
-RUN npm config set registry https://registry.npmmirror.com
+# 替换默认的 Nginx 配置文件，配置 Vue 路由支持
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY .npmrc package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
-
-COPY . .
-RUN pnpm build
-
-FROM nginx:stable-alpine as production-stage
-
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# 暴露 Nginx 端口
 EXPOSE 80
 
+# 启动 Nginx 服务
 CMD ["nginx", "-g", "daemon off;"]

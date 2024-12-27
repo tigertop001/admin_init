@@ -12,7 +12,7 @@ import { computed, type CSSProperties } from "vue";
 import { useAppStoreHook } from "@/store/modules/app";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { useGlobal, isAllEmpty } from "@pureadmin/utils";
-import { useEpThemeStoreHook } from "@/store/modules/epTheme";
+import { useEpThemeStoreHook } from "@/store/modules/ep-theme";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";

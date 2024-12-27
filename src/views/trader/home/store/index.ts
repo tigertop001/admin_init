@@ -1,12 +1,18 @@
 // store/home.ts
 import { defineStore } from "pinia";
-import {
-  getHomeDataApi,
-  getOnlineSummaryApi,
-  getOnlineApi,
-  getRankingListApi
-} from "../api";
+// import {
+//   getHomeDataApi,
+//   getOnlineSummaryApi,
+//   getOnlineApi,
+//   getRankingListApi
+// } from "../api";
 import type { OnlineParams } from "../types";
+
+// 临时数据
+import home from "./data/home.json";
+import online from "./data/online.json";
+import onlineSummary from "./data/onlineSummary.json";
+import rankingList from "./data/rankingList.json";
 
 export const homeUserStore = defineStore({
   id: "homeUser",
@@ -27,7 +33,8 @@ export const homeUserStore = defineStore({
   actions: {
     async getHomeData() {
       try {
-        const response = await getHomeDataApi();
+        // const response = await getHomeDataApi();
+        const response = home;
         this.homeData = response.data; // 将数据保存到 state 中
       } catch (error) {
         console.error("获取数据失败:", error);
@@ -35,17 +42,20 @@ export const homeUserStore = defineStore({
     },
     async getOnlineSummary(params: OnlineParams = {}) {
       try {
-        const response = await getOnlineSummaryApi(params);
+        // const response = await getOnlineSummaryApi(params);
+        const response = onlineSummary;
         this.onlineSummaryData = response.data; // 将数据保存到 state 中
+        console.log("this.onlineData", params);
       } catch (error) {
         console.error("获取数据失败:", error);
       }
     },
     async getOnline(params: OnlineParams = {}) {
       try {
-        const response = await getOnlineApi(params);
+        // const response = await getOnlineApi(params);
+        const response = online;
         this.onlineData = response.data; // 将数据保存到 state 中
-        console.log("this.onlineData", this.onlineData.day0);
+        console.log("this.onlineData", this.onlineData.day0, params);
         console.log("this.onlineData", this.onlineData.day1);
       } catch (error) {
         console.error("获取数据失败:", error);
@@ -53,8 +63,10 @@ export const homeUserStore = defineStore({
     },
     async getRankingList(params: OnlineParams = {}) {
       try {
-        const response = await getRankingListApi(params);
+        // const response = await getRankingListApi(params);
+        const response = rankingList;
         this.rankingListData = response.data; // 将数据保存到 state 中
+        console.log("this.onlineData", params);
       } catch (error) {
         console.error("获取数据失败:", error);
       }

@@ -42,7 +42,7 @@ const activePath = ref("");
 const historyPath = ref("");
 const resultOptions = shallowRef([]);
 const historyOptions = shallowRef([]);
-const handleSearch = useDebounceFn(search, 300);
+const onSrch = useDebounceFn(search, 300);
 const historyNum = getConfig().MenuSearchHistory;
 const inputRef = ref<HTMLInputElement | null>(null);
 
@@ -124,7 +124,7 @@ function search() {
     resultOptions.value?.length > 0 ? resultOptions.value[0].path : "";
 }
 
-function handleClose() {
+function onCls() {
   show.value = false;
   /** 延时处理防止用户看到某些操作 */
   setTimeout(() => {
@@ -188,11 +188,11 @@ function handleEnter() {
     updateHistory();
   }
   router.push(options[index].path);
-  handleClose();
+  onCls();
 }
 
 /** 删除历史记录 */
-function handleDelete(item) {
+function onDel(item) {
   const key = item.type === HISTORY_TYPE ? LOCALEHISTORYKEY : LOCALECOLLECTKEY;
   let list = getStorageItem(key);
   list = list.filter(listItem => listItem.path !== item.path);
@@ -201,7 +201,7 @@ function handleDelete(item) {
 }
 
 /** 收藏历史记录 */
-function handleCollect(item) {
+function onCol(item) {
   let searchHistoryList = getStorageItem(LOCALEHISTORYKEY);
   let searchCollectList = getStorageItem(LOCALECOLLECTKEY);
   searchHistoryList = searchHistoryList.filter(
@@ -278,7 +278,7 @@ onKeyStroke("ArrowDown", handleDown);
     class="pure-search-dialog"
     :show-close="false"
     :width="device === 'mobile' ? '80vw' : '40vw'"
-    :before-close="handleClose"
+    :before-close="onCls"
     :style="{
       borderRadius: '6px'
     }"
@@ -292,7 +292,7 @@ onKeyStroke("ArrowDown", handleDown);
       size="large"
       clearable
       placeholder="搜索菜单（支持拼音搜索）"
-      @input="handleSearch"
+      @input="onSrch"
     >
       <template #prefix>
         <IconifyIconOffline
@@ -310,8 +310,8 @@ onKeyStroke("ArrowDown", handleDown);
           v-model:value="historyPath"
           :options="historyOptions"
           @click="handleEnter"
-          @delete="handleDelete"
-          @collect="handleCollect"
+          @delete="onDel"
+          @collect="onCol"
           @drag="handleDrag"
         />
         <SearchResult

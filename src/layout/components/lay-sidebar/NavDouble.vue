@@ -70,7 +70,7 @@ function getSubMenuData() {
   curActive.value = menuData.value.findIndex(v => v.path === parenetRoute.path);
 }
 
-function handleChildMenu(menu, index) {
+function onCMenu(menu, index) {
   childMenu.value = menu.children;
   router.push(menu.path);
   curActive.value = index;
@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
             v-for="(menu, index) in menuData"
             :key="index"
             :class="curActive === index ? 'is-active' : ''"
-            @click="handleChildMenu(menu, index)"
+            @click="onCMenu(menu, index)"
           >
             <div
               :class="[

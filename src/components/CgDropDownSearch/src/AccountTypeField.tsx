@@ -2,8 +2,18 @@ import { defineComponent, reactive, computed, watch } from "vue";
 import { ElSelect, ElOption, ElInput } from "element-plus";
 import type { SearchField, Option } from "./types";
 
+export interface FieldConfig {
+  typeKey?: string; // 输出的类型字段名，默认 'stype'
+  contentKey?: string; // 输出的内容字段名，默认 'scontent'
+  mapping?: {
+    // 可选的传统字段映射
+    [key: string]: string;
+  };
+  isStype?: boolean; // 是否使用独立传值格式，默认 true
+}
+
 export default defineComponent({
-  name: "AccountTypeField",
+  name: "CgDropDownSearch",
   props: {
     modelValue: {
       type: Object as PropType<SearchField>,
@@ -16,6 +26,14 @@ export default defineComponent({
     selectWidth: {
       type: String,
       default: "120px"
+    },
+    config: {
+      type: Object as PropType<FieldConfig>,
+      default: () => ({
+        typeKey: "stype",
+        contentKey: "scontent",
+        isStype: true
+      })
     }
   },
   emits: ["update:modelValue"],
@@ -31,21 +49,52 @@ export default defineComponent({
         : `请输入${localSearchContent.type}`;
     });
 
+    const onValChg = (type: string, content: string | number | null) => {
+      const {
+        typeKey = "stype",
+        contentKey = "scontent",
+        mapping = {},
+        isStype = true
+      } = props.config;
+      const selectedOption = props.options.find(opt => opt.value === type);
+
+      let stypeVal: any = {
+        content,
+        type,
+        label: selectedOption?.label || ""
+      };
+
+      if (isStype) {
+        // 新格式
+        stypeVal[typeKey] = type;
+        stypeVal[contentKey] = content;
+      }
+
+      if (!isStype && mapping && mapping[type]) {
+        // 传统格式
+        stypeVal[mapping[type]] = content;
+      }
+
+      return stypeVal;
+    };
+
+    watch(
+      () => localSearchContent.type,
+      newType => {
+        const stypeVal = onValChg(newType, null);
+        emit("update:modelValue", stypeVal);
+      }
+    );
+
     const updateSearchContent = (val: string) => {
       localSearchContent.content = val;
-      const selectedOption = props.options.find(
-        option => option.value === localSearchContent.type
-      );
-      emit("update:modelValue", {
-        content: val,
-        type: localSearchContent.type,
-        label: selectedOption?.label || ""
-      });
+      const stypeVal = onValChg(localSearchContent.type, val);
+      emit("update:modelValue", stypeVal);
     };
 
     watch(
       () => props.modelValue,
-      newValue => Object.assign(localSearchContent, newValue),
+      stypeVal => Object.assign(localSearchContent, stypeVal),
       { deep: true }
     );
 

@@ -6,7 +6,7 @@ import { useDark } from "@pureadmin/utils";
 const { bool: show, toggle } = useBoolean();
 const { isDark } = useDark();
 
-function handleSearch() {
+function onSrch() {
   toggle();
 }
 </script>
@@ -16,7 +16,7 @@ function handleSearch() {
     <div
       class="search-container w-[40px] h-[48px] flex-c cursor-pointer navbar-bg-hover"
       :class="isDark ? 'text-gray-300' : ''"
-      @click="handleSearch"
+      @click="onSrch"
     >
       <IconifyIconOffline icon="ri:search-line" />
     </div>

@@ -1,0 +1,38 @@
+.content-wrapper {
+  padding: 0 20px;
+
+  .el-row {
+    position: relative;
+    display: flex;
+    min-height: 32px;
+    padding-left: 15px;
+    margin-bottom: 10px;
+
+    // 除第一个 el-row 外都添加红点
+    &:not(:first-child)::before {
+      position: absolute;
+      top: 16px;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      content: "";
+      background-color: red;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    // 第一个 el-row 的特殊样式
+    &:first-child {
+      font-size: 18px; // 文字放大
+      font-weight: 500; // 可选：加粗一点
+    }
+  }
+
+  .el-col {
+    line-height: 32px;
+  }
+}
+
+:deep(.el-scrollbar__wrap) {
+  overflow-x: hidden;
+}

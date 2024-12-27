@@ -9,8 +9,8 @@ import {
   constantMenus,
   filterNoPermissionTree,
   formatFlatteningRoutes
-} from "@/store/globalUtils";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+} from "@/store/global-utils";
+import { useMultiTagsStoreHook } from "@/store/modules/multi-tags";
 
 export const usePermissionStore = defineStore({
   id: "permission",

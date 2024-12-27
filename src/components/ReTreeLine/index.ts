@@ -88,7 +88,7 @@ export default defineComponent({
             data: this.data
           })
         ];
-    // 取得每一层的当前节点是不是在当前层级列表的最后一个
+    // 取得每一层的当前节点是不是在当前列表的最后一个
     const lastnodeArr = [];
     let currentNode = this.node;
     while (currentNode) {

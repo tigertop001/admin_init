@@ -2,7 +2,7 @@
 import Sortable from "sortablejs";
 import SearchHistoryItem from "./SearchHistoryItem.vue";
 import type { optionsItem, dragItem, Props } from "../types";
-import { useEpThemeStoreHook } from "@/store/modules/epTheme";
+import { useEpThemeStoreHook } from "@/store/modules/ep-theme";
 import { useResizeObserver, isArray, delay } from "@pureadmin/utils";
 import { ref, watch, nextTick, computed, getCurrentInstance } from "vue";
 
@@ -69,11 +69,11 @@ const collectList = computed(() => {
   return props.options.filter(item => item.type === "collect");
 });
 
-function handleCollect(item) {
+function onCol(item) {
   emit("collect", item);
 }
 
-function handleDelete(item) {
+function onDel(item) {
   stopMouseEvent.value = true;
   emit("delete", item);
 }
@@ -104,7 +104,7 @@ function handleScroll(index: number) {
   return scrollTop > innerHeight.value ? scrollTop - innerHeight.value : 0;
 }
 
-const handleChangeIndex = (evt): void => {
+const onChgInd = (evt): void => {
   emit("drag", { oldIndex: evt.oldIndex, newIndex: evt.newIndex });
 };
 
@@ -126,7 +126,7 @@ watch(
           onEnd: event => {
             event.item.style.cursor = "pointer";
           },
-          onUpdate: handleChangeIndex
+          onUpdate: onChgInd
         });
         resizeResult();
       });
@@ -153,8 +153,8 @@ defineExpose({ handleScroll });
       >
         <SearchHistoryItem
           :item="item"
-          @delete-item="handleDelete"
-          @collect-item="handleCollect"
+          @delete-item="onDel"
+          @collect-item="onCol"
         />
       </div>
     </template>
@@ -172,7 +172,7 @@ defineExpose({ handleScroll });
           @click="handleTo"
           @mouseenter="handleMouse(item)"
         >
-          <SearchHistoryItem :item="item" @delete-item="handleDelete" />
+          <SearchHistoryItem :item="item" @delete-item="onDel" />
         </div>
       </div>
     </template>

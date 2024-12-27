@@ -1,3 +1,13 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+// 加载插件
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// 设置默认时区为 "Asia/Shanghai"
+dayjs.tz.setDefault("Asia/Shanghai");
 import App from "./App.vue";
 import router from "./router";
 import { setupStore } from "@/store";

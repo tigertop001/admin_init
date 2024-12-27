@@ -1,6 +1,6 @@
 import Sortable from "sortablejs";
 import { transformI18n } from "@/plugins/i18n";
-import { useEpThemeStoreHook } from "@/store/modules/epTheme";
+import { useEpThemeStoreHook } from "@/store/modules/ep-theme";
 import { delay, cloneDeep, getKeyList } from "@pureadmin/utils";
 import {
   type PropType,
@@ -134,7 +134,7 @@ export default defineComponent({
         checkedCount > 0 && checkedCount < checkColumnList.length;
     }
 
-    async function onReset() {
+    async function onSrch() {
       checkAll.value = true;
       isIndeterminate.value = false;
       dynamicColumns.value = cloneDeep(props?.columns);
@@ -202,8 +202,8 @@ export default defineComponent({
               }
               return;
             }
-            const currentRow = dynamicColumns.value.splice(oldIndex, 1)[0];
-            dynamicColumns.value.splice(newIndex, 0, currentRow);
+            const curRow = dynamicColumns.value.splice(oldIndex, 1)[0];
+            dynamicColumns.value.splice(newIndex, 0, curRow);
             reloadColumn();
           }
         });
@@ -311,7 +311,7 @@ export default defineComponent({
                     indeterminate={isIndeterminate.value}
                     onChange={value => handleCheckAllChange(value)}
                   />
-                  <el-button type="primary" link onClick={() => onReset()}>
+                  <el-button type="primary" link onClick={() => onSrch()}>
                     重置
                   </el-button>
                 </div>

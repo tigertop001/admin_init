@@ -4,7 +4,7 @@ import { transformI18n } from "@/plugins/i18n";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, toRaw } from "vue";
 import { getParentPaths, findRouteByPath } from "@/router/utils";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { useMultiTagsStoreHook } from "@/store/modules/multi-tags";
 
 const route = useRoute();
 const levelList = ref([]);
@@ -64,7 +64,7 @@ const getBreadcrumb = (): void => {
   );
 };
 
-const handleLink = item => {
+const onLk = item => {
   const { redirect, name, path } = item;
   if (redirect) {
     router.push(redirect as any);
@@ -112,7 +112,7 @@ watch(
         :key="item.path"
         class="!inline !items-stretch"
       >
-        <a @click.prevent="handleLink(item)">
+        <a @click.prevent="onLk(item)">
           {{ transformI18n(item.meta.title) }}
         </a>
       </el-breadcrumb-item>

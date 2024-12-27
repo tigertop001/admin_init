@@ -5145,14 +5145,14 @@
         return _initWorker.apply(this, arguments);
       }
       function createRequest() {
-        let currentId = 0;
+        let currId = 0;
         const map = new Map();
         return {
           // 获取视频唯一id
           setFrameCallback(item) {
-            const id = ++currentId;
+            const id = ++currId;
             map.set(
-              currentId,
+              currId,
               _objectSpread(
                 _objectSpread({}, item),
                 {},

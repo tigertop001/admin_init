@@ -239,7 +239,7 @@ export default defineComponent({
         : cropper.value?.[event]?.(arg);
     }
 
-    function beforeUpload(file) {
+    function onUplod(file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       inSrc.value = "";
@@ -263,7 +263,7 @@ export default defineComponent({
             <ElUpload
               accept="image/*"
               show-file-list={false}
-              before-upload={beforeUpload}
+              before-upload={onUplod}
             >
               <Upload
                 class={iconClass.value}

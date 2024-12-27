@@ -1,0 +1,875 @@
+{
+  "msg": "请求成功",
+  "code": 0,
+  "data": [{
+      "path": "/admin/site",
+      "meta": {
+        "icon": "ri:macbook-line",
+        "title": "站点管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/admin/site/list/index",
+          "name": "siteList",
+          "meta": {
+            "title": "站点列表",
+            "roles": [
+              "admin"
+            ]
+          }
+        },
+        {
+          "path": "/admin/site/app/index",
+          "name": "appSettings",
+          "meta": {
+            "title": "APP设置",
+            "roles": [
+              "admin"
+            ]
+          }
+        },
+        {
+          "path": "/admin/site/settle/index",
+          "name": "settlement",
+          "meta": {
+            "title": "结算管理",
+            "roles": [
+              "admin"
+            ]
+          }
+        },
+        {
+          "path": "/admin/site/announce/index",
+          "name": "siteAnnouncements",
+          "meta": {
+            "title": "公告管理",
+            "roles": [
+              "admin"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/admin/game",
+      "meta": {
+        "icon": "ri:gamepad-line",
+        "title": "游戏管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/admin/game/type/index",
+          "name": "gameTypes",
+          "meta": {
+            "title": "类型管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/game/platform/index",
+          "name": "platforms",
+          "meta": {
+            "title": "平台管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/game/list/index",
+          "name": "gameList",
+          "meta": {
+            "title": "游戏列表",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/game/finance/index",
+          "name": "platformFunds",
+          "meta": {
+            "title": "平台资金记录",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/game/order/index",
+          "name": "orderSearch",
+          "meta": {
+            "title": "注单查询",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/game/order/add/index",
+          "name": "platformOrder",
+          "meta": {
+            "title": "平台补单",
+            "roles": ["admin"]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/admin/lottery",
+      "meta": {
+        "icon": "ri:movie-2-ai-line",
+        "title": "彩票管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/admin/lottery/type/index",
+          "name": "lotteryTypes",
+          "meta": {
+            "title": "彩种类型管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/lottery/manage/index",
+          "name": "lotteryManage",
+          "meta": {
+            "title": "彩种管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/lottery/odds/index",
+          "name": "oddsSettings",
+          "meta": {
+            "title": "赔率设置",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/lottery/period/index",
+          "name": "awardPeriods",
+          "meta": {
+            "title": "奖期管理",
+            "roles": ["admin"]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/admin/operation",
+      "meta": {
+        "icon": "ri:notification-3-line",
+        "title": "运营管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/admin/operation/template/index",
+          "name": "templateManage",
+          "meta": {
+            "title": "活动模板管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/operation/skin/index",
+          "name": "skinManage",
+          "meta": {
+            "title": "皮肤模板管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/operation/agent/index",
+          "name": "agentMode",
+          "meta": {
+            "title": "代理模式管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/operation/vip/index",
+          "name": "vipSystem",
+          "meta": {
+            "title": "VIP系统管理",
+            "roles": ["admin"]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/admin/risk",
+      "meta": {
+        "icon": "ri:notification-3-line",
+        "title": "风控管理",
+        "rank": 1
+      },
+      "children": [{
+        "path": "/admin/risk/control/index",
+        "name": "riskManage",
+        "meta": {
+          "title": "风控管理",
+          "roles": ["admin"]
+        }
+      }]
+    },
+    {
+      "path": "/admin/reports",
+      "meta": {
+        "icon": "ri:folder-chart-line",
+        "title": "报表管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/admin/reports/site/index",
+          "name": "siteReports",
+          "meta": {
+            "title": "站点报表",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/reports/user/index",
+          "name": "userReports",
+          "meta": {
+            "title": "用户报表",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/reports/game/index",
+          "name": "gameReports",
+          "meta": {
+            "title": "游戏报表",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/reports/operation/index",
+          "name": "operationReports",
+          "meta": {
+            "title": "运营报表",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/reports/ranking/index",
+          "name": "leaderboards",
+          "meta": {
+            "title": "排行榜",
+            "roles": ["admin"]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/admin/system",
+      "meta": {
+        "icon": "ri:settings-2-line",
+        "title": "系统管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/admin/system/account/index",
+          "name": "sysaccountManage",
+          "meta": {
+            "title": "后台账号管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/system/role/index",
+          "name": "sysroleManage",
+          "meta": {
+            "title": "后台角色管理",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/system/logs/index",
+          "name": "systemLogs",
+          "meta": {
+            "title": "后台系统日志",
+            "roles": ["admin"]
+          }
+        },
+        {
+          "path": "/admin/system/whitelist/index",
+          "name": "syswhitelist",
+          "meta": {
+            "title": "后台白名单",
+            "roles": ["admin"]
+          }
+        }
+      ]
+    },
+
+
+
+
+
+    {
+      "path": "/trader/operation",
+      "meta": {
+        "icon": "ri:notification-3-line",
+        "title": "通知中心管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/operation/notice/index",
+          "name": "noticeMesage",
+          "meta": {
+            "title": "通知中心",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/operation/slideshow/index",
+          "name": "slideshow",
+          "meta": {
+            "title": "轮播图管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/operation/popup/index",
+          "name": "popup",
+          "meta": {
+            "title": "弹窗管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/operation/helpcenter/index",
+          "name": "helpcenter",
+          "meta": {
+            "title": "帮助中心",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/member",
+      "meta": {
+        "icon": "ri:group-line",
+        "title": "会员管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/member/membership/index",
+          "name": "membership",
+          "meta": {
+            "title": "会员管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/audit/index",
+          "name": "audit",
+          "meta": {
+            "title": "会员审核",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/risk/index",
+          "name": "risk",
+          "meta": {
+            "title": "风险会员",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/tiers/index",
+          "name": "tiers",
+          "meta": {
+            "title": "会员层级",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/play/index",
+          "name": "play",
+          "meta": {
+            "title": "陪玩账户",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/blacklist/index",
+          "name": "blacklist",
+          "meta": {
+            "title": "黑名单",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/vip/index",
+          "name": "vip",
+          "meta": {
+            "title": "VIP管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/ban/index",
+          "name": "ban",
+          "meta": {
+            "title": "封禁管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/member/logocolor/index",
+          "name": "logocolor",
+          "meta": {
+            "title": "会员标识颜色管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/agent",
+      "meta": {
+        "icon": "ri:home-gear-line",
+        "title": "代理管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/agent/agent/index",
+          "name": "agent",
+          "meta": {
+            "title": "代理管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/agent/set/index",
+          "name": "set",
+          "meta": {
+            "title": "代理设置",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/agent/review/index",
+          "name": "review",
+          "meta": {
+            "title": "佣金结算审核",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/agent/record/index",
+          "name": "record",
+          "meta": {
+            "title": "提佣记录",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/agent/bindparent/index",
+          "name": "bindparent",
+          "meta": {
+            "title": "绑定上级",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/agent/faq/index",
+          "name": "faq",
+          "meta": {
+            "title": "常见问题",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/game",
+      "meta": {
+        "icon": "ri:gamepad-line",
+        "title": "游戏管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/game/type/index",
+          "name": "type",
+          "meta": {
+            "title": "类型管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/game/platform/index",
+          "name": "platform",
+          "meta": {
+            "title": "平台管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/game/list/index",
+          "name": "list",
+          "meta": {
+            "title": "游戏列表",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/finance",
+      "meta": {
+        "icon": "ri:refund-2-line",
+        "title": "财务管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/finance/depreview/index",
+          "name": "depreview",
+          "meta": {
+            "title": "充值审核",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/finance/wriskcontrol/index",
+          "name": "wriskcontrol",
+          "meta": {
+            "title": "提款风控",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/finance/withcash/index",
+          "name": "withcash",
+          "meta": {
+            "title": "提现出款",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/finance/funlog/index",
+          "name": "funlog",
+          "meta": {
+            "title": "资金日志",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/finance/artificialdep/index",
+          "name": "artificialdep",
+          "meta": {
+            "title": "人工存提",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/finance/depwithconf/index",
+          "name": "depwithconf",
+          "meta": {
+            "title": "充提配置",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/finance/wallet/index",
+          "name": "financewallet",
+          "meta": {
+            "title": "钱包管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/activity",
+      "meta": {
+        "icon": "ri:palette-line",
+        "title": "活动管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/activity/wallet/index",
+          "name": "wallet",
+          "meta": {
+            "title": "活动钱包",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/activity/label/index",
+          "name": "label",
+          "meta": {
+            "title": "活动标签",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/activity/list/index",
+          "name": "activitylist",
+          "meta": {
+            "title": "活动列表",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/activity/award/index",
+          "name": "award",
+          "meta": {
+            "title": "活动奖励",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/activity/count/index",
+          "name": "count",
+          "meta": {
+            "title": "活动统计",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/risk",
+      "meta": {
+        "icon": "ri:shield-cross-line",
+        "title": "风控管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/risk/useroplog/index",
+          "name": "useroplog",
+          "meta": {
+            "title": "用户操作日志",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/risk/sameip/index",
+          "name": "sameip",
+          "meta": {
+            "title": "同ip查询",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/risk/iprestric/index",
+          "name": "iprestric",
+          "meta": {
+            "title": "ip限制管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/risk/samedevice/index",
+          "name": "samedevice",
+          "meta": {
+            "title": "同设备号查询",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/risk/riskevent/index",
+          "name": "riskevent",
+          "meta": {
+            "title": "风控事件",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/report",
+      "meta": {
+        "icon": "ri:folder-chart-line",
+        "title": "报表管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/report/prosecution/index",
+          "name": "repprosecution",
+          "meta": {
+            "title": "经营报表",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/report/member/index",
+          "name": "repmember",
+          "meta": {
+            "title": "会员报表",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/report/agent/index",
+          "name": "repagent",
+          "meta": {
+            "title": "代理报表",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/report/finance/index",
+          "name": "repfinance",
+          "meta": {
+            "title": "财务报表",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/report/game/index",
+          "name": "repgame",
+          "meta": {
+            "title": "游戏报表",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/report/bet/index",
+          "name": "repbet",
+          "meta": {
+            "title": "投注记录",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "/trader/system",
+      "meta": {
+        "icon": "ri:settings-2-line",
+        "title": "系统管理",
+        "rank": 1
+      },
+      "children": [{
+          "path": "/trader/system/account/index",
+          "name": "account",
+          "meta": {
+            "title": "后台账号管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/system/role/index",
+          "name": "role",
+          "meta": {
+            "title": "后台角色管理",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/system/syslog/index",
+          "name": "syslog",
+          "meta": {
+            "title": "后台系统日志",
+            "roles": [
+              "trader"
+            ]
+          }
+        },
+        {
+          "path": "/trader/system/whitelist/index",
+          "name": "whitelist",
+          "meta": {
+            "title": "后台白名单",
+            "roles": [
+              "trader"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

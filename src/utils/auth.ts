@@ -12,7 +12,7 @@ export interface DataInfo<T> {
   /** 头像 */
   avatar?: string;
   /** 用户名 */
-  username?: string;
+  account?: string;
   /** 当前登录用户的角色 */
   roles?: Array<string>;
   /** 当前登录用户的按钮级别权限 */
@@ -66,40 +66,41 @@ export function setToken(data: DataInfo<Date>) {
       : {}
   );
 
-  function setUserKey({ avatar, username, roles, permissions }) {
-    useUserStoreHook().SET_USERNAME(username);
+  function setUserKey({ avatar, account, roles, permissions }) {
+    useUserStoreHook().SET_USERNAME(account);
     useUserStoreHook().SET_ROLES(roles);
     useUserStoreHook().SET_PERMS(permissions);
     storageLocal().setItem(userKey, {
+      token,
       refreshToken,
       expires,
       avatar,
-      username,
+      account,
       roles,
       permissions
     });
   }
-
-  if (data.username && data.roles) {
-    const { username, roles } = data;
+  console.log("00---", data);
+  if (data.account && data.roles) {
+    const { account, roles } = data;
     setUserKey({
       avatar: data?.avatar ?? "",
-      username,
+      account,
       roles,
       permissions: data?.permissions ?? []
     });
   } else {
     const avatar =
       storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "";
-    const username =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "";
+    const account =
+      storageLocal().getItem<DataInfo<number>>(userKey)?.account ?? "";
     const roles =
       storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [];
     const permissions =
       storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [];
     setUserKey({
       avatar,
-      username,
+      account,
       roles,
       permissions
     });

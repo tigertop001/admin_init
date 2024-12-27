@@ -16,11 +16,11 @@ interface Emits {
 const emit = defineEmits<Emits>();
 withDefaults(defineProps<Props>(), {});
 
-function handleCollect(item) {
+function onCol(item) {
   emit("collectItem", item);
 }
 
-function handleDelete(item) {
+function onDel(item) {
   emit("deleteItem", item);
 }
 </script>
@@ -34,12 +34,12 @@ function handleDelete(item) {
     v-show="item.type === 'history'"
     :icon="StarIcon"
     class="w-[18px] h-[18px] mr-2 hover:text-[#d7d5d4]"
-    @click.stop="handleCollect(item)"
+    @click.stop="onCol(item)"
   />
   <IconifyIconOffline
     :icon="CloseIcon"
     class="w-[18px] h-[18px] hover:text-[#d7d5d4] cursor-pointer"
-    @click.stop="handleDelete(item)"
+    @click.stop="onDel(item)"
   />
 </template>
 

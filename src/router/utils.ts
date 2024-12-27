@@ -20,7 +20,7 @@ import { getConfig } from "@/config";
 import { buildHierarchyTree } from "@/utils/tree";
 import { userKey, type DataInfo } from "@/utils/auth";
 import { type menuType, routerArrays } from "@/layout/types";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { useMultiTagsStoreHook } from "@/store/modules/multi-tags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 const IFrame = () => import("@/views/comm/frame/frame.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
@@ -176,6 +176,8 @@ function handleAsyncRoutes(routeList) {
   addPathMatch();
 }
 
+/** 测试 --- start */
+import rouList from "../data/routes.json"; // 临时方案
 function initRouter() {
   if (getConfig()?.CachingAsyncRoutes) {
     const key = "async-routes";
@@ -187,22 +189,64 @@ function initRouter() {
       });
     } else {
       return new Promise(resolve => {
-        getAsyncRoutes().then(({ data }) => {
-          handleAsyncRoutes(cloneDeep(data));
-          storageLocal().setItem(key, data);
-          resolve(router);
-        });
+        handleAsyncRoutes(cloneDeep(rouList.data)); // 临时方案
+        storageLocal().setItem(key, rouList.data); // 临时方案
+        resolve(router); // 临时方案
+        return; // 临时方案
+        getAsyncRoutes()
+          .then(({ data }) => {
+            handleAsyncRoutes(cloneDeep(data));
+            storageLocal().setItem(key, data);
+            resolve(router);
+          })
+          .catch(error => {
+            console.log("请求异常", error);
+          });
       });
     }
   } else {
     return new Promise(resolve => {
+      handleAsyncRoutes(cloneDeep(rouList.data)); // 临时方案
+      resolve(router); // 临时方案
+      return; // 临时方案
       getAsyncRoutes().then(({ data }) => {
         handleAsyncRoutes(cloneDeep(data));
         resolve(router);
       });
+    }).catch(error => {
+      console.log("请求异常02", error);
     });
   }
 }
+/** 测试 --- end */
+
+// function initRouter() {
+//   if (getConfig()?.CachingAsyncRoutes) {
+//     const key = "async-routes";
+//     const asyncRouteList = storageLocal().getItem(key) as any;
+//     if (asyncRouteList && asyncRouteList?.length > 0) {
+//       return new Promise(resolve => {
+//         handleAsyncRoutes(asyncRouteList);
+//         resolve(router);
+//       });
+//     } else {
+//       return new Promise(resolve => {
+//         getAsyncRoutes().then(({ data }) => {
+//           handleAsyncRoutes(cloneDeep(data));
+//           storageLocal().setItem(key, data);
+//           resolve(router);
+//         });
+//       });
+//     }
+//   } else {
+//     return new Promise(resolve => {
+//       getAsyncRoutes().then(({ data }) => {
+//         handleAsyncRoutes(cloneDeep(data));
+//         resolve(router);
+//       });
+//     });
+//   }
+// }
 
 function formatFlatteningRoutes(routesList: RouteRecordRaw[]) {
   if (routesList.length === 0) return routesList;
@@ -274,7 +318,6 @@ function handleAliveRoute({ name }: ToRouteType, mode?: string) {
 
 function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
   if (!arrRoutes || !arrRoutes.length) return;
-  console.log("---00重新生成规范路由-cccc-", modulesRoutes);
   const modulesRoutesKeys = Object.keys(modulesRoutes);
   arrRoutes.forEach((v: RouteRecordRaw) => {
     v.meta.backstage = true;

@@ -12,7 +12,7 @@ import { useRoute, useRouter } from "vue-router";
 import { transformI18n, $t } from "@/plugins/i18n";
 import { responsiveStorageNameSpace } from "@/config";
 import { useSettingStoreHook } from "@/store/modules/settings";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { useMultiTagsStoreHook } from "@/store/modules/multi-tags";
 import {
   isEqual,
   isBoolean,

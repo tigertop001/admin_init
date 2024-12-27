@@ -9,10 +9,9 @@ import { useNav } from "@/layout/hooks/useNav";
 import { useEventListener } from "@vueuse/core";
 import type { FormInstance } from "element-plus";
 import { useLayout } from "@/layout/hooks/useLayout";
-import LoginUpdate from "./components/LoginUpdate.vue";
 import { useUserStoreHook } from "@/views/comm/login/store/user";
 import { initRouter, getTopMenu } from "@/router/utils";
-import { logo, lgam, rgam } from "./utils/static";
+import { lgam, rgam } from "./utils/static";
 import { ReImageVerify } from "@/components/ReImageVerify";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
@@ -34,13 +33,13 @@ defineOptions({
   name: "Login"
 });
 const userStore = useUserStoreHook();
-// const imgCode = ref("");
 const router = useRouter();
 const loading = ref(false);
 const checked = ref(false);
 const disabled = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const currentPage = computed(() => userStore.currentPage);
+const codeType = computed(() => userStore.verifiType);
 
 const { initStorage } = useLayout();
 initStorage();
@@ -59,8 +58,8 @@ const {
 } = useTranslationLang();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123",
+  username: "test1",
+  password: "123456",
   code: "", // 验证码
   captcha: null, // 谷歌验证码字段
   deviceType: osInfo.code // 设备操作系统类型
@@ -78,42 +77,29 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       try {
-        // // 第一步登录
-        // const params = { ...ruleForm, remember: checked.value };
-        // if (userStore.verifiType == 1) {
-        //   const res = await userStore.verifyGoogleAuthCode({
-        //     code: ruleForm.captcha
-        //   });
-        //   if (!res.success) {
-        //     message("验证码验证失败，请检查验证码", { type: "error" });
-        //     loading.value = false;
-        //     return;
-        //   }
-        // }
-        // 动态构建登录参数，移除不需要的字段
-        const params = { ...ruleForm, remember: checked.value };
+        const params = { ...ruleForm, codeType: codeType.value };
 
         // 根据 verifiType 来移除不需要的字段
-        if (userStore.verifiType === 0) {
+        if (codeType.value === 1) {
           // 当 verifiType 为 0 时，移除 captcha 字段
           delete params.captcha;
-        } else if (userStore.verifiType === 1) {
+        } else if (codeType.value === 2) {
           // 当 verifiType 为 1 时，移除 code 字段
           delete params.code;
         }
 
         // 验证谷歌验证码
-        if (userStore.verifiType == 1) {
+        if (codeType.value == 2) {
           const res = await userStore.verifyGoogleAuthCode({
             code: ruleForm.captcha
           });
-          if (!res.success) {
+          if (res.code != 0) {
             message("验证码验证失败，请检查验证码", { type: "error" });
             loading.value = false;
             return;
           }
         }
-
+        console.log("---verifyCode---", verifyCode);
         const loginRes = await userStore.loginByUsername(params);
         if (loginRes?.code === 0) {
           await initRouter();
@@ -156,15 +142,9 @@ useEventListener(
 
 const verifyCode = computed(() => userStore.verifyCode);
 // 刷新验证码
-const handleRefresh = async () => {
-  await userStore.getCode();
+const onRef = async () => {
+  await userStore.getCode({ len: 6 });
 };
-// // 监听并更新 store 中的状态，避免不必要的深度监听
-// watch([imgCode, checked], ([imgCodeValue, checkedValue]) => {
-//   console.log("---111---", imgCode);
-//   userStore.SET_VERIFYCODE(imgCodeValue);
-//   userStore.SET_ISREMEMBERED(checkedValue);
-// });
 </script>
 
 <template>
@@ -250,7 +230,7 @@ const handleRefresh = async () => {
       </div>
       <div class="login-box flex justify-center items-center">
         <div class="login-form text-center">
-          <img :src="logo" class="w-1/3" />
+          <!-- <img :src="logo" class="w-1/3" /> -->
           <Motion>
             <h2 class="outline-none">
               <TypeIt
@@ -299,7 +279,7 @@ const handleRefresh = async () => {
               </el-form-item>
             </Motion>
 
-            <Motion v-if="userStore.verifiType == 0" :delay="200">
+            <Motion v-if="codeType == 1" :delay="200">
               <el-form-item prop="code">
                 <el-input
                   v-model="ruleForm.code"
@@ -308,11 +288,7 @@ const handleRefresh = async () => {
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
                 >
                   <template v-slot:append>
-                    <!-- <ReImageVerify v-model:code="imgCode" /> -->
-                    <ReImageVerify
-                      :code="verifyCode"
-                      @refresh="handleRefresh"
-                    />
+                    <ReImageVerify :code="verifyCode" @refresh="onRef" />
                   </template>
                 </el-input>
               </el-form-item>
@@ -347,13 +323,6 @@ const handleRefresh = async () => {
                       />
                     </span>
                   </el-checkbox>
-                  <el-button
-                    link
-                    type="primary"
-                    @click="userStore.SET_CURRENTPAGE(4)"
-                  >
-                    忘记密码?
-                  </el-button>
                 </div>
                 <el-button
                   class="w-full mt-4"
@@ -368,7 +337,6 @@ const handleRefresh = async () => {
               </el-form-item>
             </Motion>
           </el-form>
-          <LoginUpdate v-if="currentPage === 4" />
         </div>
       </div>
       <div class="flex items-center h-screen">

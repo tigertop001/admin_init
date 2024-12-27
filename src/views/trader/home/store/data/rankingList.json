@@ -1,0 +1,236 @@
+{
+    "msg": "请求成功",
+    "code": 0,
+    "data": {
+        "rechargeRank": [
+            {
+                "memberid": 67920,
+                "rechargeAmount": "300.00",
+                "rechargeCount": "1",
+                "rank": 1
+            },
+            {
+                "memberid": 67925,
+                "rechargeAmount": "300.00",
+                "rechargeCount": "3",
+                "rank": 2
+            },
+            {
+                "memberid": 67753,
+                "rechargeAmount": "200.00",
+                "rechargeCount": "2",
+                "rank": 3
+            },
+            {
+                "memberid": 67906,
+                "rechargeAmount": "200.00",
+                "rechargeCount": "2",
+                "rank": 4
+            },
+            {
+                "memberid": 67785,
+                "rechargeAmount": "100.00",
+                "rechargeCount": "1",
+                "rank": 5
+            },
+            {
+                "memberid": 67899,
+                "rechargeAmount": "100.00",
+                "rechargeCount": "1",
+                "rank": 6
+            },
+            {
+                "memberid": 67924,
+                "rechargeAmount": "100.00",
+                "rechargeCount": "1",
+                "rank": 7
+            },
+            {
+                "memberid": 67780,
+                "rechargeAmount": "58.00",
+                "rechargeCount": "1",
+                "rank": 8
+            }
+        ],
+        "withdrawRank": [
+            {
+                "memberid": 67914,
+                "withdrawAmount": "320.00",
+                "withdrawCount": "1",
+                "rank": 1
+            },
+            {
+                "memberid": 67886,
+                "withdrawAmount": "280.00",
+                "withdrawCount": "1",
+                "rank": 2
+            },
+            {
+                "memberid": 67803,
+                "withdrawAmount": "264.00",
+                "withdrawCount": "1",
+                "rank": 3
+            },
+            {
+                "memberid": 67874,
+                "withdrawAmount": "239.00",
+                "withdrawCount": "1",
+                "rank": 4
+            },
+            {
+                "memberid": 67896,
+                "withdrawAmount": "216.00",
+                "withdrawCount": "1",
+                "rank": 5
+            },
+            {
+                "memberid": 67916,
+                "withdrawAmount": "210.00",
+                "withdrawCount": "1",
+                "rank": 6
+            },
+            {
+                "memberid": 67865,
+                "withdrawAmount": "201.00",
+                "withdrawCount": "1",
+                "rank": 7
+            },
+            {
+                "memberid": 67891,
+                "withdrawAmount": "200.00",
+                "withdrawCount": "1",
+                "rank": 8
+            },
+            {
+                "memberid": 67892,
+                "withdrawAmount": "200.00",
+                "withdrawCount": "1",
+                "rank": 9
+            }
+        ],
+        "proxyRank": [
+            {
+                "memberid": 53540,
+                "newAddCount": 103,
+                "allCount": 1118,
+                "rank": 1
+            },
+            {
+                "memberid": 53534,
+                "newAddCount": 28,
+                "allCount": 626,
+                "rank": 2
+            },
+            {
+                "memberid": 53539,
+                "newAddCount": 19,
+                "allCount": 131,
+                "rank": 3
+            },
+            {
+                "memberid": 53559,
+                "newAddCount": 13,
+                "allCount": 61,
+                "rank": 4
+            },
+            {
+                "memberid": 54735,
+                "newAddCount": 10,
+                "allCount": 30,
+                "rank": 5
+            },
+            {
+                "memberid": 53834,
+                "newAddCount": 9,
+                "allCount": 29,
+                "rank": 6
+            },
+            {
+                "memberid": 53541,
+                "newAddCount": 7,
+                "allCount": 85,
+                "rank": 7
+            },
+            {
+                "memberid": 55559,
+                "newAddCount": 6,
+                "allCount": 26,
+                "rank": 8
+            },
+            {
+                "memberid": 56196,
+                "newAddCount": 5,
+                "allCount": 7,
+                "rank": 9
+            },
+            {
+                "memberid": 56226,
+                "newAddCount": 4,
+                "allCount": 5,
+                "rank": 10
+            }
+        ],
+        "profitRank": [
+            {
+                "memberid": 56178,
+                "profit": "3754.00",
+                "betRecordCount": "3238",
+                "rank": 1
+            },
+            {
+                "memberid": 56471,
+                "profit": "2511.93",
+                "betRecordCount": "405",
+                "rank": 2
+            },
+            {
+                "memberid": 56173,
+                "profit": "2299.20",
+                "betRecordCount": "2555",
+                "rank": 3
+            },
+            {
+                "memberid": 54054,
+                "profit": "1217.24",
+                "betRecordCount": "923",
+                "rank": 4
+            },
+            {
+                "memberid": 56504,
+                "profit": "1011.32",
+                "betRecordCount": "28",
+                "rank": 5
+            },
+            {
+                "memberid": 54629,
+                "profit": "1000.20",
+                "betRecordCount": "122",
+                "rank": 6
+            },
+            {
+                "memberid": 56489,
+                "profit": "999.97",
+                "betRecordCount": "516",
+                "rank": 7
+            },
+            {
+                "memberid": 56197,
+                "profit": "613.53",
+                "betRecordCount": "983",
+                "rank": 8
+            },
+            {
+                "memberid": 55409,
+                "profit": "598.66",
+                "betRecordCount": "263",
+                "rank": 9
+            },
+            {
+                "memberid": 54802,
+                "profit": "560.31",
+                "betRecordCount": "1287",
+                "rank": 10
+            }
+        ]
+    }
+}

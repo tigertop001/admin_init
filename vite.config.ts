@@ -45,11 +45,6 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       port: VITE_PORT,
       host: "0.0.0.0",
       proxy: {
-        "/api": {
-          target: "http://localhost:3001",
-          changeOrigin: true,
-          rewrite: path => path
-        },
         "/mock": {
           target: "http://0.0.0.0:7300",
           changeOrigin: true,
@@ -61,13 +56,8 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       port: VITE_PORT,
       host: "0.0.0.0",
       proxy: {
-        "/api": {
-          target: "http://localhost:3001",
-          changeOrigin: true,
-          rewrite: path => path
-        },
         "/mock": {
-          target: "http://0.0.0.0:7300",
+          target: "http://192.168.9.129:7300",
           changeOrigin: true,
           rewrite: path => path
         }
