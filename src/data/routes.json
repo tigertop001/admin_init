@@ -799,6 +799,16 @@
               "trader"
             ]
           }
+        },
+        {
+          "path": "/trader/system/config/index",
+          "name": "config",
+          "meta": {
+            "title": "后台通用配置",
+            "roles": [
+              "trader"
+            ]
+          }
         }
       ]
     }

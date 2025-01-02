@@ -37,7 +37,6 @@ export function useColumns(uid: number) {
     try {
       let params: Record<string, any> = { uid };
 
-      // 根据 type 判断传递的参数
       if (type === "uname") {
         params = { ...params, uname: formValues.uname };
       } else if (type === "phoneNum") {
