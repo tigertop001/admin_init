@@ -87,27 +87,27 @@ export function useColumns() {
       formatter: row => `${row.walletLeft || "--"}`
     },
     {
-      label: "金额/币种",
+      label: "实际充值总额/实际提款总额",
       width: 140,
       prop: "enterMoney",
       formatter: row => `${row.enterMoney || "--"} / ${row.enterMoney || "--"}`
     },
     {
-      label: "实际到账/手续费",
-      width: 140,
-      prop: "outMoney",
-      formatter: row => `${row.enterMoney || "--"} / ${row.enterMoney || "--"}`
-    },
-    {
       label: "注册日期",
       width: 140,
-      prop: "entOutDiff",
-      sortable: true,
+      prop: "outMoney",
       formatter: row =>
         `${fmtTs(row.addTime, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "提款类型/姓名&账号",
+      width: 140,
+      prop: "entOutDiff",
+      sortable: true,
+      formatter: row => `${row.enterMoney || "--"} / ${row.enterMoney || "--"}`
+    },
+    {
+      label: "金额/币种",
       width: 160,
       prop: "winOrLose",
       formatter: row => `${row.enterMoney || "--"} / ${row.enterMoney || "--"}`
@@ -116,12 +116,6 @@ export function useColumns() {
       label: "提款方式",
       width: 140,
       prop: "addTime",
-      formatter: row => `${row.enterMoney || "--"}`
-    },
-    {
-      label: "风控原因",
-      width: 140,
-      prop: "enterThird",
       formatter: row => `${row.enterMoney || "--"}`
     },
     {

@@ -108,7 +108,7 @@ export function useColumns() {
     },
     {
       label: "提款类型/姓名&账号",
-      width: 140,
+      width: 160,
       prop: "winOrLose",
       formatter: row => `${row.enterMoney || "--"} / ${row.enterMoney || "--"}`
     },
@@ -126,6 +126,7 @@ export function useColumns() {
     },
     {
       label: "审核状态",
+      width: 140,
       prop: "remark",
       cellRenderer: ({ row }) => {
         const status = statusMap[row.status] || {
@@ -137,7 +138,7 @@ export function useColumns() {
     },
     {
       label: "申请时间/审核时间",
-      width: 140,
+      width: 180,
       prop: "winOrLose",
       formatter: row =>
         `${fmtTs(row.addTime, "YYYY-MM-DD HH:mm:ss.SSS") || "--"} / ${fmtTs(row.addTime, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
@@ -162,7 +163,7 @@ export function useColumns() {
     },
     {
       label: "操作",
-      width: 160,
+      width: 200,
       fixed: "right",
       slot: "operation"
     }

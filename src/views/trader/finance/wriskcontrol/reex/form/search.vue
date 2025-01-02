@@ -2,14 +2,28 @@
 import { PlusSearch } from "plus-pro-components";
 import "plus-pro-components/es/components/search/style/css";
 import { useSearch } from "./config/searchConfig";
-import { Search, Refresh, Upload } from "@element-plus/icons-vue";
+import {
+  Search,
+  Refresh,
+  ArrowDown,
+  ArrowUp,
+  Plus
+} from "@element-plus/icons-vue";
 
 const emit = defineEmits<{
   (_e: "update:param", _param: Record<string, any>): void;
 }>();
 
-const { searchState, searchVal, columns, onSearch, onReset, onPrmUp } =
-  useSearch(emit);
+const {
+  searchState,
+  searchVal,
+  columns,
+  onSearch,
+  onReset,
+  onPrmUp,
+  onAdd3rd,
+  onQt3rd
+} = useSearch(emit);
 
 defineExpose({ searchVal });
 </script>
@@ -35,12 +49,21 @@ defineExpose({ searchVal });
     }"
     @update:param="onPrmUp"
   >
-    <template #footer="{}">
+    <template #footer="{ handleUnfold, isShowUnfold }">
       <div class="flex">
         <el-button type="primary" :icon="Search" @click="onSearch">
           查询
         </el-button>
         <el-button :icon="Refresh" @click="onReset">重置</el-button>
+        <el-button type="primary" @click="onAdd3rd"> 批量通过 </el-button>
+        <el-button type="primary" @click="onQt3rd"> 批量取消 </el-button>
+        <el-button
+          :icon="isShowUnfold ? ArrowUp : ArrowDown"
+          link
+          @click="handleUnfold"
+        >
+          {{ isShowUnfold ? "收起" : "展开" }}
+        </el-button>
       </div>
     </template>
   </PlusSearch>

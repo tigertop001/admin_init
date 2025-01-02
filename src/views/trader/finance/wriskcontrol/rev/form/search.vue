@@ -35,7 +35,7 @@ defineExpose({ searchVal });
     :defaultValues="searchState"
     label-position="right"
     :hasFooter="true"
-    :showNumber="1"
+    :showNumber="2"
     :col-props="{
       xs: { span: 24 },
       sm: { span: 12 },
@@ -55,12 +55,8 @@ defineExpose({ searchVal });
           查询
         </el-button>
         <el-button :icon="Refresh" @click="onReset">重置</el-button>
-        <el-button type="primary" @click="onAdd3rd">
-          批量加入三方账户
-        </el-button>
-        <el-button type="primary" @click="onQt3rd">
-          批量退出三方账户
-        </el-button>
+        <el-button type="primary" @click="onAdd3rd"> 批量通过 </el-button>
+        <el-button type="primary" @click="onQt3rd"> 批量取消 </el-button>
         <el-button
           :icon="isShowUnfold ? ArrowUp : ArrowDown"
           link

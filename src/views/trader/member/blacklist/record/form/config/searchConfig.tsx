@@ -115,7 +115,6 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
       frozenType: searchState.value.frozenType
     };
 
-    // 组件会处理好输出格式，直接展开到结果中
     const accountField = searchState.value.account as ExtendedSearchField;
     if (accountField && accountField.stype && accountField.scontent) {
       result.stype = accountField.stype;

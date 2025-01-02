@@ -133,7 +133,7 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
     ]
   },
   {
-    label: "提现状态",
+    label: "审核状态",
     prop: "status",
     valueType: "select",
     options: [

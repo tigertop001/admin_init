@@ -53,9 +53,10 @@ onMounted(() => {
     @selection-change="onSelChg"
   >
     <template #operation="{}">
-      <el-button link type="primary" size="small">详情</el-button>
-      <el-button link type="primary" size="small">入账</el-button>
-      <el-button link type="primary" size="small">出账</el-button>
+      <el-button link type="primary" size="small">通过</el-button>
+      <el-button link type="primary" size="small">取消</el-button>
+      <el-button link type="primary" size="small">复审</el-button>
+      <el-button link type="primary" size="small">冻结</el-button>
     </template>
   </pure-table>
 </template>
