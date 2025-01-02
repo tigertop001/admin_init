@@ -7,7 +7,6 @@ export interface SearchField {
   type: string;
   label: string;
 }
-
 export interface SearchStateType {
   start: number;
   limit: number;

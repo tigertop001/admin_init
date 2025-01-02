@@ -101,7 +101,7 @@ export function useColumns(store: any) {
 
   // 计算属性
   const refIconCls = computed(() => [
-    "text-red-600 cursor-pointer transition-all duration-500 hover:opacity-60",
+    "text-red cursor-pointer transition-all duration-500 hover:opacity-60",
     { "animate-spin": isSpin.value }
   ]);
 

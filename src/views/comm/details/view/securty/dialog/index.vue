@@ -8,6 +8,7 @@ import {
 const props = defineProps<{
   visible: boolean;
   type: "reLog" | "rePay";
+  uid: string;
 }>();
 
 const formData = ref<FieldValues>({
@@ -68,7 +69,11 @@ const rstFrm = () => {
 };
 
 const onSubmit = () => {
-  emit("submit", formData.value);
+  const dataToSubmit = {
+    ...formData.value,
+    uid: props.uid
+  };
+  emit("submit", dataToSubmit);
 };
 
 const onClose = () => {

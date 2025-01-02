@@ -173,10 +173,10 @@ export function useColumns() {
         )
       },
       {
-        label: " 领奖时间间隔",
+        label: "领奖时间间隔",
         labelWidth: 130,
-        prop: "extend.perMax",
-        valueType: "input",
+        prop: "extend.receiveTime",
+        valueType: "input-number",
         fieldProps: {
           style: { width: "220px" },
           type: "number"
@@ -188,6 +188,9 @@ export function useColumns() {
               style="width: 100px"
               type="number"
               placeholder="请输入"
+              onInput={value => {
+                state.value.extend.receiveTime = value ? Number(value) : 0;
+              }}
             />
             <span class="ml-2">小时</span>
           </div>
@@ -197,7 +200,7 @@ export function useColumns() {
         label: " 每次奖励上限",
         labelWidth: 130,
         prop: "extend.perMax",
-        valueType: "input"
+        valueType: "input-number"
       },
       {
         label: "派奖钱包",

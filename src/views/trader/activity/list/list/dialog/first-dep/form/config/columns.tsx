@@ -134,7 +134,7 @@ export function useColumns() {
         label: "奖励金额上限",
         labelWidth: 130,
         prop: "extend.max",
-        valueType: "input"
+        valueType: "input-number"
       },
       {
         label: "派奖钱包",
@@ -160,7 +160,7 @@ export function useColumns() {
         label: "稽核倍数",
         labelWidth: 130,
         prop: "extend.auditMultiple",
-        valueType: "input"
+        valueType: "input-number"
       });
     }
 

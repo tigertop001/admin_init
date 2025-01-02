@@ -44,8 +44,8 @@ export function useColumns() {
     1: { text: "正常", color: "text-green-600" },
     2: { text: "资金冻结", color: "text-orange-400" },
     3: { text: "禁止登录", color: "text-orange-600" },
-    4: { text: "黑名单", color: "text-gray-400" },
-    5: { text: "封禁", color: "text-red-700" }
+    4: { text: "黑名单", color: "text-gray" },
+    5: { text: "封禁", color: "text-red" }
   };
 
   const columns = [

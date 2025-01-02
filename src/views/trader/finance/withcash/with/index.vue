@@ -76,6 +76,5 @@ onMounted(() => {
     @update:visible="addMebVis = $event"
   /> -->
 
-  <!-- 会员详情 -->
   <Details v-model:visible="dtlsVis" title="会员详情" :rowDt="curRow" />
 </template>

@@ -35,12 +35,12 @@ export function useColumns(uid: number) {
 
   const statusMap = {
     1: { text: "成功", color: "text-green-600" },
-    2: { text: "失败", color: "text-red-700" }
+    2: { text: "失败", color: "text-red" }
   };
   const opStMap = {
     login: { text: "登录", color: "text-blue-500" },
-    loginout: { text: "登出", color: "text-red-500" },
-    profile: { text: "签名", color: "text-green-500" },
+    loginout: { text: "登出", color: "text-red" },
+    profile: { text: "签名", color: "text-green-600" },
     avatar: { text: "头像", color: "text-orange-400" },
     phone: { text: "手机号", color: "text-orange-500" },
     skinType: { text: "背景图", color: "text-orange-500" },
@@ -53,7 +53,7 @@ export function useColumns(uid: number) {
       prop: "oparate",
       width: 150,
       cellRenderer: ({ row }) => {
-        const status = opStMap[row.status] || {
+        const status = opStMap[row.oparate] || {
           text: "--",
           color: "text-gray-400"
         };

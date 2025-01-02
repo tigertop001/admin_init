@@ -70,7 +70,7 @@ onMounted(() => {
         </el-button>
       </template>
     </pure-table>
-    <!-- 会员详情 -->
+
     <Details v-model:visible="dtlsVis" title="会员详情" :rowDt="curRow" />
   </el-card>
 </template>

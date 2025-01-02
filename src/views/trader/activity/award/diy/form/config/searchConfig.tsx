@@ -27,10 +27,11 @@ const crtCols = (): PlusColumn[] => [
     valueType: "select",
     options: [
       { label: "全部", value: 0 },
-      { label: "待发放", value: 1 },
+      { label: "等待中", value: 1 },
       { label: "已发放", value: 2 },
-      { label: "发放中", value: 3 },
-      { label: "已停用", value: 4 }
+      { label: "审核中", value: 3 },
+      { label: "已取消", value: 4 },
+      { label: "进行中", value: 5 }
     ]
   }
 ];

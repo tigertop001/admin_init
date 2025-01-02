@@ -5,7 +5,7 @@ const apiTp = import.meta.env.VITE_APITYPE;
 const API_URLS = {
   LIST: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/agent/commission-list"
+    real: "/api/v1/tenant/usercenter/user/tenantlist"
   },
   PASS: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",

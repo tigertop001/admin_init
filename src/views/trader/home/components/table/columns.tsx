@@ -43,9 +43,9 @@ const tableConfigs = {
               class: [
                 "font-medium",
                 value > 0
-                  ? "text-red-500 dark:text-red-400"
+                  ? "text-red dark:text-red"
                   : value < 0
-                    ? "text-green-500 dark:text-green-400"
+                    ? "text-green-600 dark:text-green-600"
                     : "text-gray-500 dark:text-gray-400"
               ]
             },
@@ -83,9 +83,9 @@ const tableConfigs = {
               class: [
                 "font-medium",
                 value > 0
-                  ? "text-red-500 dark:text-red-400"
+                  ? "text-red dark:text-red"
                   : value < 0
-                    ? "text-green-500 dark:text-green-400"
+                    ? "text-green-600 dark:text-green-600"
                     : "text-gray-500 dark:text-gray-400"
               ]
             },
@@ -123,9 +123,9 @@ const tableConfigs = {
               class: [
                 "font-medium",
                 value > 0
-                  ? "text-red-500 dark:text-red-400"
+                  ? "text-red dark:text-red"
                   : value < 0
-                    ? "text-green-500 dark:text-green-400"
+                    ? "text-green-600 dark:text-green-600"
                     : "text-gray-500 dark:text-gray-400"
               ]
             },

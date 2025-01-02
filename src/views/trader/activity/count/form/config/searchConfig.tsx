@@ -19,13 +19,19 @@ export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
 }
 
-export const crtDFS = (): SearchStateType => ({
-  name: null,
-  startAt: null,
-  endAt: null,
-  start: 0,
-  limit: 10
-});
+export const crtDFS = (): SearchStateType => {
+  const now = new Date();
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 1);
+
+  return {
+    name: null,
+    startAt: threeMonthsAgo.getTime(),
+    endAt: now.getTime(),
+    start: 0,
+    limit: 10
+  };
+};
 
 const onDateChg = (
   searchState: SearchStateType,

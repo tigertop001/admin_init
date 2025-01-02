@@ -42,8 +42,8 @@ export function useColumns(obj: { uid?: number | string; tabItem: string }) {
   };
 
   const isBindPhStMap = {
-    1: { text: "是", color: "text-green-500" },
-    2: { text: "否", color: "text-red-500" }
+    1: { text: "是", color: "text-green-600" },
+    2: { text: "否", color: "text-red" }
   };
 
   const columns = [

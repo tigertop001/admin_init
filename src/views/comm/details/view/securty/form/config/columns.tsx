@@ -14,7 +14,14 @@ export function useColumns(uid: number) {
         labelWidth: 100,
         prop: "uname",
         valueType: "input"
-      },
+      }
+    ];
+    return baseColumns;
+  };
+  const columns = computed(() => getColumns());
+
+  const getColumnsTel = (): PlusColumn[] => {
+    const baseColumnsTel: PlusColumn[] = [
       {
         label: "绑定手机号",
         labelWidth: 100,
@@ -22,18 +29,24 @@ export function useColumns(uid: number) {
         valueType: "input"
       }
     ];
-    return baseColumns;
+    return baseColumnsTel;
   };
-  const columns = computed(() => getColumns());
-  const onSub = async (formValues: FieldValues) => {
+  const columnsTel = computed(() => getColumnsTel());
+
+  const onSub = async (type: string, formValues: FieldValues) => {
     try {
-      const params = {
-        uid,
-        phoneNum: formValues.phoneNum,
-        uname: formValues.uname
-      };
+      let params: Record<string, any> = { uid };
+
+      // 根据 type 判断传递的参数
+      if (type === "uname") {
+        params = { ...params, uname: formValues.uname };
+      } else if (type === "phoneNum") {
+        params = { ...params, phoneNum: formValues.phoneNum };
+      }
+
       const res = await store.chgInfo(params);
-      if (res?.code == 0) {
+
+      if (res?.code === 0) {
         message("操作成功", { type: "success", showClose: true });
       } else {
         message("操作失败", { type: "error" });
@@ -57,6 +70,7 @@ export function useColumns(uid: number) {
     columns,
     onSub,
     onSubErr,
-    onReset
+    onReset,
+    columnsTel
   };
 }

@@ -27,7 +27,6 @@ const emit = defineEmits<{
 
 const { searchState, searchVal, columns, onSearch, onReset, onPrmUp } =
   useSearch(emit);
-
 defineExpose({ searchVal });
 </script>
 

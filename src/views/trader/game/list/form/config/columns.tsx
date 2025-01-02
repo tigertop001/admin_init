@@ -37,7 +37,7 @@ export function useColumns() {
   });
 
   const statusMap = {
-    1: { text: "开放中", color: "text-green-500" },
+    1: { text: "开放中", color: "text-green-600" },
     2: { text: "维护中", color: "text-yellow" },
     3: { text: "已关闭", color: "text-red" }
   };

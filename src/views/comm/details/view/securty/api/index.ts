@@ -13,11 +13,11 @@ const API_URLS = {
   },
   RELOGIN: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/user/checkAdminPwd"
+    real: "/api/v1/tenant/usercenter/user/resetLoginPwd"
   },
   REPPAY: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/user/checkAdminPwd"
+    real: "/api/v1/tenant/usercenter/user/resetPayPwd"
   }
 } as const;
 

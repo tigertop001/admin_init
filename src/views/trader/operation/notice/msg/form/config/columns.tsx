@@ -38,7 +38,7 @@ export function useColumns() {
 
   const statusMap = {
     1: { text: "未发布", color: "text-yellow-500" },
-    2: { text: "待发布", color: "text-green-500" },
+    2: { text: "待发布", color: "text-green-600" },
     3: { text: "已发送", color: "text-blue-500" },
     4: { text: "已撤回", color: "text-red" }
   };

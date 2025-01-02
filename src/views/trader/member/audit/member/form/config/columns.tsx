@@ -41,9 +41,9 @@ export function useColumns() {
     1: { text: "待审核", color: "text-orange-600" },
     2: { text: "驳回审核", color: "text-orange-400" },
     3: { text: "通过审核", color: "text-green-600" },
-    4: { text: "撤销审核", color: "text-red-400" },
+    4: { text: "撤销审核", color: "text-red" },
     5: { text: "黑名单", color: "text-gray-700" },
-    6: { text: "清除", color: "text-red-500" }
+    6: { text: "清除", color: "text-red" }
   };
 
   const columns = [

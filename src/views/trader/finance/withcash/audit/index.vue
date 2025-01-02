@@ -36,7 +36,7 @@ onMounted(() => {
     <div class="space-y-2">
       <template v-if="!auditInfo.isCompleted">
         <div class="text-gray-700">
-          当前稽核 <span class="text-red-500 font-medium">未完成</span>，
+          当前稽核 <span class="text-red font-medium">未完成</span>，
           提现需扣除行政费：
           <span class="text-orange-500 font-medium">{{
             auditInfo.adminFee.toFixed(2)
@@ -50,7 +50,7 @@ onMounted(() => {
       </template>
       <template v-else>
         <div class="text-gray-700">
-          当前稽核 <span class="text-green-500 font-medium">已完成</span>
+          当前稽核 <span class="text-green-600 font-medium">已完成</span>
         </div>
       </template>
     </div>

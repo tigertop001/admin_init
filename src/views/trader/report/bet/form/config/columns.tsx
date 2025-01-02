@@ -36,7 +36,7 @@ export function useColumns() {
   const curRow = ref<Record<string, any>>({});
 
   const statusMap = {
-    1: { text: "已结算", color: "text-green" },
+    1: { text: "已结算", color: "text-green-600" },
     2: { text: "未结算", color: "text-red" },
     3: { text: "已取消", color: "text-gray" }
   };
@@ -54,6 +54,7 @@ export function useColumns() {
     },
     {
       label: "会员ID/会员账号",
+      width: 160,
       prop: "date",
       cellRenderer: ({ row }) => (
         <div class="flex flex-col gap-2">

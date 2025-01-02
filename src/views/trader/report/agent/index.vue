@@ -36,12 +36,12 @@ onMounted(() => {
       />
     </template>
     <div class="flex justify-center items-center text-sm px-4 py-2">
-      合计：佣金钱包余额：<span class="text-red-500 ml-2 mr-8">4000.00</span>
-      累计佣金：<span class="text-red-500 ml-2 mr-8">4000.00</span>
-      新增总业绩：<span class="text-red-500 ml-2 mr-8">4000.00</span>
-      新增直属业绩：<span class="text-red-500 ml-2 mr-8">100</span>
-      新增其他业绩：<span class="text-red-500 ml-2 mr-8">400.00</span>
-      结算佣金:<span class="text-red-500 ml-2 mr-8">400.00</span>
+      合计：佣金钱包余额：<span class="text-red ml-2 mr-8">4000.00</span>
+      累计佣金：<span class="text-red ml-2 mr-8">4000.00</span>
+      新增总业绩：<span class="text-red ml-2 mr-8">4000.00</span>
+      新增直属业绩：<span class="text-red ml-2 mr-8">100</span>
+      新增其他业绩：<span class="text-red ml-2 mr-8">400.00</span>
+      结算佣金:<span class="text-red ml-2 mr-8">400.00</span>
     </div>
     <pure-table
       ref="tableRef"
@@ -66,7 +66,7 @@ onMounted(() => {
         </el-button>
       </template>
     </pure-table>
-    <!-- 会员详情 -->
+
     <Details v-model:visible="dtlsVis" title="会员详情" :rowDt="curRow" />
   </el-card>
 </template>

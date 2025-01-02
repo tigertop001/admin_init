@@ -42,7 +42,7 @@ export function useColumns() {
   const statusMap = {
     1: { text: "正常", color: "text-green-600" },
     2: { text: "冻结", color: "text-orange-400" },
-    3: { text: "禁止登录", color: "text-red-500" },
+    3: { text: "禁止登录", color: "text-red" },
     4: { text: "拉黑", color: "text-gray-500" }
   };
 

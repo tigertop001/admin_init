@@ -37,7 +37,7 @@ export function useColumns() {
   const statusMap = {
     1: { text: "成功", color: "text-green-600" },
     2: { text: "审核中", color: "text-orange-400" },
-    3: { text: "拒绝", color: "text-red-500" }
+    3: { text: "拒绝", color: "text-red" }
   };
 
   const convertModeMap = {

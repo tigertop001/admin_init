@@ -37,7 +37,7 @@ export function useColumns() {
   const addType = ref(0);
 
   const statusMap = {
-    1: { text: "关闭", color: "text-red-500" },
+    1: { text: "关闭", color: "text-red" },
     2: { text: "开启", color: "text-green-600" }
   };
 

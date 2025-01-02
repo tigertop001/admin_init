@@ -7,9 +7,9 @@ const API_URLS = {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
     real: "/api/v1/tenant/usercenter/banned/bannedSet"
   },
-  DEL: {
+  INFO: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/banned/bannedDelete"
+    real: "/api/v1/tenant/usercenter/banned/bannedConfig"
   }
 } as const;
 
@@ -28,17 +28,15 @@ const getUrl = (api: keyof typeof API_URLS) => {
   return str;
 };
 
-// 配置
 export const setApi = data => {
   return http.request<Result>("post", getUrl("SET"), { data });
 };
 
-// 删除
-export const delApi = data => {
-  return http.request<Result>("post", getUrl("DEL"), { data });
+export const infoApi = () => {
+  return http.request<Result>("post", getUrl("INFO"));
 };
 
 export const api = {
   set: setApi,
-  del: delApi
+  info: infoApi
 };

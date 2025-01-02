@@ -209,7 +209,7 @@ export function useColumns() {
   };
 
   const statusMap = {
-    1: { text: "未发布", color: "text-red-500" },
+    1: { text: "未发布", color: "text-red" },
     2: { text: "未开始 ", color: "text-orange-400" },
     3: { text: "进行中 ", color: "text-green-600" },
     4: { text: "已过期 ", color: "text-gray-600" },

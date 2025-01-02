@@ -33,10 +33,10 @@ export function useColumns() {
   const dtLst = ref([]);
 
   const statusMap = {
-    1: { text: "未发布", color: "text-red-500" },
+    1: { text: "未发布", color: "text-red" },
     2: { text: "未开始 ", color: "text-orange-400" },
     3: { text: "进行中 ", color: "text-green-600" },
-    4: { text: "已过期 ", color: "text-gray-600" },
+    4: { text: "已过期 ", color: "text-gray" },
     5: { text: "手动结束 ", color: "text-amber-600" }
   };
 

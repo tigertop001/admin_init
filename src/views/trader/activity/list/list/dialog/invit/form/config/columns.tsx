@@ -103,6 +103,9 @@ export function useColumns() {
               type="number"
               class="w-[115px]"
               placeholder="最小金额"
+              onInput={value => {
+                state.value.extend.firstAmount.min = value ? Number(value) : 0;
+              }}
             />
             <span>-</span>
             <el-input
@@ -110,6 +113,9 @@ export function useColumns() {
               type="number"
               class="w-[115px]"
               placeholder="最大金额"
+              onInput={value => {
+                state.value.extend.firstAmount.max = value ? Number(value) : 0;
+              }}
             />
           </div>
         )
@@ -177,6 +183,9 @@ export function useColumns() {
   };
 
   const onSub = values => {
+    values.extend.firstAmount.min = Number(values.extend.firstAmount.min) || 0;
+    values.extend.firstAmount.max = Number(values.extend.firstAmount.max) || 0;
+
     console.log(values, "Submit");
   };
 

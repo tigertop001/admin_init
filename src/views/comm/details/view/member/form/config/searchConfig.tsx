@@ -71,24 +71,32 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
     valueType: "select",
     options: [
       {
-        label: "未解决",
-        value: "0",
-        color: "red"
+        label: "登录",
+        value: "login"
       },
       {
-        label: "已解决",
-        value: "1",
-        color: "blue"
+        label: "登出",
+        value: "loginout"
       },
       {
-        label: "解决中",
-        value: "2",
-        color: "yellow"
+        label: "签名",
+        value: "profile"
       },
       {
-        label: "失败",
-        value: "3",
-        color: "red"
+        label: "头像",
+        value: "avatar"
+      },
+      {
+        label: "手机号",
+        value: "phone"
+      },
+      {
+        label: "背景图",
+        value: "skinType"
+      },
+      {
+        label: "昵称",
+        value: "nickname"
       }
     ]
   },

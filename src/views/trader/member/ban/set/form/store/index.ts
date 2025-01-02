@@ -7,9 +7,6 @@ const useMemBanSetStore = defineStore({
   state: () => ({}),
 
   actions: {
-    /**
-     * 配置
-     */
     async set(params) {
       try {
         const response = await api.set(params);
@@ -20,9 +17,9 @@ const useMemBanSetStore = defineStore({
       }
     },
 
-    async del(params) {
+    async info() {
       try {
-        const response = await api.del(params);
+        const response = await api.info();
         return response;
       } catch (error) {
         console.error("编辑失败:", error);

@@ -37,8 +37,8 @@ export function useColumns() {
   const statusMap = {
     1: { text: "待审核", color: "text-orange-600" },
     2: { text: "审核通过", color: "text-blue-600" },
-    3: { text: "审核拒绝", color: "text-red-500" },
-    4: { text: "已提佣", color: "text-green-400" }
+    3: { text: "审核拒绝", color: "text-red" },
+    4: { text: "已提佣", color: "text-green-600" }
   };
 
   const columns = [

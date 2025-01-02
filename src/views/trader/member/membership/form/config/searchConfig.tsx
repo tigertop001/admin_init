@@ -36,15 +36,15 @@ export interface SearchEmits {
 export const searchOptions = {
   account: [
     { label: "UID", value: "uid", typename: "会员" },
-    { label: "账号", value: "username", typename: "会员" }
+    { label: "账号", value: "account", typename: "会员" }
   ],
   parentAccount: [
-    { label: "UID", value: "sUid", typename: "上级代理" },
-    { label: "账号", value: "supName", typename: "上级代理" }
+    { label: "UID", value: "uid", typename: "上级代理" },
+    { label: "账号", value: "account", typename: "上级代理" }
   ],
   inviterAccount: [
-    { label: "UID", value: "initUid", typename: "邀请人" },
-    { label: "账号", value: "initName", typename: "邀请人" }
+    { label: "UID", value: "uid", typename: "邀请人" },
+    { label: "账号", value: "account", typename: "邀请人" }
   ]
 } as const;
 
@@ -52,7 +52,7 @@ const fieldMappings = {
   account: {
     label: "会员",
     typeKey: "sAccountType",
-    contentKey: "sAccountType",
+    contentKey: "sAccountContent",
     options: searchOptions.account
   },
   parentAccount: {
@@ -71,8 +71,8 @@ const fieldMappings = {
 
 export const crtDFS = (): SearchStateType => ({
   account: { content: null, type: "uid", label: "UID" },
-  parentAccount: { content: null, type: "sUid", label: "UID" },
-  inviterAccount: { content: null, type: "initUid", label: "UID" },
+  parentAccount: { content: null, type: "uid", label: "UID" },
+  inviterAccount: { content: null, type: "uid", label: "UID" },
   regTimeStart: null,
   regTimeEnd: null,
   loginTimeStart: null,

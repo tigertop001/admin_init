@@ -38,11 +38,11 @@ export function useColumns(activeType: Ref<number>) {
   const dtLst = ref([]);
 
   const statusMap = {
-    1: { text: "待发放", color: "text-yellow-500" },
-    2: { text: "已发放", color: "text-green-500" },
+    1: { text: "等待中", color: "text-yellow-500" },
+    2: { text: "已发放", color: "text-green-600" },
     3: { text: "审核中", color: "text-blue-500" },
     4: { text: "已取消", color: "text-orange-400" },
-    5: { text: "发放中", color: "text-red-500" }
+    5: { text: "进行中", color: "text-red" }
   };
 
   const columns = [

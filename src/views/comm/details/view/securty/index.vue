@@ -10,7 +10,7 @@ interface Props {
   rowDt?: any;
 }
 
-const { state, columns, onSub, onSubErr, onReset } = useColumns(
+const { state, columns, onSub, onSubErr, onReset, columnsTel } = useColumns(
   props.rowDt.uid
 );
 
@@ -27,15 +27,31 @@ defineExpose({
 
 <template>
   <div class="pt-10">
-    <PlusForm
-      v-model="state"
-      class="w-[380px] m-auto"
-      :columns="columns"
-      label-position="left"
-      @submit="onSub"
-      @submit-error="onSubErr"
-      @reset="onReset"
-    />
+    <div class="pt-10 flex justify-center">
+      <PlusForm
+        v-model="state"
+        class="m-auto w-[280px]"
+        :columns="columns"
+        label-position="left"
+        :reset="false"
+        :hide-reset-button="true"
+        :actions="['submit']"
+        @submit="formValues => onSub('uname', formValues)"
+        @submit-error="onSubErr"
+      />
+
+      <PlusForm
+        v-model="state"
+        class="m-auto w-[280px]"
+        :columns="columnsTel"
+        label-position="left"
+        :reset="false"
+        :hide-reset-button="true"
+        :actions="['submit']"
+        @submit="formValues => onSub('phoneNum', formValues)"
+        @submit-error="onSubErr"
+      />
+    </div>
   </div>
   <div class="flex justify-center pt-20">
     <el-button type="danger" @click="onReLog">重置登录密码</el-button>
@@ -47,5 +63,10 @@ defineExpose({
     <el-button type="danger">清除虚拟币提现限制</el-button>
     <el-button type="danger">清除NG扑克稽核限制</el-button>
   </div>
-  <Dlg v-model:visible="dlgVis" :type="actTp" @submit="onChgSub" />
+  <Dlg
+    v-model:visible="dlgVis"
+    :type="actTp"
+    :uid="props.rowDt?.uid"
+    @submit="onChgSub"
+  />
 </template>

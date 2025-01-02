@@ -5,9 +5,7 @@ import { message } from "@/utils/message";
 export function useColumns() {
   const store = useMemBanSet();
 
-  // 初始化显示时间
   onMounted(() => {
-    // 登录密码封禁时间初始化
     const loginSeconds = formData.value.loginPwdTimes;
     const loginUnit =
       timeOptions.find(
@@ -18,7 +16,6 @@ export function useColumns() {
     loginTimeUnit.value = loginUnit;
     displayLoginTime.value = loginSeconds / loginUnit;
 
-    // 订单取消封禁时间初始化
     const orderSeconds = formData.value.orderCancelTimes;
     const orderUnit =
       timeOptions.find(
@@ -28,41 +25,57 @@ export function useColumns() {
       )?.value || 60;
     orderTimeUnit.value = orderUnit;
     displayOrderTime.value = orderSeconds / orderUnit;
+
+    getInfo();
   });
 
-  // 表单数据
+  interface Option<T = any> {
+    value: T;
+    text: string;
+  }
+  interface BaseObject {
+    [key: string]: Option | string | number | boolean | null;
+  }
+  const infoData = ref<BaseObject>({});
+
+  const getInfo = async () => {
+    try {
+      const res = await store.info();
+      if (res?.code === 0) {
+        infoData.value = res.data;
+      }
+    } catch (error) {
+      console.error("获取数据失败:", error);
+      message("获取数据失败", { type: "error" });
+    }
+  };
+
   const formData = ref({
-    // 登录密码相关
-    loginPwdChecked: true, // 选中状态，改用 boolean
+    loginPwdChecked: true,
     loginPwdCounts: 5,
-    loginPwdAuto: 1, // 1:是 2:否
-    loginPwdTimes: 300, // 存储秒数
+    loginPwdAuto: 1,
+    loginPwdTimes: 300,
     loginPwdNotice: "账户已被锁定，请10分钟后再试。",
 
-    // 订单取消相关
-    orderCancelChecked: true, // 选中状态，改用 boolean
+    orderCancelChecked: true,
     orderCancelCounts: 300,
-    orderCancelAuto: 1, // 1:是 2:否
-    orderCancelTimes: 600, // 存储秒数
+    orderCancelAuto: 1,
+    orderCancelTimes: 600,
     orderCancelNotice: "账户已被锁定，请联系在线客服处理。"
   });
 
-  // 时间选择
   const timeOptions = [
     { label: "分钟", value: 60 },
     { label: "小时", value: 3600 },
     { label: "天", value: 86400 }
   ];
 
-  // 选中的时间单位
-  const loginTimeUnit = ref(60); // 默认分钟
+  const loginTimeUnit = ref(60);
   const orderTimeUnit = ref(60);
 
-  // 实际显示的时间数值
   const displayLoginTime = ref(5);
   const displayOrderTime = ref(10);
 
-  // 监听时间单位变化，转换秒数
   watch([displayLoginTime, loginTimeUnit], () => {
     formData.value.loginPwdTimes = displayLoginTime.value * loginTimeUnit.value;
   });
@@ -72,12 +85,10 @@ export function useColumns() {
       displayOrderTime.value * orderTimeUnit.value;
   });
 
-  // 保存配置
   const saveConfig = async () => {
     try {
       const subData: any = {};
 
-      // 如果登录密码错误选中
       if (formData.value.loginPwdChecked) {
         subData.loginPwdCounts = Number(formData.value.loginPwdCounts);
         subData.loginPwdAuto = Number(formData.value.loginPwdAuto);
@@ -85,7 +96,6 @@ export function useColumns() {
         subData.loginPwdNotice = formData.value.loginPwdNotice;
       }
 
-      // 如果连续取消订单选中
       if (formData.value.orderCancelChecked) {
         subData.orderCancelCounts = Number(formData.value.orderCancelCounts);
         subData.orderCancelAuto = Number(formData.value.orderCancelAuto);
