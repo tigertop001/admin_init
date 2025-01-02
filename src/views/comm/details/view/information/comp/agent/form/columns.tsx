@@ -1,9 +1,6 @@
 import type { AdaptiveConfig } from "@pureadmin/table";
 
 export function useColumns() {
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "代理UID",
@@ -31,9 +28,6 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 自适应高度配置
-   */
   const adapConf: AdaptiveConfig = {
     offsetBottom: 110,
     fixHeader: false

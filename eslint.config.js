@@ -13,7 +13,9 @@ export default defineFlatConfig([
     ...js.configs.recommended,
     ignores: [
       "**/.*",
-      "dist/*",
+      "**/dist/**",
+      "**/dist/*.js",
+      "dist/**/*",
       "*.d.ts",
       "public/*",
       "src/assets/**",
@@ -21,7 +23,6 @@ export default defineFlatConfig([
     ],
     languageOptions: {
       globals: {
-        // index.d.ts
         RefType: "readonly",
         EmitType: "readonly",
         TargetContext: "readonly",
@@ -109,10 +110,11 @@ export default defineFlatConfig([
         { allowBitwiseExpressions: true }
       ],
       "@typescript-eslint/no-unused-vars": [
-        "error",
+        "warn",
         {
           argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_"
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true
         }
       ]
     }
@@ -163,7 +165,7 @@ export default defineFlatConfig([
       ...pluginVue.configs["vue3-essential"].rules,
       ...pluginVue.configs["vue3-recommended"].rules,
       "no-undef": "off",
-      "no-unused-vars": "warn",
+      "no-unused-vars": "off",
       "vue/no-unused-vars": "warn",
       "no-empty": "warn",
       "vue/no-v-html": "off",

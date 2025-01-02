@@ -1,19 +1,19 @@
-import { ref, onMounted } from "vue";
+import { ref, onMounted, Fragment } from "vue";
 import { clone } from "@pureadmin/utils";
 import { useMemVipSet } from "../store";
 import { message } from "@/utils/message";
+import { get } from "lodash";
 
 export function useColumns() {
   const store = useMemVipSet();
   const editMap = ref({});
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
-  // 获取列表数据
   const getList = async () => {
     try {
       const res = await store.list({});
       if (res?.code === 0) {
-        dataList.value = res.data?.list || [];
+        dtLst.value = res.data?.list || [];
       } else {
         message(res?.msg || "获取数据失败", { type: "error" });
       }
@@ -33,7 +33,7 @@ export function useColumns() {
       label: "VIP等级",
       prop: "level",
       cellRenderer: ({ row, index }) => (
-        <>
+        <Fragment>
           {editMap.value[index]?.editable ? (
             <el-input
               modelValue={editMap.value[index].level}
@@ -45,131 +45,156 @@ export function useColumns() {
           ) : (
             <p>{row.level}</p>
           )}
-        </>
+        </Fragment>
       )
     },
     {
       label: "晋级条件(累计有效投注)",
-      prop: "upgradeCon",
+      prop: "config",
       cellRenderer: ({ row, index }) => (
-        <>
+        <Fragment>
           {editMap.value[index]?.editable ? (
             <el-input
-              modelValue={editMap.value[index].upgradeCon}
+              modelValue={editMap.value[index].config.betUpgrade}
               onUpdate:modelValue={val => {
-                editMap.value[index].upgradeCon = val;
-                row.upgradeCon = val;
+                editMap.value[index].config.betUpgrade = val;
+                row.config.betUpgrade = val;
               }}
             />
           ) : (
-            <p>{row.upgradeCon}</p>
+            <p>{row.config.betUpgrade}</p>
           )}
-        </>
+        </Fragment>
       )
     },
     {
       label: "VIP奖金",
-      prop: "upgradeMoney",
+      prop: "reward",
       children: [
         {
           label: "晋级奖金",
-          prop: "upgradeMoney",
+          prop: "reward",
           cellRenderer: ({ row, index }) => (
-            <>
+            <Fragment>
               {editMap.value[index]?.editable ? (
                 <el-input
-                  modelValue={editMap.value[index].upgradeMoney}
+                  modelValue={
+                    editMap.value[index].config.reward.levelReward.amount
+                  }
                   onUpdate:modelValue={val => {
-                    editMap.value[index].upgradeMoney = val;
-                    row.upgradeMoney = val;
+                    // 保持原有的 amountCode
+                    editMap.value[index].config.reward.levelReward = {
+                      amount: val,
+                      amountCode: row.config.reward.levelReward.amountCode
+                    };
+                    row.config.reward.levelReward = {
+                      amount: val,
+                      amountCode: row.config.reward.levelReward.amountCode
+                    };
                   }}
                 />
               ) : (
-                <p>{row.upgradeMoney}</p>
+                <p>{row.config.reward.levelReward.amount}</p>
               )}
-            </>
+            </Fragment>
           )
         },
         {
           label: "周礼金",
           prop: "weekMoney",
           cellRenderer: ({ row, index }) => (
-            <>
+            <Fragment>
               {editMap.value[index]?.editable ? (
                 <el-input
-                  modelValue={editMap.value[index].weekMoney}
+                  modelValue={
+                    editMap.value[index].config.reward.weeklyReward.amount
+                  }
                   onUpdate:modelValue={val => {
-                    editMap.value[index].weekMoney = val;
-                    row.weekMoney = val;
+                    editMap.value[index].config.reward.weeklyReward = {
+                      amount: val,
+                      amountCode: row.config.reward.weeklyReward.amountCode
+                    };
+                    row.config.reward.weeklyReward = {
+                      amount: val,
+                      amountCode: row.config.reward.weeklyReward.amountCode
+                    };
                   }}
                 />
               ) : (
-                <p>{row.weekMoney}</p>
+                <p>{row.config.reward.weeklyReward.amount}</p>
               )}
-            </>
+            </Fragment>
           )
         },
         {
           label: "月礼金",
           prop: "monthMoney",
           cellRenderer: ({ row, index }) => (
-            <>
+            <Fragment>
               {editMap.value[index]?.editable ? (
                 <el-input
-                  modelValue={editMap.value[index].monthMoney}
+                  modelValue={
+                    editMap.value[index].config.reward.monthlyReward.amount
+                  }
                   onUpdate:modelValue={val => {
-                    editMap.value[index].monthMoney = val;
-                    row.monthMoney = val;
+                    editMap.value[index].config.reward.monthlyReward = {
+                      amount: val,
+                      amountCode: row.config.reward.monthlyReward.amountCode
+                    };
+                    row.config.reward.monthlyReward = {
+                      amount: val,
+                      amountCode: row.config.reward.monthlyReward.amountCode
+                    };
                   }}
                 />
               ) : (
-                <p>{row.monthMoney}</p>
+                <p>{row.config.reward.monthlyReward.amount}</p>
               )}
-            </>
+            </Fragment>
           )
         }
       ]
     },
     {
       label: "VIP特权",
-      prop: "dayDrawTimes",
+      prop: "config",
       children: [
         {
           label: "日提款次数",
-          prop: "dayDrawTimes",
+          prop: "dailyWithdrawTimes",
           cellRenderer: ({ row, index }) => (
-            <>
+            <Fragment>
               {editMap.value[index]?.editable ? (
                 <el-input
-                  modelValue={editMap.value[index].dayDrawTimes}
+                  modelValue={editMap.value[index].config.dailyWithdrawTimes}
                   onUpdate:modelValue={val => {
-                    editMap.value[index].dayDrawTimes = val;
-                    row.dayDrawTimes = val;
+                    editMap.value[index].config.dailyWithdrawTimes = val;
+                    row.config.dailyWithdrawTimes = val;
                   }}
                 />
               ) : (
-                <p>{row.dayDrawTimes}</p>
+                <p>{row.config.dailyWithdrawTimes}</p>
               )}
-            </>
+            </Fragment>
           )
         },
         {
           label: "日提款金额",
-          prop: "dayDrawMoney",
+          prop: "dailyWithdrawQuota",
           cellRenderer: ({ row, index }) => (
-            <>
+            <Fragment>
               {editMap.value[index]?.editable ? (
                 <el-input
-                  modelValue={editMap.value[index].dayDrawMoney}
+                  modelValue={editMap.value[index].config.dailyWithdrawQuota}
                   onUpdate:modelValue={val => {
-                    editMap.value[index].dayDrawMoney = val;
-                    row.dayDrawMoney = val;
+                    editMap.value[index].config.dailyWithdrawQuota = val;
+                    row.config.dailyWithdrawQuota = val;
                   }}
                 />
               ) : (
-                <p>{row.dayDrawMoney}</p>
+                <p>{row.config.dailyWithdrawQuota}</p>
               )}
-            </>
+            </Fragment>
           )
         }
       ]
@@ -183,28 +208,36 @@ export function useColumns() {
   ];
 
   function onAdd() {
-    const newIndex = dataList.value.length;
+    const newIndex = dtLst.value.length;
+    const level = dtLst.value.length + 1;
+
     const newRow = {
       id: newIndex + 1,
-      level: "",
-      upgradeCon: "",
-      upgradeMoney: "",
-      weekMoney: "",
-      monthMoney: "",
-      dayDrawTimes: "",
-      dayDrawMoney: ""
+      bizId: `VIP${level}`,
+      level: level,
+      config: {
+        betUpgrade: "",
+        rechargeUpgrade: "",
+        dailyWithdrawTimes: "",
+        dailyWithdrawQuota: "",
+        reward: {
+          levelReward: { amount: "", amountCode: 1 },
+          weeklyReward: { amount: "", amountCode: 1 },
+          monthlyReward: { amount: "", amountCode: 1 }
+        }
+      }
     };
-    dataList.value.push(newRow);
+
+    dtLst.value.push(newRow);
     editMap.value[newIndex] = { ...newRow, editable: true, isNew: true };
   }
 
-  // 删除行
   async function onDel(row) {
     try {
       const res = await store.del({ id: Number(row.id) });
       if (res?.code === 0) {
         message("删除成功", { type: "success" });
-        getList(); // 重新获取列表
+        getList();
       } else {
         message(res?.msg || "删除失败", { type: "error" });
       }
@@ -214,54 +247,70 @@ export function useColumns() {
     }
   }
 
-  // 编辑行
   function onEdit(row, index) {
     editMap.value[index] = Object.assign({ ...row, editable: true });
   }
 
-  // 保存编辑或新增
   async function onSave(index) {
     const currentData = editMap.value[index];
+
+    if (!currentData.level) {
+      message("请填写VIP等级", { type: "warning" });
+      return;
+    }
+
+    // 构建提交数据，使用编辑框中的值
     const subData = {
-      level: String(currentData.level).trim(),
-      upgradeCon: Number(currentData.upgradeCon),
-      upgradeMoney: Number(currentData.upgradeMoney),
-      weekMoney: Number(currentData.weekMoney),
-      monthMoney: Number(currentData.monthMoney),
-      dayDrawTimes: Number(currentData.dayDrawTimes),
-      dayDrawMoney: Number(currentData.dayDrawMoney)
+      bizId: `VIP${currentData.level}`,
+      level: Number(currentData.level),
+      config: {
+        betUpgrade: currentData.config.betUpgrade || "0",
+        rechargeUpgrade: currentData.config.rechargeUpgrade || "0",
+        dailyWithdrawTimes: Number(currentData.config.dailyWithdrawTimes || 0),
+        dailyWithdrawQuota: currentData.config.dailyWithdrawQuota || "0",
+        reward: {
+          levelReward: {
+            amount: currentData.config.reward.levelReward.amount || "0",
+            amountCode: currentData.config.reward.levelReward.amountCode
+          },
+          weeklyReward: {
+            amount: currentData.config.reward.weeklyReward.amount || "0",
+            amountCode: currentData.config.reward.weeklyReward.amountCode
+          },
+          monthlyReward: {
+            amount: currentData.config.reward.monthlyReward.amount || "0",
+            amountCode: currentData.config.reward.monthlyReward.amountCode
+          }
+        }
+      }
     };
 
-    // 验证必填字段
     if (!subData.level) {
       message("请填写VIP等级", { type: "warning" });
       return;
     }
 
-    // 验证其他数字类型字段
-    const numberFields = {
-      upgradeCon: "晋级条件",
-      upgradeMoney: "晋级奖金",
-      weekMoney: "周礼金",
-      monthMoney: "月礼金",
-      dayDrawTimes: "日提款次数",
-      dayDrawMoney: "日提款金额"
+    const requiredFields = {
+      "config.betUpgrade": "晋级条件",
+      "config.dailyWithdrawTimes": "日提款次数",
+      "config.dailyWithdrawQuota": "日提款金额",
+      "config.reward.levelReward.amount": "晋级奖金",
+      "config.reward.weeklyReward.amount": "周礼金",
+      "config.reward.monthlyReward.amount": "月礼金"
     };
 
-    for (const [field, label] of Object.entries(numberFields)) {
-      if (!subData[field] && subData[field] !== 0) {
+    for (const [field, label] of Object.entries(requiredFields)) {
+      const value = get(currentData, field);
+      if (value === undefined || value === "" || value === null) {
         message(`请填写${label}`, { type: "warning" });
         return;
       }
     }
-
     try {
       let res;
       if (currentData.isNew) {
-        // 新增
         res = await store.add(subData);
       } else {
-        // 编辑
         res = await store.edit({
           ...subData,
           id: currentData.id
@@ -272,16 +321,12 @@ export function useColumns() {
         message(`${currentData.isNew ? "新增" : "修改"}成功`, {
           type: "success"
         });
-        await getList(); // 刷新列表
-
-        // 重置编辑状态
-        if (currentData.isNew) {
-          editMap.value[index] = {
-            ...currentData,
-            isNew: false, // 新增成功后设置为非新增状态
-            editable: false // 关闭编辑状态
-          };
-        }
+        await getList();
+        editMap.value[index] = {
+          ...currentData,
+          isNew: false,
+          editable: false
+        };
       } else {
         message(res?.msg || `${currentData.isNew ? "新增" : "修改"}失败`, {
           type: "error"
@@ -293,12 +338,11 @@ export function useColumns() {
     }
   }
 
-  // 取消编辑或新增
   function onCxl(index) {
     if (editMap.value[index].isNew) {
-      dataList.value.splice(index, 1);
+      dtLst.value.splice(index, 1);
     } else {
-      dataList.value[index] = clone(dataList.value[index], true);
+      dtLst.value[index] = clone(dtLst.value[index], true);
     }
     editMap.value[index] = undefined;
   }
@@ -310,7 +354,7 @@ export function useColumns() {
   return {
     editMap,
     columns,
-    dataList,
+    dtLst,
     onAdd,
     onDel,
     onEdit,

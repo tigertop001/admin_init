@@ -7,7 +7,7 @@ import { useColumns } from "./form/config/columns";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -27,7 +27,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- 数据表格 -->
   <pure-table
     ref="tableRef"
     adaptive
@@ -41,13 +40,12 @@ onMounted(() => {
     :adaptiveConfig="adapConf"
     :columns="columns"
     :pagination="pagination"
-    :data="dataList"
+    :data="dtLst"
     @page-size-change="onSzChg"
     @page-current-change="onCurChg"
   >
-    <!-- 操作列 -->
     <template #operation="{ row }">
-      <el-button link type="primary" size="small" @click="shwAdd()">
+      <el-button link type="primary" size="small" @click="shwAdd(row)">
         新增用户
       </el-button>
       <el-button link type="primary" size="small" @click="shwUsrLst(row)">
@@ -57,12 +55,16 @@ onMounted(() => {
   </pure-table>
 
   <!-- 添加标签弹窗 -->
-  <Add v-model:visible="addVis" @update:visible="addVis = $event" />
+  <Add
+    v-model:visible="addVis"
+    :rowDt="currRow"
+    @update:visible="addVis = $event"
+  />
   <!-- 用户列表弹窗 -->
   <Rec
     ref="recRef"
     v-model:visible="recVis"
-    :rowData="currRow"
+    :rowDt="currRow"
     @update:visible="recVis = $event"
   />
 </template>

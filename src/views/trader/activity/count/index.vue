@@ -7,7 +7,7 @@ import { useColumns } from "./form/config/columns";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -18,7 +18,8 @@ const {
   onCurChg,
   getList,
   onPrmUp,
-  shwAdd
+  shwAdd,
+  getSummaries
 } = useColumns();
 
 onMounted(() => {
@@ -28,12 +29,10 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
-    <!-- 搜索区域 -->
     <template #header>
-      <Search :exportData="dataList" @update:param="onPrmUp" @add="shwAdd(0)" />
+      <Search :exportData="dtLst" @update:param="onPrmUp" @add="shwAdd(0)" />
     </template>
 
-    <!-- 数据表格 -->
     <pure-table
       ref="tableRef"
       adaptive
@@ -47,17 +46,17 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
+      :show-summary="true"
+      :summary-method="getSummaries"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
     >
-      <!-- 操作列 -->
       <template #operation="{}">
         <el-button link type="primary" size="small"> 详情 </el-button>
       </template>
     </pure-table>
 
-    <!-- 添加标签弹窗 -->
     <Add
       v-model:visible="addVis"
       :editData="editData"

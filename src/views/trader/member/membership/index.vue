@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/**
- * 导入依赖和组件
- */
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
 // import Tag from "./dialog/tag.vue";
@@ -12,7 +9,7 @@ import Details from "@/views/comm/details/index.vue";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -31,9 +28,6 @@ const {
   onDetail
 } = useColumns();
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
 });
@@ -41,17 +35,15 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
-    <!-- 搜索区域 -->
     <template #header>
       <Search
         :expExcel="expExcel"
-        :exportData="dataList"
+        :exportData="dtLst"
         @update:param="onPrmUp"
         @add="onAdd"
       />
     </template>
 
-    <!-- 数据表格 -->
     <pure-table
       ref="tableRef"
       adaptive
@@ -65,11 +57,10 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
     >
-      <!-- 操作列 -->
       <template #operation="{ row }">
         <el-button link type="primary" size="small" @click="onDetail(row)">
           详情
@@ -88,6 +79,6 @@ onMounted(() => {
     />
 
     <!-- 会员详情 -->
-    <Details v-model:visible="dtlsVis" title="会员详情" :rowData="curRow" />
+    <Details v-model:visible="dtlsVis" title="会员详情" :rowDt="curRow" />
   </el-card>
 </template>

@@ -7,10 +7,12 @@ import {
   type FormItemValueType,
   PlusDialogForm
 } from "plus-pro-components";
+import { usePullData } from "@/views/trader/comm/pull/activity/form/columns";
+const { getPullData, currentData, formatOptions } = usePullData("ACT");
 
 const props = defineProps<{
   editData?: FieldValues;
-  type?: number; // 0新增，1修改，2详情
+  type?: number;
 }>();
 
 const dlgConf = computed(() => {
@@ -45,6 +47,11 @@ const formData = ref<FieldValues>({
   remark: null
 });
 
+const opt = computed(() => {
+  if (!currentData.value?.data?.list) return [];
+  return formatOptions(currentData.value.data.list);
+});
+
 const columns = computed<PlusColumn[]>(() => {
   const isEdit = props.type === 1;
   const isDetail = props.type === 2;
@@ -56,20 +63,21 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "activityId",
       valueType: "select",
-      options: [
-        {
-          label: "自定义活动1",
-          value: 120003
-        },
-        {
-          label: "自定义活动2",
-          value: 120008
-        },
-        {
-          label: "自定义活动4",
-          value: 120003
-        }
-      ],
+      options: opt.value,
+      // options: [
+      //   {
+      //     label: "自定义活动1",
+      //     value: 120003
+      //   },
+      //   {
+      //     label: "自定义活动2",
+      //     value: 120008
+      //   },
+      //   {
+      //     label: "自定义活动4",
+      //     value: 120003
+      //   }
+      // ],
       rules: [
         {
           required: true,
@@ -108,7 +116,7 @@ const columns = computed<PlusColumn[]>(() => {
       width: 120,
       labelWidth: 100,
       prop: "amount",
-      valueType: "input-number",
+      valueType: "input",
       fieldProps: {
         disabled: isDetail,
         precision: 0,
@@ -200,7 +208,7 @@ const parseExtendData = (extendStr: string) => {
     const extendData = JSON.parse(extendStr);
     return {
       uids: extendData.uids || "",
-      amount: Number(extendData.amount) || null
+      amount: extendData.amount || null
     };
   } catch (error) {
     console.error("Parse extend data error:", error);
@@ -226,21 +234,19 @@ const rstFrm = () => {
   }
 };
 
-// 监听 distributeType 和其他数据的变化
 watch(
   () => formData.value.distributeType,
   newType => {
-    // 仅在编辑模式下且选择"全部"时，清空 uids
     if (props.type === 1 && newType === 1) {
       formData.value.uids = "";
     }
   }
 );
 
-// 监听 type 和 editData 的变化，用于初始化表单
 watch(
   [() => props.type, () => props.editData],
-  ([type, editData]) => {
+  async ([type, editData]) => {
+    await getPullData({ type: 1 });
     if (type === 0) {
       formData.value = crtDefVal(columns.value);
     } else if ([1, 2].includes(type) && editData) {

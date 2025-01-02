@@ -1,30 +1,20 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { ref } from "vue";
-/**
- * 导入组件和工具
- */
+
 import Add from "@iconify-icons/ri/add-circle-line";
 import Subtract from "@iconify-icons/ri/indeterminate-circle-line";
 import ACCTLST from "./comp/index.vue";
 
 import type { UserRowData } from "../../types";
 interface Props {
-  rowData?: UserRowData;
-  resData?: any;
+  rowDt?: UserRowData;
+  resDt?: any;
 }
-/**
- * 父级传来的数据---start
- */
+
 const props = defineProps<Props>();
-const rowData = props.rowData;
-const resData = props.resData;
-console.log(rowData, resData);
-/**
- * 父级传来的数据---end
- */
+const rowDt = props.rowDt;
+const resDt = props.resDt;
+console.log(rowDt, resDt);
 
 const isShow = ref(false);
 const showTable = () => {
@@ -58,5 +48,5 @@ const showTable = () => {
   </el-col>
 </template>
 <style lang="scss" scoped>
-@import url("../../styles/index.scss"); // 样式通过 scoped 限制
+@import url("../../styles/index.scss");
 </style>

@@ -4,15 +4,13 @@ import Search from "./form/search.vue";
 import type { UserRowData } from "./types";
 
 interface Props {
-  rowData?: UserRowData | null;
+  rowDt?: UserRowData | null;
 }
 
 const props = defineProps<Props>();
 
-// 定义选中的 tab 名称
 const actNm = ref("ip");
 
-// 定义 tabs 数据
 const tabs = [
   { label: "同最近登录IP(0)", name: "ip" },
   { label: "同设备(0)", name: "device" },
@@ -30,7 +28,7 @@ const currentTab = computed(
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -40,18 +38,14 @@ const {
   onPrmUp,
   updateTabItem
 } = useColumns({
-  uid: props.rowData?.uid,
+  uid: props.rowDt?.uid,
   tabItem: currentTab.value.name
 });
 
-// 点击 tab 时的处理函数
 const onClk = () => {
   updateTabItem(currentTab.value.name);
 };
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
 });
@@ -59,12 +53,11 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
-    <!-- 搜索区域 -->
     <template #header>
       <Search
-        :exportData="dataList"
+        :exportData="dtLst"
         :obj="{
-          uid: props.rowData?.uid,
+          uid: props.rowDt?.uid,
           tabItem: currentTab.name
         }"
         @update:param="onPrmUp"
@@ -80,7 +73,6 @@ onMounted(() => {
       />
     </el-tabs>
 
-    <!-- 数据表格 -->
     <pure-table
       ref="tableRef"
       adaptive
@@ -94,7 +86,7 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
     />

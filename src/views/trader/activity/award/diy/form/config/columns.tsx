@@ -36,7 +36,7 @@ export function useColumns(activeType: Ref<number>) {
     }
   });
 
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const addVis = ref(false);
   const addType = ref(0);
@@ -49,9 +49,6 @@ export function useColumns(activeType: Ref<number>) {
     5: { text: "发放中", color: "text-red-500" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "活动ID",
@@ -144,9 +141,6 @@ export function useColumns(activeType: Ref<number>) {
     getList(newParam);
   };
 
-  /**
-   * 弹窗相关方法
-   */
   const shwAdd = (type: number) => {
     if (type === 0) {
       editData.value = null;
@@ -164,9 +158,6 @@ export function useColumns(activeType: Ref<number>) {
     await getList(searchParam.value);
   };
 
-  /**
-   * CRUD 操作方法
-   */
   const onEdit = (row: any) => {
     editData.value = row;
     shwAdd(1);
@@ -255,11 +246,8 @@ export function useColumns(activeType: Ref<number>) {
     }
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -267,7 +255,7 @@ export function useColumns(activeType: Ref<number>) {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

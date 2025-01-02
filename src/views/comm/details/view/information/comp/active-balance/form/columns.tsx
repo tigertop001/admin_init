@@ -2,14 +2,8 @@ import type { AdaptiveConfig } from "@pureadmin/table";
 import { ref } from "vue";
 
 export function useColumns() {
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "游戏名称",
@@ -36,22 +30,18 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 自适应高度配置
-   */
   const adapConf: AdaptiveConfig = {
     offsetBottom: 110,
     fixHeader: false
   };
 
-  // 设置表格数据
   const setData = (data: any[]) => {
-    dataList.value = data;
+    dtLst.value = data;
   };
 
   return {
     columns,
-    dataList,
+    dtLst,
     adapConf,
     setData
   };

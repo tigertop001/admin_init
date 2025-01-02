@@ -2,7 +2,6 @@
   <el-config-provider :locale="currentLocale">
     <router-view />
     <ReDialog />
-    <!-- <ReFloatButton :floatBtns="floatBtns" /> -->
   </el-config-provider>
 </template>
 
@@ -18,13 +17,10 @@ import zhTw from "element-plus/es/locale/lang/zh-tw";
 import plusEn from "plus-pro-components/es/locale/lang/en";
 import plusZhCn from "plus-pro-components/es/locale/lang/zh-cn";
 import { ReDialog } from "@/components/ReDialog";
-// import ReFloatButton from "@/components/ReFloatButton";
 
-// 响应式状态
 const storage = useStorage<{ locale?: string }>("locale", { locale: "zh" }); // Initialize with a key and a default value
 const locale = computed(() => storage.value.locale);
 
-// 当前语言的计算属性
 const currentLocale = computed(() => {
   switch (locale.value) {
     case "zh":
@@ -42,7 +38,6 @@ const currentLocale = computed(() => {
   }
 });
 
-// 生命周期钩子
 onBeforeMount(() => {
   const { version, name: title } = __APP_INFO__.pkg;
   const { VITE_PUBLIC_PATH, MODE } = import.meta.env;

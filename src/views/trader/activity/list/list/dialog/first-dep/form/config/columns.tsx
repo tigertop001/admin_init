@@ -19,8 +19,8 @@ export function useColumns() {
     }
   };
 
-  // 在 setFormData 中调用
-  const setFormData = (data: any) => {
+  // 在 setData 中调用
+  const setData = (data: any) => {
     Object.assign(state.value, {
       name: data.name,
       startAt: data.startAt,
@@ -237,6 +237,6 @@ export function useColumns() {
     onSub,
     onSubErr,
     onReset,
-    setFormData
+    setData
   };
 }

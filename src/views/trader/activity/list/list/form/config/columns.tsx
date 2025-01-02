@@ -7,7 +7,6 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useActiveList } from "../store";
 const store = useActiveList();
 
-// 初始查询参数
 import { crtDFS } from "./searchConfig";
 const searchParam = ref(crtDFS());
 export function useColumns() {
@@ -30,18 +29,12 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
-  // 状态管理
   const editData = ref();
   const addVis = ref(false);
   const addType = ref(0);
-  /**
-   * 数据获取方法
-   */
+
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -57,17 +50,11 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 搜索参数更新
-   */
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 弹窗控制方法
-   */
   const shwAdd = async (type: number, value) => {
     editData.value = value;
     addType.value = type;
@@ -80,9 +67,6 @@ export function useColumns() {
     }, 0);
   };
 
-  /**
-   * 成功之后的回调
-   */
   const onSucc = async () => {
     addVis.value = false;
     editData.value = null;
@@ -90,19 +74,12 @@ export function useColumns() {
     await getList(searchParam.value);
   };
 
-  /**
-   * 显示表单处理显示表单逻辑
-   */
   const onDlogSub = async formData => {
     const cleanedData = { ...formData };
     console.log("提交的表单数据：", cleanedData);
     await onAddSub(formData);
-    // 处理提交逻辑
   };
 
-  /**
-   * 显示表单处理提交逻辑
-   */
   const onAddSub = async (formData: FieldValues) => {
     if (addType.value === 0) {
       await onAdd(formData);
@@ -113,9 +90,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 新增
-   */
   const onAdd = async (params: any) => {
     try {
       const res = await store.add(params as object);
@@ -131,9 +105,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 编辑处理
-   */
   const onEdit = async () => {
     if (!editData.value.id) {
       message("数据异常", { type: "error" });
@@ -154,9 +125,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 详情
-   */
   const onInfo = async (params: any) => {
     if (!params || !params.id) {
       message("数据异常", { type: "error" });
@@ -166,8 +134,7 @@ export function useColumns() {
       const res = await store.info({ id: params.id });
       if (res?.code === 0) {
         editData.value = res.data;
-        addVis.value = true; // 显示弹窗
-        console.log(res.data, "editData.value--- editData.value");
+        addVis.value = true;
         await onSucc();
       } else {
         message(res?.msg || "获取活动信息失败", { type: "error" });
@@ -178,9 +145,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 删除
-   */
   const onDel = async (row: any) => {
     if (!row || !row.id) {
       message("数据异常", { type: "error" });
@@ -202,9 +166,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 发布
-   */
   const onPub = async (row: any) => {
     if (!row || !row.id) {
       message("数据异常", { type: "error" });
@@ -226,9 +187,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 结束
-   */
   const onEnd = async (row: any) => {
     if (!row || !row.id) {
       message("数据异常", { type: "error" });
@@ -250,9 +208,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 状态映射配置
-   */
   const statusMap = {
     1: { text: "未发布", color: "text-red-500" },
     2: { text: "未开始 ", color: "text-orange-400" },
@@ -261,9 +216,6 @@ export function useColumns() {
     5: { text: "手动结束 ", color: "text-amber-600" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "活动ID",
@@ -348,11 +300,8 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -360,7 +309,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

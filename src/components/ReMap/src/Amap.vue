@@ -48,13 +48,10 @@ onBeforeMount(() => {
     plugins: ["AMap.MarkerCluster"]
   })
     .then(AMap => {
-      // 创建地图实例
       map = new AMap.Map(instance.refs.mapview, options);
 
-      //地图中添加地图操作ToolBar插件
       map.plugin(["AMap.ToolBar", "AMap.MapType"], () => {
         map.addControl(new AMap.ToolBar());
-        //地图类型切换
         map.addControl(
           new AMap.MapType({
             defaultType: 0
@@ -63,7 +60,6 @@ onBeforeMount(() => {
       });
 
       MarkerCluster = new AMap.MarkerCluster(map, [], {
-        // 聚合网格像素大小
         gridSize: 80,
         maxZoom: 14,
         renderMarker(ctx) {
@@ -76,21 +72,18 @@ onBeforeMount(() => {
             marker.setContent(content);
             marker.setLabel({
               direction: "bottom",
-              //设置文本标注偏移量
               offset: new AMap.Pixel(-4, 0),
-              //设置文本标注内容
               content: `<div> ${plateNumber}(${driver})</div>`
             });
             marker.setOffset(new AMap.Pixel(-18, -10));
             marker.on("click", ({ lnglat }) => {
-              map.setZoom(13); //设置地图层级
+              map.setZoom(13);
               map.setCenter(lnglat);
             });
           }
         }
       });
 
-      // 获取模拟车辆信息
       mapJson()
         .then(({ data }) => {
           const points: object = data.map(v => {
@@ -115,7 +108,6 @@ onBeforeMount(() => {
 
 onUnmounted(() => {
   if (map) {
-    // 销毁地图实例
     map.destroy() && map.clearEvents("click");
   }
 });

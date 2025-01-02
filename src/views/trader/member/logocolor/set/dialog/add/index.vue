@@ -4,6 +4,7 @@ import { useAddDialog } from "./form/config/addConfig";
 
 const props = defineProps<{
   visible: boolean;
+  rowDt?: any;
 }>();
 
 const emit = defineEmits<{
@@ -11,12 +12,22 @@ const emit = defineEmits<{
   (_e: "update:visible", _visible: boolean): void;
 }>();
 
-const { remark, onSub, resetForm } = useAddDialog(emit);
+const { remark, onSub, resetForm } = useAddDialog(emit, props);
 
 const dlgVis = computed({
   get: () => props.visible,
   set: val => emit("update:visible", val)
 });
+
+const clrMap = {
+  1: { text: "红色", color: "bg-red-500", texclr: "text-white" },
+  2: { text: "蓝色", color: "bg-blue-500", texclr: "text-white" },
+  3: { text: "绿色", color: "bg-green-500", texclr: "text-white" },
+  4: { text: "紫色", color: "bg-purple-500", texclr: "text-white" },
+  5: { text: "黄色", color: "bg-yellow-500", texclr: "text-white" },
+  6: { text: "黑色", color: "bg-black", texclr: "text-white" },
+  7: { text: "褐色", color: "bg-amber-600", texclr: "text-white" }
+};
 
 const onCls = () => {
   resetForm();
@@ -26,43 +37,52 @@ const onCls = () => {
 const onCfm = () => {
   onSub();
 };
+console.log("Props rowDt:", props.rowDt);
+console.log("Color mapping:", clrMap[props.rowDt?.color]);
 </script>
 
 <template>
   <el-dialog
     v-model="dlgVis"
-    title="添加黑名单"
-    width="800px"
+    title="新增用户"
+    width="500px"
     :close-on-click-modal="false"
     @close="onCls"
   >
-    <div class="flex flex-col gap-4">
-      <!-- 用户名 -->
-      <div class="w-full">
-        <el-form
-          :model="{ remark }"
-          :rules="{
-            remark: [
-              { required: true, message: '请输入用户名', trigger: 'blur' }
-            ]
-          }"
+    <el-form
+      :model="{ remark }"
+      :rules="{
+        remark: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
+      }"
+    >
+      <!-- 颜色标识 -->
+      <el-form-item label="用户颜色标识:" :label-width="100">
+        <div
+          :class="[
+            'rounded w-100% text-center',
+            clrMap[props.rowDt?.color]?.color,
+            clrMap[props.rowDt?.color]?.texclr
+          ]"
         >
-          <el-form-item label="用户名：" prop="remark">
-            <el-input
-              v-model="remark"
-              type="textarea"
-              :rows="3"
-              placeholder="请输入用户名"
-            />
-          </el-form-item>
-        </el-form>
-      </div>
-    </div>
+          {{ clrMap[props.rowDt?.color]?.text || "--" }}
+        </div>
+      </el-form-item>
+
+      <!-- 用户名 -->
+      <el-form-item label="用户名:" prop="remark" :label-width="100">
+        <el-input
+          v-model="remark"
+          type="textarea"
+          :rows="3"
+          placeholder="请输入用户名"
+        />
+      </el-form-item>
+    </el-form>
 
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="onCls">取消</el-button>
-        <el-button type="primary" @click="onCfm"> 确定 </el-button>
+        <el-button type="primary" @click="onCfm">确定</el-button>
       </div>
     </template>
   </el-dialog>

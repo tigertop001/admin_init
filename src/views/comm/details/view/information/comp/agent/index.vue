@@ -1,35 +1,23 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { ref } from "vue";
-/**
- * 导入组件和工具
- */
+
 import Add from "@iconify-icons/ri/add-circle-line";
 import Subtract from "@iconify-icons/ri/indeterminate-circle-line";
 
 import type { UserRowData } from "../../types";
 interface Props {
-  rowData?: UserRowData;
-  resData?: Result;
+  rowDt?: UserRowData;
+  resDt?: Result;
 }
 
 import { useColumns } from "./form/columns";
 const { columns } = useColumns();
 
-/**
- * 父级传来的数据---start
- */
 const props = defineProps<Props>();
-const rowData = props.rowData;
-const resData = props.resData.data.data;
-const dataList = ref([resData.agInf]);
-console.log(rowData, resData);
-
-/**
- * 父级传来的数据---end
- */
+const rowDt = props.rowDt;
+const resDt = props.resDt.data.data;
+const dtLst = ref([resDt.agentInfo]);
+console.log(rowDt, resDt);
 
 const isShow = ref(false);
 const showTable = () => {
@@ -40,7 +28,7 @@ const showTable = () => {
 <template>
   <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
     <div class="flex items-center gap-2">
-      <span>上级代理：{{ resData.agInf.account }}</span>
+      <span>上级代理：{{ resDt.agentInfo.account }}</span>
       <IconifyIconOffline
         v-if="isShow"
         width="22"
@@ -67,14 +55,14 @@ const showTable = () => {
       alignWhole="center"
       showOverflowTooltip
       :columns="columns"
-      :data="dataList"
+      :data="dtLst"
       :empty-size="100"
-      :height="dataList ? 'auto' : '100'"
+      :height="dtLst ? 'auto' : '100'"
       max-height="500"
-      :style="{ height: dataList ? '' : '100px' }"
+      :style="{ height: dtLst ? '' : '100px' }"
     />
   </el-col>
 </template>
 <style lang="scss" scoped>
-@import url("../../styles/index.scss"); // 样式通过 scoped 限制
+@import url("../../styles/index.scss");
 </style>

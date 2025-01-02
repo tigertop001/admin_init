@@ -83,7 +83,6 @@ function toggle(device: string, bool: boolean) {
   useAppStoreHook().toggleSideBar(bool, "resize");
 }
 
-// 判断是否可自动关闭菜单栏
 let isAutoCloseSidebar = true;
 
 useResizeObserver(appWrapperRef, entries => {
@@ -92,11 +91,7 @@ useResizeObserver(appWrapperRef, entries => {
   const [{ inlineSize: width, blockSize: height }] = entry.borderBoxSize;
   useAppStoreHook().setViewportSize({ width, height });
   width <= 760 ? setTheme("vertical") : setTheme(useAppStoreHook().layout);
-  /** width app-wrapper类容器宽度
-   * 0 < width <= 760 隐藏侧边栏
-   * 760 < width <= 990 折叠侧边栏
-   * width > 990 展开侧边栏
-   */
+
   if (width > 0 && width <= 760) {
     toggle("mobile", false);
     isAutoCloseSidebar = true;

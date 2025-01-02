@@ -22,7 +22,6 @@ const ALL_TEXT = "全部";
 
 CodeToText[""] = ALL_TEXT;
 
-// 计算省
 Object.keys(provinceObject).forEach(prop => {
   const provinceText = provinceObject[prop];
   regionData.push({
@@ -38,7 +37,6 @@ Object.keys(provinceObject).forEach(prop => {
   };
 });
 
-// 计算市
 regionData.forEach((item: ProvinceData) => {
   const provinceCode = item.value;
   const provinceText = item.label;
@@ -95,7 +93,6 @@ regionData.forEach((item: ProvinceData) => {
   }
 });
 
-// 添加“全部”选项
 const provinceAndCityDataPlus = cloneDeep(provinceAndCityData);
 provinceAndCityDataPlus.unshift({
   value: "",

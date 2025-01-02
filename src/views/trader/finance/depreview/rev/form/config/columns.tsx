@@ -10,23 +10,16 @@ import { fmtTs } from "@/utils/dateFormat";
 
 const store = useFdRev();
 
-// 初始查询参数
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  /**
-   * 状态管理
-   */
-  const dataList = ref([]);
-  // const dialogVis = ref(false);
-  // const curTag = ref<Record<string, any> | null>(null);
-  // const addMebVis = ref(false);
+  const dtLst = ref([]);
+
   const dtlsVis = ref(false);
   const curRow = ref<Record<string, any>>({});
 
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -46,9 +39,6 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 状态映射配置
-   */
   const statusMap = {
     1: { text: "申请充值", color: "text-orange-400" },
     2: { text: "充值成功 ", color: "text-green-600" },
@@ -60,9 +50,7 @@ export function useColumns() {
     1: { text: "在线充值 ", color: "text-green-600" },
     2: { text: "人工充值", color: "text-orange-400" }
   };
-  /**
-   * 表格列配置
-   */
+
   const columns = [
     {
       label: "订单号",
@@ -160,7 +148,6 @@ export function useColumns() {
     }
   ];
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     if (
       Object.keys(newParam).length === 2 &&
@@ -173,18 +160,12 @@ export function useColumns() {
     getList(newParam);
   };
 
-  /**
-   * 设置数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
 
-  /**
-   * 列表
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -200,32 +181,6 @@ export function useColumns() {
     }
   };
 
-  // /**
-  //  * 会员管理方法
-  //  */
-  // const onAdd = () => {
-  //   addMebVis.value = true;
-  // };
-
-  // const onAddSub = async (formValues: FieldValues) => {
-  //   try {
-  //     const res = await store.add(formValues as object);
-  //     if (res?.code === 0) {
-  //       message("添加成功", { type: "success", showClose: true });
-  //       await getList(searchParam.value);
-  //     } else {
-  //       message("添加失败", { type: "error" });
-  //     }
-  //   } catch (error) {
-  //     console.error("添加失败:", error);
-  //     message("添加失败", { type: "error" });
-  //   }
-  //   addMebVis.value = false;
-  // };
-
-  /**
-   * 导出处理
-   */
   const expExcel = (data: any[]) => {
     ExcelExporter.exportToExcel({
       columns,
@@ -234,7 +189,6 @@ export function useColumns() {
     });
   };
 
-  // 到帐
   const onArrv = async (row: any, type: number) => {
     try {
       const { value: remark } = await ElMessageBox.prompt(
@@ -269,27 +223,20 @@ export function useColumns() {
   };
 
   return {
-    // 状态
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,
-    // dialogVis,
-    // curTag,
-    // addMebVis,
     dtlsVis,
     curRow,
-    // 方法
     onSzChg,
     onCurChg,
     expExcel,
     setData,
     getList,
     onPrmUp,
-    // onAdd,
-    // onAddSub,
     onArrv
   };
 }

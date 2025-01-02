@@ -20,7 +20,6 @@ interface UserInfo {
   parentAccount?: string;
 }
 
-// 转换检查接口返回的数据
 const transformCheckData = (data: CheckResponse): UserInfo => ({
   username: data.account || "--",
   status: data.agentState || "--",
@@ -30,7 +29,6 @@ const transformCheckData = (data: CheckResponse): UserInfo => ({
 });
 
 export function useColumns() {
-  // 会员信息
   const mUid = ref("");
   const mInf = ref<UserInfo>({
     username: "",
@@ -38,7 +36,6 @@ export function useColumns() {
     identity: ""
   });
 
-  // 代理信息
   const agUid = ref("");
   const agInf = ref<UserInfo>({
     username: "",
@@ -46,7 +43,6 @@ export function useColumns() {
     identity: ""
   });
 
-  // 检查会员信息
   const ckMem = async () => {
     if (!mUid.value) return;
     try {
@@ -54,7 +50,6 @@ export function useColumns() {
       const res = await store.ck({ uid });
       if (res?.code === 0) {
         mInf.value = transformCheckData(res.data);
-        // 如果已有上级，显示提示
         if (mInf.value.parentUid || mInf.value.parentAccount) {
           message("该会员已有上级", { type: "warning" });
         }
@@ -67,7 +62,6 @@ export function useColumns() {
     }
   };
 
-  // 检查代理信息
   const ckAg = async () => {
     if (!agUid.value) return;
     try {
@@ -90,7 +84,6 @@ export function useColumns() {
     }
   };
 
-  // 确认绑定
   const onCfm = async () => {
     if (!mUid.value || !agUid.value) {
       message("请输入完整信息", { type: "warning" });
@@ -121,7 +114,6 @@ export function useColumns() {
     }
   };
 
-  // 取消处理
   const onCxl = () => {
     mUid.value = "";
     agUid.value = "";

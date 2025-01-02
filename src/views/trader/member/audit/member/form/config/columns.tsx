@@ -5,21 +5,17 @@ import { useMemMem } from "../store";
 import { useSearch, crtDFS } from "./searchConfig";
 import { usePagination } from "@/hooks/usePagination";
 import { fmtTs } from "@/utils/dateFormat";
+import { useTableSelection } from "@/hooks/useSelection";
 
 const store = useMemMem();
 
-// 初始查询参数
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  /**
-   * 状态管理
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -39,9 +35,8 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 状态映射配置
-   */
+  const { onSelChg, clrSel } = useTableSelection(dtLst);
+
   const statusMap = {
     1: { text: "待审核", color: "text-orange-600" },
     2: { text: "驳回审核", color: "text-orange-400" },
@@ -51,10 +46,12 @@ export function useColumns() {
     6: { text: "清除", color: "text-red-500" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
+    {
+      type: "selection",
+      width: 55,
+      align: "center"
+    },
     {
       label: "ID",
       prop: "id",
@@ -125,7 +122,6 @@ export function useColumns() {
     }
   ];
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     if (
       Object.keys(newParam).length === 2 &&
@@ -138,23 +134,18 @@ export function useColumns() {
     getList(newParam);
   };
 
-  /**
-   * 设置数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
 
-  /**
-   * 列表
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
       if (res?.code === 0) {
         setData(res.data.list || [], res.data.total || 0);
+        clrSel();
       } else {
         setData([], 0);
         message("未找到数据", { type: "error" });
@@ -191,7 +182,6 @@ export function useColumns() {
     }
   };
 
-  // 撤销审核
   const onCxl = async (row: any) => {
     try {
       await ElMessageBox.confirm("确定要撤销审核吗？", "提示", {
@@ -218,7 +208,6 @@ export function useColumns() {
     }
   };
 
-  // 拉黑
   const onBlK = async (row: any) => {
     try {
       await ElMessageBox.confirm("确定要将该用户拉黑吗？", "提示", {
@@ -245,7 +234,6 @@ export function useColumns() {
     }
   };
 
-  // 一键清除
   const onClr = async (row: any) => {
     try {
       await ElMessageBox.confirm("确定要一键清除吗？", "提示", {
@@ -272,7 +260,6 @@ export function useColumns() {
     }
   };
 
-  // 驳回审核
   const onRej = async (row: any) => {
     try {
       await ElMessageBox.confirm("确定要驳回审核吗？", "提示", {
@@ -300,14 +287,13 @@ export function useColumns() {
   };
 
   return {
-    // 状态
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,
-    // 方法
+
     onSzChg,
     onCurChg,
     setData,
@@ -317,6 +303,7 @@ export function useColumns() {
     onCxl,
     onBlK,
     onClr,
-    onRej
+    onRej,
+    onSelChg
   };
 }

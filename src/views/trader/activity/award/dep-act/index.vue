@@ -8,7 +8,7 @@ const activeType = ref(2);
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -34,7 +34,7 @@ onMounted(() => {
 <template>
   <div class="mb-4">
     <Search
-      :exportData="dataList"
+      :exportData="dtLst"
       @update:param="onPrmUp"
       @update:activeType="onActTUpd"
     />
@@ -53,7 +53,7 @@ onMounted(() => {
     :adaptiveConfig="adapConf"
     :columns="columns"
     :pagination="pagination"
-    :data="dataList"
+    :data="dtLst"
     @page-size-change="onSzChg"
     @page-current-change="onCurChg"
   >
@@ -63,7 +63,7 @@ onMounted(() => {
         link
         type="primary"
         size="small"
-        @click="() => onCxl(row)"
+        @click="() => onCxl(row, 2)"
       >
         通过
       </el-button>
@@ -72,7 +72,7 @@ onMounted(() => {
         link
         type="primary"
         size="small"
-        @click="() => onCxl(row)"
+        @click="() => onCxl(row, 5)"
       >
         取消
       </el-button>

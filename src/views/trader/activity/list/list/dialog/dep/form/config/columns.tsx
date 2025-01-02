@@ -16,7 +16,7 @@ export function useColumns() {
     showEndAt: null,
     walletType: null,
     extend: {
-      reset: null, // 1: 单次活动 2 每天重置 3 每周重置
+      reset: null,
       isCumulative: null,
       rechargeMode: [],
       condition: [],
@@ -32,14 +32,12 @@ export function useColumns() {
     checkAll: false,
     isIndeterminate: false
   });
-  // checkbox 选项
   const options = [
     { label: "PIX1", value: 1 },
     { label: "PIX2", value: 2 },
     { label: "银行卡转账", value: 3 }
   ];
 
-  // 全选处理函数
   const onCkAllChg = (val: boolean) => {
     state.value.extend.rechargeMode = val
       ? options.map(item => item.value)
@@ -47,7 +45,6 @@ export function useColumns() {
     checkBoxState.value.isIndeterminate = false;
   };
 
-  // 选项变化处理函数
   const onCkChg = (value: any[]) => {
     const checkedCount = value.length;
     checkBoxState.value.checkAll = checkedCount === options.length;
@@ -157,10 +154,8 @@ export function useColumns() {
         prop: "extend.rechargeMode",
         valueType: "checkbox",
         rules: DEPOSIT_RULES.isCumulative,
-        // 使用自定义渲染
         renderField: () => (
           <div class="w-full">
-            {/* 全选 checkbox */}
             <el-checkbox
               v-model={checkBoxState.value.checkAll}
               indeterminate={checkBoxState.value.isIndeterminate}
@@ -169,7 +164,6 @@ export function useColumns() {
               全选
             </el-checkbox>
             <div class="mt-2">
-              {/* checkbox 组 */}
               <el-checkbox-group
                 v-model={state.value.extend.rechargeMode}
                 onChange={onCkChg}
@@ -199,7 +193,7 @@ export function useColumns() {
         label: " 每日次数上限",
         labelWidth: 130,
         prop: "extend.dailyLimit",
-        valueType: "input"
+        valueType: "input-number"
       },
       {
         label: "派奖钱包",
@@ -225,7 +219,7 @@ export function useColumns() {
         label: "稽核倍数",
         labelWidth: 130,
         prop: "extend.auditMultiple",
-        valueType: "input"
+        valueType: "input-number"
       });
     }
 

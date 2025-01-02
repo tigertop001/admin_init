@@ -6,7 +6,7 @@ import { useColumns } from "./config/columns";
 const props = defineProps<{
   visible: boolean;
   uid: number;
-  resData?: Record<string, any>;
+  resDt?: Record<string, any>;
 }>();
 
 const emit = defineEmits<{

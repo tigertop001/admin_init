@@ -360,7 +360,6 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
 // }
 
 function getHistoryMode(routerHistory: string): RouterHistory {
-  // 添加防御性检查
   if (!routerHistory) {
     console.warn("No router history mode specified, fallback to hash mode");
     return createWebHashHistory("");
@@ -368,10 +367,9 @@ function getHistoryMode(routerHistory: string): RouterHistory {
 
   try {
     const historyMode = routerHistory.split(",");
-    const leftMode = historyMode[0]?.toLowerCase(); // 添加小写转换
+    const leftMode = historyMode[0]?.toLowerCase();
     const rightMode = historyMode[1] || "";
 
-    // 添加日志
     console.log("History Mode:", {
       raw: routerHistory,
       left: leftMode,

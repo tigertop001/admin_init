@@ -10,7 +10,7 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     required: false,
-    default: false // 默认值为 false
+    default: false
   }
 });
 
@@ -18,14 +18,13 @@ const getFormData = () => {
   return state.value;
 };
 
-// 添加设置表单数据的方法
-const setFormData = (data: any) => {
+const setData = (data: any) => {
   Object.assign(state.value, data);
 };
 
 defineExpose({
   getFormData,
-  setFormData // 暴露设置数据方法
+  setData
 });
 </script>
 

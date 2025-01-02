@@ -16,7 +16,7 @@ export function useColumns() {
     showEndAt: null,
     walletType: null,
     extend: {
-      reset: null, // 1: 单次活动 2 每天重置 3 每周重置
+      reset: null,
       games: [],
       condition: [],
       receiveTime: null,
@@ -29,20 +29,17 @@ export function useColumns() {
     checkAll: false,
     isIndeterminate: false
   });
-  // checkbox 选项
   const options = [
     { label: "XX棋牌", value: 1 },
     { label: "XX视讯", value: 2 },
     { label: "XX体育", value: 3 }
   ];
 
-  // 全选处理函数
   const onCkAllChg = (val: boolean) => {
     state.value.extend.games = val ? options.map(item => item.value) : [];
     checkBoxState.value.isIndeterminate = false;
   };
 
-  // 选项变化处理函数
   const onCkChg = (value: any[]) => {
     const checkedCount = value.length;
     checkBoxState.value.checkAll = checkedCount === options.length;
@@ -140,10 +137,8 @@ export function useColumns() {
         labelWidth: 130,
         prop: "extend.games",
         valueType: "checkbox",
-        // 使用自定义渲染
         renderField: () => (
           <div class="w-full">
-            {/* 全选 checkbox */}
             <el-checkbox
               v-model={checkBoxState.value.checkAll}
               indeterminate={checkBoxState.value.isIndeterminate}
@@ -152,7 +147,6 @@ export function useColumns() {
               全选
             </el-checkbox>
             <div class="mt-2">
-              {/* checkbox 组 */}
               <el-checkbox-group
                 v-model={state.value.extend.games}
                 onChange={onCkChg}
@@ -229,7 +223,7 @@ export function useColumns() {
         label: "稽核倍数",
         labelWidth: 130,
         prop: "extend.auditMultiple",
-        valueType: "input"
+        valueType: "input-number"
       });
     }
 

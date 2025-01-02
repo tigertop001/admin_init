@@ -4,6 +4,7 @@ import {
   computed,
   reactive,
   onMounted,
+  Fragment,
   defineComponent
 } from "vue";
 import { countToProps } from "./props";
@@ -164,7 +165,7 @@ export default defineComponent({
     });
 
     return () => (
-      <>
+      <Fragment>
         <span
           style={{
             color: props.color,
@@ -173,7 +174,7 @@ export default defineComponent({
         >
           {state.displayValue}
         </span>
-      </>
+      </Fragment>
     );
   }
 });

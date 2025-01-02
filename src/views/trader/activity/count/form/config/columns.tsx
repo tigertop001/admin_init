@@ -5,14 +5,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useActCnt } from "../store";
 const store = useActCnt();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -32,69 +30,88 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const addVis = ref(false);
   const addType = ref(0);
 
   const statusMap = {
-    1: { text: "关闭", color: "text-red-500" },
-    2: { text: "开启", color: "text-green-600" }
+    1: { text: "帐号首充" },
+    2: { text: "充值活动" },
+    3: { text: "邀请转盘" },
+    4: { text: "救济金" },
+    5: { text: "自定义活动" }
   };
-  /**
-   * 表格列配置
-   */
+
+  const summaryData = ref({
+    participantCount: 0,
+    participationCount: 0,
+    totalReward: 0
+  });
+
+  const getSummaries = (param: { columns: any[] }) => {
+    const { columns } = param;
+    const sums: string[] = [];
+    columns.forEach((_, index) => {
+      if (index === 0) {
+        sums[index] = "合计";
+        return;
+      }
+      switch (columns[index].prop) {
+        case "participantCount":
+          sums[index] = `${summaryData.value.participantCount}`;
+          break;
+        case "participationCount":
+          sums[index] = `${summaryData.value.participationCount}`;
+          break;
+        case "totalReward":
+          sums[index] = `${fmtTs(summaryData.value.totalReward)}`;
+          break;
+        default:
+          sums[index] = "--";
+      }
+    });
+    return sums;
+  };
+
   const columns = [
     {
-      label: "ID",
-      prop: "id",
+      label: "活动ID",
+      prop: "activityId",
       width: 100,
-      formatter: row => `${row.id || "--"}`
+      formatter: row => `${row.activityId || "--"}`
     },
     {
-      label: "活动标签",
+      label: "活动名称",
       prop: "name",
       formatter: row => `${row.name || "--"}`
     },
     {
-      label: "进行中活动数量",
-      prop: "ProcessingActivityNum",
-      formatter: row => `${row.ProcessingActivityNum || "--"}`
-    },
-    {
-      label: "排序",
-      prop: "sort",
-      formatter: row => `${row.sort || "--"}`
-    },
-    {
-      label: "操作人",
-      prop: "operator",
-      formatter: row => `${row.operator || "--"}`
-    },
-    {
-      label: "最后操作时间",
-      prop: "updatedAt",
-      sortable: true,
-      formatter: row => `${fmtTs(row.updatedAt) || "--"}}`
-    },
-    {
-      label: "状态",
-      prop: "status",
+      label: "活动类型",
+      prop: "type",
       cellRenderer: ({ row }) => {
-        const status = statusMap[row.status] || {
+        const status = statusMap[row.type] || {
           text: "--",
           color: "text-gray-400"
         };
-        return <span class={`${status.color} font-medium`}>{status.text}</span>;
+        return <span>{status.text}</span>;
       }
     },
     {
-      label: "备注",
-      prop: "remark",
-      formatter: row => `${row.remark || "--"}`
+      label: "参与人数",
+      prop: "participantCount",
+      formatter: row => `${row.participantCount || "--"}`
+    },
+    {
+      label: "活动发放次数",
+      prop: "participationCount",
+      formatter: row => `${row.participationCount || "--"}`
+    },
+    {
+      label: "活动总奖金",
+      prop: "totalReward",
+      sortable: true,
+      formatter: row => `${fmtTs(row.totalReward) || "--"}}`
     },
     {
       label: "操作",
@@ -103,9 +120,6 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -121,15 +135,11 @@ export function useColumns() {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 弹窗相关方法
-   */
   const shwAdd = (type: number) => {
     if (type === 0) {
       editData.value = null;
@@ -140,11 +150,8 @@ export function useColumns() {
     }, 0);
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -152,7 +159,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,
@@ -164,6 +171,7 @@ export function useColumns() {
     getList,
     onPrmUp,
     shwAdd,
-    setData
+    setData,
+    getSummaries
   };
 }

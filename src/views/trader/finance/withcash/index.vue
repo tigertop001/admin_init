@@ -1,19 +1,48 @@
+<script setup lang="ts">
+import { ref, computed } from "vue";
+
+import With from "./with/index.vue";
+import Set from "./set/index.vue";
+import Audit from "./audit/index.vue";
+import Fee from "./fee/index.vue";
+import Conf from "./conf/index.vue";
+
+const actNm = ref("1");
+
+const tabs = [
+  { label: "提现出款", name: "1", component: With },
+  { label: "提现设置", name: "2", component: Set },
+  { label: "稽核流水", name: "3", component: Audit },
+  { label: "提现手续费", name: "4", component: Fee },
+  { label: "下分卡配置", name: "5", component: Conf }
+];
+
+const onClk = (tab: any) => {
+  console.log("Clicked tab:", tab);
+};
+
+const curCmp = computed(() => {
+  const tab = tabs.find(tab => tab.name === actNm.value);
+  return tab ? tab.component : null;
+});
+</script>
+
 <template>
-  <div class="main">tee</div>
+  <el-card shadow="never" :body-style="{ height: 'calc(100vh - 196px)' }">
+    <template #header>
+      <el-tabs v-model="actNm" class="demo-tabs" @tab-click="onClk">
+        <el-tab-pane
+          v-for="(tab, index) in tabs"
+          :key="index"
+          :label="tab.label"
+          :name="tab.name"
+        />
+      </el-tabs>
+    </template>
+
+    <component :is="curCmp" />
+  </el-card>
 </template>
-
-<style scoped lang="scss">
-:deep(.el-dropdown-menu__item i) {
-  margin: 0;
-}
-
-.main-content {
-  margin: 24px 24px 0 !important;
-}
-
-.search-form {
-  :deep(.el-form-item) {
-    margin-bottom: 12px;
-  }
-}
+<style lang="scss" scoped>
+@import url("./styles/index.scss");
 </style>

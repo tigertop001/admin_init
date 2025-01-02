@@ -3,7 +3,7 @@ import { useColumns } from "./columns";
 import Empty from "@/assets/svg/empty.svg?component";
 
 const emit = defineEmits(["update:modelValue"]);
-const { columns, dataList, onChg } = useColumns(emit);
+const { columns, dtLst, onChg } = useColumns(emit);
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const { columns, dataList, onChg } = useColumns(emit);
       background: 'var(--el-fill-color-light)',
       color: 'var(--el-text-color-primary)'
     }"
-    :data="dataList"
+    :data="dtLst"
     :columns="columns"
     @change="onChg"
   >

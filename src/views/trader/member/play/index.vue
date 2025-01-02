@@ -7,7 +7,7 @@ import { useColumns } from "./form/config/columns";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -33,10 +33,9 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
-    <!-- 搜索区域 -->
     <template #header>
       <Search
-        :exportData="dataList"
+        :exportData="dtLst"
         @update:param="onPrmUp"
         @add="shwAdd(0)"
         @add3rd="add3rd"
@@ -44,7 +43,6 @@ onMounted(() => {
       />
     </template>
 
-    <!-- 数据表格 -->
     <pure-table
       ref="tableRef"
       adaptive
@@ -58,12 +56,11 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
       @selection-change="onSelChg"
     >
-      <!-- 操作列 -->
       <template #operation="{ row }">
         <el-button link type="primary" size="small" @click="() => onEdit(row)">
           详情

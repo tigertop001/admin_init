@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/**
- * 导入依赖和组件
- */
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
 import { useColumns } from "./form/config/columns";
@@ -9,7 +6,7 @@ import { useColumns } from "./form/config/columns";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -21,21 +18,16 @@ const {
   onRej
 } = useColumns();
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
 });
 </script>
 
 <template>
-  <!-- 搜索区域 -->
   <div class="mb-4">
-    <Search :exportData="dataList" @update:param="onPrmUp" />
+    <Search :exportData="dtLst" @update:param="onPrmUp" />
   </div>
 
-  <!-- 数据表格 -->
   <pure-table
     ref="tableRef"
     adaptive
@@ -49,11 +41,10 @@ onMounted(() => {
     :adaptiveConfig="adapConf"
     :columns="columns"
     :pagination="pagination"
-    :data="dataList"
+    :data="dtLst"
     @page-size-change="onSzChg"
     @page-current-change="onCurChg"
   >
-    <!-- 操作列 -->
     <template #operation="{ row }">
       <el-button link type="primary" size="small" @click="onPass(row)">
         审核通过

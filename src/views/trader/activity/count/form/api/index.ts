@@ -1,9 +1,7 @@
 import { http } from "@/utils/http";
 
-// 读取环境变量判断是否使用 mock
-const isApiType = import.meta.env.VITE_APITYPE;
+const apiTp = import.meta.env.VITE_APITYPE;
 
-// API 路径配置
 const API_URLS = {
   LIST: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
@@ -11,14 +9,13 @@ const API_URLS = {
   },
   INFO: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/activity/statistics"
+    real: "/api/v1/tenant/activity/statistics/get"
   }
 } as const;
 
-// 获取URL
 const getUrl = (api: keyof typeof API_URLS) => {
   let str = "";
-  switch (isApiType) {
+  switch (apiTp) {
     case "1":
       str = API_URLS[api].mock;
       break;
@@ -31,7 +28,6 @@ const getUrl = (api: keyof typeof API_URLS) => {
   return str;
 };
 
-// 列表
 export const listApi = data => {
   return http.request<Result>("post", getUrl("LIST"), { data });
 };

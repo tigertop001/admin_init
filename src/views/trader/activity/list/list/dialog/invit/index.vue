@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// https://plus-pro-components.com/components/form.html
 import "plus-pro-components/es/components/form/style/css";
 import { PlusForm } from "plus-pro-components";
 import { useColumns } from "./form/config/columns";

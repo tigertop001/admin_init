@@ -9,13 +9,10 @@ import {
 } from "plus-pro-components";
 
 const props = defineProps<{
-  editData?: FieldValues; // 可选的默认数据
-  type?: number; // 0新增，1修改
+  editData?: FieldValues;
+  type?: number;
 }>();
 
-/**
- * 计算弹窗标题和按钮文字
- */
 const dlgConf = computed(() => {
   const isEdit = props.type === 1;
   return {
@@ -24,20 +21,13 @@ const dlgConf = computed(() => {
   };
 });
 
-/** 控制弹窗显示状态 */
 const visible = ref(false);
 
-/**
- * 定义表单字段的默认值类型
- */
 interface FormDefaultValues extends FieldValues {
   [key: string]: any;
   [key: symbol]: any;
 }
 
-/**
- * 表单验证规则配置
- */
 const FORM_RULES = {
   levelName: [
     { required: true, message: "请输入名称", trigger: "blur" },
@@ -136,7 +126,7 @@ const columns = computed<PlusColumn[]>(() => [
     labelWidth: 100,
     prop: "minVal",
     valueType: "input",
-    colProps: { span: 14 }, // 控制第一个输入框的宽度
+    colProps: { span: 14 },
     fieldProps: {
       type: "number",
       placeholder: "最低金额"
@@ -148,12 +138,12 @@ const columns = computed<PlusColumn[]>(() => [
     labelWidth: 16,
     prop: "maxVal",
     valueType: "input",
-    colProps: { span: 10 }, // 控制第二个输入框的宽度
+    colProps: { span: 10 },
     hasLabel: false,
     fieldProps: {
       type: "number",
       placeholder: "最高金额",
-      class: "no-asterisk" // 添加自定义类名
+      class: "no-asterisk"
     },
     rules: FORM_RULES.maxVal
   },
@@ -170,12 +160,8 @@ const columns = computed<PlusColumn[]>(() => [
   }
 ]);
 
-/**
- * 根据columns自动生成重置数据
- */
 const crtDefVal = (columns: PlusColumn[]): FormDefaultValues => {
   const defaultValues = columns.reduce((acc, column) => {
-    // 根据不同的valueType设置默认值
     const defaultValue = (() => {
       const valueType = column.valueType as TableValueType | FormItemValueType;
       switch (valueType) {
@@ -199,40 +185,21 @@ const crtDefVal = (columns: PlusColumn[]): FormDefaultValues => {
     return acc;
   }, {} as FormDefaultValues);
 
-  // // 如果有默认数据，则使用默认数据覆盖
-  // if (props.editData) {
-  //   return {
-  //     ...defaultValues,
-  //     ...props.editData
-  //   };
-  // }
-
   return defaultValues;
 };
 
-/**
- * 表单数据对象
- */
 const formData = ref<FieldValues>(crtDefVal(columns.value));
 
-/** 组件事件定义 */
 const emit = defineEmits<{
-  /** 提交事件,传递表单数据 */
   (_e: "submit", _formValues: FieldValues): void;
-  /** 更新弹窗显示状态 */
+
   (_e: "update:visible", _visible: boolean): void;
 }>();
 
-/**
- * 优化重置表单方法
- */
 const rstFrm = () => {
-  // 根据当前类型决定是否保留数据
   if (props.type === 0) {
-    // 新增时清空所有数据
     formData.value = crtDefVal(columns.value);
   } else if (props.type === 1 && props.editData) {
-    // 修改时保留默认数据
     formData.value = {
       ...crtDefVal(columns.value),
       ...props.editData
@@ -240,17 +207,12 @@ const rstFrm = () => {
   }
 };
 
-/**
- * 监听 type 和 editData 的变化
- */
 watch(
   [() => props.type, () => props.editData],
   ([newType, newData]) => {
     if (newType === 0) {
-      // 新增时清空表单数据
       formData.value = crtDefVal(columns.value);
     } else if (newType === 1 && newData) {
-      // 修改时且有默认数据时，设置表单数据
       formData.value = {
         ...crtDefVal(columns.value),
         ...newData
@@ -260,11 +222,7 @@ watch(
   { immediate: true }
 );
 
-/**
- * 提交
- */
 const onCfm = () => {
-  // 创建一个新对象并转换类型
   const subData = {
     ...formData.value,
     minVal: formData.value.minVal ? Number(formData.value.minVal) : null,
@@ -273,21 +231,16 @@ const onCfm = () => {
 
   emit("submit", subData);
   emit("update:visible", false);
-  // 提交后，如果是新增模式，清空表单
   if (props.type === 0) {
     formData.value = crtDefVal(columns.value);
   }
 };
 
-/**
- * 处理弹窗关闭
- */
 const onCls = () => {
   rstFrm();
   emit("update:visible", false);
 };
 
-/** 表单配置对象 */
 const formConfig = computed(() => ({
   columns: columns.value
 }));

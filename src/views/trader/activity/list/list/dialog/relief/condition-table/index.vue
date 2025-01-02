@@ -6,7 +6,7 @@ import AddFill from "@iconify-icons/ep/plus";
 import Delete from "@iconify-icons/ep/delete";
 
 const emit = defineEmits(["update:modelValue"]);
-const { columns, dataList, onAdd, onDel, onChg } = useColumns(emit);
+const { columns, dtLst, onAdd, onDel, onChg } = useColumns(emit);
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const { columns, dataList, onAdd, onDel, onChg } = useColumns(emit);
       background: 'var(--el-fill-color-light)',
       color: 'var(--el-text-color-primary)'
     }"
-    :data="dataList"
+    :data="dtLst"
     :columns="columns"
     @change="onChg"
   >

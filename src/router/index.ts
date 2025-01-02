@@ -64,7 +64,6 @@ export const remainingPaths = Object.keys(remainingRouter).map(v => {
 });
 
 export const router: Router = createRouter({
-  // 添加防御性检查
   history: getHistoryMode(import.meta.env.VITE_ROUTER_HISTORY || "hash"),
   routes: constantRoutes.concat(...(remainingRouter as any)),
   strict: true,
@@ -85,7 +84,6 @@ export const router: Router = createRouter({
   }
 });
 
-// 添加错误处理
 router.onError(error => {
   console.error("Router Error:", error);
 });

@@ -1,7 +1,18 @@
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import type { PlusColumn, FieldValues } from "plus-pro-components";
 import EditorBase from "@/views/comm/editor/editor-base.vue";
 import { COMM_RULES } from "../../../comm/utils/rules";
+
+import { usPullCols } from "@/views/trader/comm/pull/member/form/columns";
+const { getPullData, cfgDt } = usPullCols();
+
+import { usePullData } from "@/views/trader/comm/pull/activity/form/columns";
+const {
+  getPullData: getTagData,
+  currentData: tagData,
+  formatOptions: formatTagOptions
+} = usePullData("TAG");
+
 export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
 }
@@ -16,7 +27,6 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
     publicityPicture: null,
     details: null
   });
-
   const rules = {
     name: [
       {
@@ -30,6 +40,19 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
     set: (val: string) => {
       state.value.details = val; // 更新 details 的值
     }
+  });
+
+  onMounted(async () => {
+    await getPullData();
+    await getTagData();
+  });
+
+  const lvlOp = computed(() => {
+    if (!cfgDt.value?.data?.levelList) return [];
+    return cfgDt.value.data.levelList.map(item => ({
+      label: item.levelName,
+      value: item.id
+    }));
   });
 
   const getColumns = (): PlusColumn[] => {
@@ -78,24 +101,7 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
         labelWidth: 100,
         prop: "userLevel",
         valueType: "checkbox",
-        options: [
-          {
-            label: "层级1",
-            value: 1
-          },
-          {
-            label: "层级2",
-            value: 2
-          },
-          {
-            label: "层级3",
-            value: 3
-          },
-          {
-            label: "层级4",
-            value: 4
-          }
-        ]
+        options: lvlOp.value
       });
     }
 
@@ -118,24 +124,10 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
         prop: "tagID",
         valueType: "radio",
         rules: COMM_RULES.tagID,
-        options: [
-          {
-            label: "长期活动",
-            value: 1
-          },
-          {
-            label: "电子活动",
-            value: 2
-          },
-          {
-            label: "限时活动",
-            value: 3
-          },
-          {
-            label: "体育活动",
-            value: 4
-          }
-        ]
+        options: computed(() => {
+          if (!tagData.value?.data?.list) return [];
+          return formatTagOptions(tagData.value.data.list);
+        }).value
       },
       {
         label: "排序",

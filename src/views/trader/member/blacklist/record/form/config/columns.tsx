@@ -5,14 +5,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useMemBlkRec } from "../store";
 const store = useMemBlkRec();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -32,14 +30,8 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "序号",
@@ -78,9 +70,6 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -96,17 +85,13 @@ export function useColumns() {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -114,7 +99,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

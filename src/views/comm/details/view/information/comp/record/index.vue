@@ -3,13 +3,13 @@ import { useColumns } from "./config/columns";
 import type { UserRowData } from "../../types";
 
 interface Props {
-  rowData?: UserRowData;
-  resData?: Result;
+  rowDt?: UserRowData;
+  resDt?: Result;
 }
 
 const props = defineProps<Props>();
 const { isEdit, textarea, onEdit, save, cancel } = useColumns({
-  uid: props.rowData.uid
+  uid: props.rowDt.uid
 });
 </script>
 
@@ -19,11 +19,11 @@ const { isEdit, textarea, onEdit, save, cancel } = useColumns({
       <span>备注:</span>
 
       <!-- 有备注值且不是编辑状态时显示文本 -->
-      <template v-if="resData.data.data.userInfo?.remark && !isEdit">
-        <span class="mx-2">{{ resData.data.data.userInfo.remark }}</span>
+      <template v-if="resDt.data.data.userInfo?.remark && !isEdit">
+        <span class="mx-2">{{ resDt.data.data.userInfo.remark }}</span>
         <el-button
           class="self-end"
-          @click="onEdit(resData.data.data.userInfo.remark)"
+          @click="onEdit(resDt.data.data.userInfo.remark)"
         >
           修改
         </el-button>

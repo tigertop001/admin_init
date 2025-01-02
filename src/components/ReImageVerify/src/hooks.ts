@@ -1,17 +1,11 @@
 import { ref, onMounted } from "vue";
 
-/**
- * 绘制图形验证码
- * @param width - 图形宽度
- * @param height - 图形高度
- */
 export const useImageVerify = (width = 180, height = 45) => {
   const domRef = ref<HTMLCanvasElement>();
   const imgCode = ref("");
 
   function setImgCode(code: string) {
     imgCode.value = code;
-    // 如果 canvas 已存在，立即重绘验证码
     if (domRef.value) {
       draw(domRef.value, width, height, code);
     }
@@ -22,7 +16,6 @@ export const useImageVerify = (width = 180, height = 45) => {
   }
 
   onMounted(() => {
-    // 初始挂载时，仅在有 code 的情况下绘制
     if (imgCode.value && domRef.value) {
       draw(domRef.value, width, height, imgCode.value);
     }
@@ -56,16 +49,13 @@ function draw(
   const ctx = dom.getContext("2d");
   if (!ctx || !code) return;
 
-  // 设置背景色
   ctx.fillStyle = randomColor(210, 220);
   ctx.fillRect(0, 0, width, height);
 
-  // 底层干扰线
   drawInterferenceLines(ctx, width, height, 3, 160, 200);
   drawCurveLines(ctx, width, height, 2);
   drawZigzagLines(ctx, width, height, 2);
 
-  // 绘制验证码字符
   const padding = width * 0.1;
   const charWidth = (width - padding * 2) / code.length;
 
@@ -87,16 +77,13 @@ function draw(
     ctx.restore();
   }
 
-  // 上层干扰线
   drawInterferenceLines(ctx, width, height, 3, 160, 200);
   drawWavyLines(ctx, width, height, 2);
   drawDottedLines(ctx, width, height, 2);
 
-  // 干扰点
   drawNoise(ctx, width, height);
 }
 
-// 绘制直线干扰线
 function drawInterferenceLines(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -115,7 +102,6 @@ function drawInterferenceLines(
   }
 }
 
-// 绘制波浪线
 function drawWavyLines(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -143,7 +129,6 @@ function drawWavyLines(
   }
 }
 
-// 绘制贝塞尔曲线
 function drawCurveLines(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -169,7 +154,6 @@ function drawCurveLines(
   }
 }
 
-// 绘制锯齿线
 function drawZigzagLines(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -203,7 +187,6 @@ function drawZigzagLines(
   }
 }
 
-// 绘制虚线
 function drawDottedLines(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -229,13 +212,11 @@ function drawDottedLines(
   }
 }
 
-// 绘制干扰点
 function drawNoise(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number
 ) {
-  // 普通圆点
   for (let i = 0; i < 20; i += 1) {
     ctx.beginPath();
     ctx.arc(randomNum(0, width), randomNum(0, height), 0.5, 0, 2 * Math.PI);
@@ -243,7 +224,6 @@ function drawNoise(
     ctx.fill();
   }
 
-  // 小方块
   for (let i = 0; i < 10; i += 1) {
     ctx.fillStyle = randomColor(140, 190);
     ctx.fillRect(

@@ -11,7 +11,6 @@ import {
   devDependencies
 } from "../package.json";
 
-/** 启动`node`进程时所在工作目录的绝对路径 */
 const root: string = process.cwd();
 
 /**
@@ -20,36 +19,26 @@ const root: string = process.cwd();
  * @param metaUrl 模块的完整`url`，如果在`build`目录外调用必传`import.meta.url`
  */
 const pathResolve = (dir = ".", metaUrl = import.meta.url) => {
-  // 当前文件目录的绝对路径
   const currentFileDir = dirname(fileURLToPath(metaUrl));
-  // build 目录的绝对路径
   const buildDir = resolve(currentFileDir, "build");
-  // 解析的绝对路径
   const resolvedPath = resolve(currentFileDir, dir);
-  // 检查解析的绝对路径是否在 build 目录内
   if (resolvedPath.startsWith(buildDir)) {
-    // 在 build 目录内，返回当前文件路径
     return fileURLToPath(metaUrl);
   }
-  // 不在 build 目录内，返回解析后的绝对路径
   return resolvedPath;
 };
 
-/** 设置别名 */
 const alias: Record<string, string> = {
   "@": pathResolve("../src"),
   "@build": pathResolve()
 };
 
-/** 平台的名称、版本、运行所需的`node`和`pnpm`版本、依赖、最后构建时间的类型提示 */
 const __APP_INFO__ = {
   pkg: { name, version, engines, dependencies, devDependencies },
   lastBuildTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss")
 };
 
-/** 处理环境变量 */
 const wrapperEnv = (envConf: Recordable): ViteEnv => {
-  // 默认值
   const ret: ViteEnv = {
     VITE_PORT: 8848,
     VITE_PUBLIC_PATH: "",
@@ -80,7 +69,6 @@ const wrapperEnv = (envConf: Recordable): ViteEnv => {
 
 const fileListTotal: number[] = [];
 
-/** 获取指定文件夹中所有文件的总大小 */
 const getPackageSize = options => {
   const { folder = "dist", callback, format = true } = options;
   readdir(folder, (err, files: string[]) => {

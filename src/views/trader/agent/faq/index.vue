@@ -6,7 +6,7 @@ import Search from "./form/search.vue";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -23,9 +23,6 @@ const {
   onPrmUp
 } = useColumns();
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
 });
@@ -34,7 +31,7 @@ onMounted(() => {
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 220px)' }">
     <template #header>
-      <Search :exportData="dataList" @update:param="onPrmUp" @add="shwAdd(0)" />
+      <Search :exportData="dtLst" @update:param="onPrmUp" @add="shwAdd(0)" />
     </template>
 
     <pure-table
@@ -50,11 +47,10 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
     >
-      <!-- 操作列 -->
       <template #operation="{ row }">
         <el-button link type="warning" size="small" @click="onEdit(row)">
           修改
@@ -65,7 +61,6 @@ onMounted(() => {
       </template>
     </pure-table>
 
-    <!-- 新增弹窗 -->
     <Add
       v-model:visible="addVis"
       :editData="editData"

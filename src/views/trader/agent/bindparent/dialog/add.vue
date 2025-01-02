@@ -8,20 +8,13 @@ import {
   PlusDialogForm
 } from "plus-pro-components";
 
-/** 控制弹窗显示状态 */
 const visible = ref(false);
 
-/**
- * 定义表单字段的默认值类型
- */
 interface FormDefaultValues extends FieldValues {
   [key: string]: any;
   [key: symbol]: any;
 }
 
-/**
- * 表单验证规则配置
- */
 const FORM_RULES = {
   account: [
     { required: true, message: "请输入账号", trigger: "blur" },
@@ -36,7 +29,6 @@ const FORM_RULES = {
   ]
 } as const;
 
-/** 表单列配置 */
 const columns = computed<PlusColumn[]>(() => [
   {
     label: "会员账号",
@@ -74,9 +66,6 @@ const columns = computed<PlusColumn[]>(() => [
   }
 ]);
 
-/**
- * 根据columns自动生成重置数据
- */
 const crtDefVal = (columns: PlusColumn[]): FormDefaultValues => {
   return columns.reduce((acc, column) => {
     // 根据不同的valueType设置默认值
@@ -104,21 +93,13 @@ const crtDefVal = (columns: PlusColumn[]): FormDefaultValues => {
   }, {} as FormDefaultValues);
 };
 
-/**
- * 表单数据对象
- */
 const formData = ref<FieldValues>(crtDefVal(columns.value));
 
-/** 组件事件定义 */
 const emit = defineEmits<{
   (_e: "submit", _formValues: FieldValues): void;
   (_e: "update:visible", _visible: boolean): void;
 }>();
 
-/**
- * 动态重置表单数据
- * @param customDefaults 可选的自定义默认值
- */
 const rstFrm = (customDefaults?: Partial<FormDefaultValues>) => {
   const defaultValues = crtDefVal(columns.value);
   formData.value = {
@@ -127,23 +108,16 @@ const rstFrm = (customDefaults?: Partial<FormDefaultValues>) => {
   };
 };
 
-/**
- * 提交
- */
 const onCfm = () => {
   emit("submit", formData.value);
   emit("update:visible", false);
 };
 
-/**
- * 处理弹窗关闭
- */
 const onCls = () => {
   rstFrm();
   emit("update:visible", false);
 };
 
-/** 表单配置对象 */
 const formConfig = computed(() => ({
   columns: columns.value,
   labelSuffix: ""

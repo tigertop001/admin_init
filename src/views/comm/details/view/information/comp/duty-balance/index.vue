@@ -1,32 +1,21 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { ref, computed } from "vue";
-/**
- * 导入组件和工具
- */
+
 import Refresh from "@iconify-icons/ri/loop-right-fill";
 
 import type { UserRowData } from "../../types";
 interface Props {
-  rowData?: UserRowData;
-  resData?: Result;
+  rowDt?: UserRowData;
+  resDt?: Result;
 }
 
 import { useColumns } from "./form/columns";
-const { columns, dataList } = useColumns();
+const { columns, dtLst } = useColumns();
 
-/**
- * 父级传来的数据---start
- */
 const props = defineProps<Props>();
-const rowData = props.rowData;
-const resData = props.resData.data.data;
-console.log(rowData, resData);
-/**
- * 父级传来的数据---end
- */
+const rowDt = props.rowDt;
+const resDt = props.resDt.data.data;
+console.log(rowDt, resDt);
 
 const isShow = ref(false);
 const isSpin = ref(false);
@@ -69,7 +58,7 @@ const refIconCls = computed(() => [
       <span
         >佣金钱包余额：
         <span class="text-orange-400"
-          >{{ resData.userInfo?.commissionWalletLeft || "--" }} BRL</span
+          >{{ resDt.userInfo?.commissionWalletLeft || "--" }} BRL</span
         ></span
       >
       <IconifyIconOffline
@@ -109,14 +98,14 @@ const refIconCls = computed(() => [
       alignWhole="center"
       showOverflowTooltip
       :columns="columns"
-      :data="dataList"
+      :data="dtLst"
       :empty-size="100"
-      :height="dataList.length ? 'auto' : '100'"
+      :height="dtLst.length ? 'auto' : '100'"
       max-height="500"
-      :style="{ height: dataList.length ? '' : '100px' }"
+      :style="{ height: dtLst.length ? '' : '100px' }"
     />
   </el-col>
 </template>
 <style lang="scss" scoped>
-@import url("../../styles/index.scss"); // 样式通过 scoped 限制
+@import url("../../styles/index.scss");
 </style>

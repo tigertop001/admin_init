@@ -57,7 +57,6 @@ export function useColumns() {
     }
   };
 
-  // 设置表格数据
   let type = false;
   const setData = data => {
     // 判断对象是否为空或者对象的值是否都为空
@@ -116,7 +115,7 @@ export function useColumns() {
       label: "稽核倍数",
       prop: "auditMultiple",
       labelWidth: 120,
-      valueType: "input",
+      valueType: "input-number",
       tooltip: "活动钱包余额提款至账户主钱包稽核倍数"
     },
     {

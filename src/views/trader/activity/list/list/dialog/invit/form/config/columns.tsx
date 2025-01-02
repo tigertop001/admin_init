@@ -16,7 +16,7 @@ export function useColumns() {
       firstAmount: { min: null, max: null },
       reward: null,
       rule: null,
-      auditMultiple: null // 稽核倍数  当钱包类型为帐户主钱包时需要配置
+      auditMultiple: null
     }
   });
 
@@ -161,7 +161,7 @@ export function useColumns() {
         label: "稽核倍数",
         labelWidth: 130,
         prop: "extend.auditMultiple",
-        valueType: "input"
+        valueType: "input-number"
       });
     }
 

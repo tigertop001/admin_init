@@ -5,9 +5,6 @@ export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
 }
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = () => ({
   name: null,
   status: null,
@@ -15,9 +12,6 @@ export const crtDFS = () => ({
   limit: 10
 });
 
-/**
- * 表单字段配置
- */
 const crtCols = (): PlusColumn[] => [
   {
     label: "活动标题",
@@ -47,9 +41,6 @@ const crtCols = (): PlusColumn[] => [
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   const searchState = ref(crtDFS());
 

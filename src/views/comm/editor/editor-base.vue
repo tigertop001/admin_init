@@ -20,49 +20,43 @@ const mode = "default";
 const editorRef = shallowRef();
 const valueHtml = ref("");
 
-// 工具栏配置，添加图片上传
 const toolbarConfig = {
   toolbarKeys: [
-    "bold", // 加粗
-    "italic", // 斜体
-    "underline", // 下划线
-    "|", // 分割线
-    "fontSize", // 字号
-    "color", // 文字颜色
+    "bold",
+    "italic",
+    "underline",
     "|",
-    "bulletedList", // 无序列表
-    "numberedList", // 有序列表
+    "fontSize",
+    "color",
     "|",
-    "uploadImage", // 图片上传
+    "bulletedList",
+    "numberedList",
     "|",
-    "clearStyle" // 清除格式
+    "uploadImage",
+    "|",
+    "clearStyle"
   ]
 };
 
-// 编辑器配置，添加图片上传配置
 const editorConfig = {
   placeholder: "请输入内容...",
   autoFocus: false,
   MENU_CONF: {
     uploadImage: {
-      server: "/api/upload", // 图片上传接口
-      fieldName: "file", // 上传图片时的参数名
-      maxFileSize: 10 * 1024 * 1024, // 限制大小10M
-      maxNumberOfFiles: 10, // 最多上传10张
+      server: "/api/upload",
+      fieldName: "file",
+      maxFileSize: 10 * 1024 * 1024,
+      maxNumberOfFiles: 10,
       allowedFileTypes: ["image/*"],
-      // 上传之前触发
       onBeforeUpload(file: any) {
         return file;
       },
-      // 上传成功后触发
       onSuccess(file: any, res: any) {
         console.log("图片上传成功", file, res);
       },
-      // 上传失败后触发
       onFailed(file: any, res: any) {
         console.log("图片上传失败", file, res);
       },
-      // 上传错误后触发
       onError(file: any, err: any, res: any) {
         console.log("图片上传错误", file, err, res);
       }
@@ -75,7 +69,6 @@ const onCreat = editor => {
   editor.setHtml(props.modelValue);
 };
 
-// 处理编辑器内容变化
 const onEditChg = (html: string) => {
   emit("update:modelValue", html);
 };

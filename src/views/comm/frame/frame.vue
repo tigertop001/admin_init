@@ -17,13 +17,11 @@ const loading = ref(true);
 const frameSrc = ref<string>(props.frameInfo?.frameSrc || "");
 const frameRef = ref<HTMLElement | null>(null);
 
-// 初始加载时，如果路由 meta 有 frameSrc 设置 frameSrc
 const currentRoute = useRoute();
 if (currentRoute.meta?.frameSrc) {
   frameSrc.value = currentRoute.meta.frameSrc as string;
 }
 
-// 根据路由变化更新 iframe 的 src
 watch(
   () => currentRoute.fullPath,
   path => {
@@ -31,7 +29,7 @@ watch(
       currentRoute.name === "Redirect" &&
       path.includes(props.frameInfo?.fullPath || "")
     ) {
-      frameSrc.value = path; // redirect时，置换成任意值，待重定向后重新赋值
+      frameSrc.value = path;
       loading.value = true;
     } else if (props.frameInfo?.fullPath === path) {
       frameSrc.value = props.frameInfo.frameSrc || "";
@@ -39,7 +37,6 @@ watch(
   }
 );
 
-// 初始化 iframe 加载监听
 onMounted(() => {
   nextTick(() => {
     const iframe = frameRef.value;
@@ -49,7 +46,6 @@ onMounted(() => {
   });
 });
 
-// 隐藏加载状态
 function hideLoading() {
   loading.value = false;
 }

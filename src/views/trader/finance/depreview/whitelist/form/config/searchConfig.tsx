@@ -13,9 +13,6 @@ export interface SearchEmits {
   add: () => void;
 }
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (): SearchStateType => ({
   regStartTime: null,
   regEndTime: null,
@@ -23,9 +20,7 @@ export const crtDFS = (): SearchStateType => ({
   limit: 10
 });
 const searchState = ref<SearchStateType>(crtDFS());
-/**
- * 日期处理方法
- */
+
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
@@ -41,9 +36,6 @@ const onDateChg = (
   }
 };
 
-/**
- * 创建表单列配置
- */
 const crtCols = (): PlusColumn[] => [
   {
     label: "所属代理",

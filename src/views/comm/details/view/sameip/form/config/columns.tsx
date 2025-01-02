@@ -8,17 +8,12 @@ import { fmtTs } from "@/utils/dateFormat";
 const store = useSameIp();
 
 export function useColumns(obj: { uid?: number | string; tabItem: string }) {
-  // 初始查询参数
   const searchState = ref(crtDFS);
   const { searchVal } = useSearch(searchState.value, obj);
   const searchParam = ref(searchVal.value);
 
-  /**
-   * 状态管理
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -46,17 +41,11 @@ export function useColumns(obj: { uid?: number | string; tabItem: string }) {
     getList(searchParam.value);
   };
 
-  /**
-   * 状态映射配置
-   */
   const isBindPhStMap = {
     1: { text: "是", color: "text-green-500" },
     2: { text: "否", color: "text-red-500" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "UID/用户名/标识会员",
@@ -129,7 +118,6 @@ export function useColumns(obj: { uid?: number | string; tabItem: string }) {
     }
   ];
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     if (
       Object.keys(newParam).length === 2 &&
@@ -142,18 +130,12 @@ export function useColumns(obj: { uid?: number | string; tabItem: string }) {
     getList(newParam);
   };
 
-  /**
-   * 设置数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
 
-  /**
-   * 列表
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -170,14 +152,13 @@ export function useColumns(obj: { uid?: number | string; tabItem: string }) {
   };
 
   return {
-    // 状态
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,
-    // 方法
+
     onSzChg,
     onCurChg,
     setData,

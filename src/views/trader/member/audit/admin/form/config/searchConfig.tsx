@@ -2,19 +2,16 @@ import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
 import AccountTypeField from "@/components/CgDropDownSearch";
 
-/**
- * 类型定义
- */
 export interface SearchField {
   content: number | string | null;
   type: string;
   label: string;
 }
-// 或者创建一个新的类型来处理扩展字段
+
 export interface ExtendedSearchField extends SearchField {
   stype: string;
   scontent: string | number | null;
-  [key: string]: any; // 允许其他可能的字段
+  [key: string]: any;
 }
 
 export interface SearchStateType {
@@ -32,9 +29,6 @@ export interface SearchEmits {
   add: () => void;
 }
 
-/**
- * 常量配置
- */
 export const srchOpts = {
   account: [
     { label: "UID", value: "uid", typename: "会员" },
@@ -43,9 +37,6 @@ export const srchOpts = {
   ]
 } as const;
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (): SearchStateType => ({
   account: { content: null, type: "ip", label: "IP" },
   startTime: null,
@@ -54,9 +45,6 @@ export const crtDFS = (): SearchStateType => ({
   limit: 10
 });
 
-/**
- * 日期处理方法
- */
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
@@ -72,9 +60,6 @@ const onDateChg = (
   }
 };
 
-/**
- * 创建表单列配置
- */
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "审核状态",
@@ -150,9 +135,6 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   const searchState = ref<SearchStateType>(crtDFS());
 
@@ -164,19 +146,15 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
       endTime: searchState.value.endTime
     };
 
-    // 处理每个搜索字段
     Object.entries(searchState.value).forEach(([key, field]) => {
-      // 检查是否是搜索字段（而不是其他状态字段如 start, limit 等）
       if (field && typeof field === "object" && "type" in field) {
         const searchField = field as ExtendedSearchField;
         if (searchField.stype && searchField.scontent) {
-          // 检查是否是有效的 value
           const options = srchOpts[key];
           if (
             options &&
             options.some(option => option.value === searchField.stype)
           ) {
-            // 使用字段名作为前缀，避免不同字段的参数冲突
             result[`${key}_stype`] = searchField.stype;
             result[`${key}_scontent`] = searchField.scontent;
           }

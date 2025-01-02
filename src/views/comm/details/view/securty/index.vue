@@ -7,11 +7,11 @@ import Dlg from "./dialog/index.vue";
 
 const props = defineProps<Props>();
 interface Props {
-  rowData?: any;
+  rowDt?: any;
 }
 
 const { state, columns, onSub, onSubErr, onReset } = useColumns(
-  props.rowData.uid
+  props.rowDt.uid
 );
 
 const { dlgVis, actTp, onChgSub, onReLog, onRePay } = useConfColumns();

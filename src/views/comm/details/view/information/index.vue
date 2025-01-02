@@ -1,11 +1,6 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { ref, watch } from "vue";
-/**
- * 导入组件和工具
- */
+
 import { useDetailInfo } from "./store";
 
 import LastLogin from "./comp/last-login/index.vue";
@@ -27,7 +22,7 @@ import type { UserRowData } from "./types";
 const store = useDetailInfo();
 
 interface Props {
-  rowData?: UserRowData | null;
+  rowDt?: UserRowData | null;
 }
 
 const props = defineProps<Props>();
@@ -35,16 +30,16 @@ const props = defineProps<Props>();
 /**
  * 数据处理方法
  */
-// 列表
-const { rowData } = props;
-const resData = ref();
+
+const { rowDt } = props;
+const resDt = ref();
 const getData = async (data?: Record<string, any>) => {
   try {
     if (!data?.id) return;
     const params = { uid: data.id };
     const res = await store.dtls(params);
     if (res?.code === 0) {
-      resData.value = res;
+      resDt.value = res;
     }
   } catch (error) {
     console.error("获取数据失败:", error);
@@ -52,7 +47,7 @@ const getData = async (data?: Record<string, any>) => {
 };
 
 watch(
-  () => props.rowData,
+  () => props.rowDt,
   newVal => {
     if (newVal) {
       getData(newVal);
@@ -66,84 +61,84 @@ watch(
     <div class="content-wrapper">
       <el-row>
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-          {{ rowData?.account }}({{ rowData?.uid }})
+          {{ rowDt?.account }}({{ rowDt?.uid }})
         </el-col>
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 最后登录 -->
-        <LastLogin :rowData="rowData" :resData="resData" />
+        <LastLogin :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 注册信息 -->
-        <RegInfo :rowData="rowData" :resData="resData" />
+        <RegInfo :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- VIP信息 -->
-        <VipInfo :rowData="rowData" :resData="resData" />
+        <VipInfo :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 账号状态 -->
-        <AccountStatus :rowData="rowData" />
+        <AccountStatus :rowDt="rowDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 账户钱包余额 -->
         <AccountBalance
-          :rowData="rowData"
-          :resData="resData"
+          :rowDt="rowDt"
+          :resDt="resDt"
           @shwFndLg="$emit('shwFndLg')"
         />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 活动钱包余额 -->
         <ActiveBalance
-          :rowData="rowData"
-          :resData="resData"
+          :rowDt="rowDt"
+          :resDt="resDt"
           @shwFndLg="$emit('shwFndLg')"
         />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 上级代理 -->
-        <Agent :rowData="rowData" :resData="resData" />
+        <Agent :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 佣金钱包余额 -->
         <DutyBalance
-          :rowData="rowData"
-          :resData="resData"
+          :rowDt="rowDt"
+          :resDt="resDt"
           @shwFndLg="$emit('shwFndLg')"
         />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 会员层级 -->
-        <Level :rowData="rowData" :resData="resData" />
+        <Level :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 会员信息 -->
-        <Contact :rowData="rowData" :resData="resData" />
+        <Contact :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 提现账户 -->
-        <WithAccount :rowData="rowData" :resData="resData" />
+        <WithAccount :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 充值信息 -->
-        <DepositInfo :rowData="rowData" :resData="resData" />
+        <DepositInfo :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 提现信息 -->
-        <WithInfo :rowData="rowData" :resData="resData" />
+        <WithInfo :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 近期充值 -->
-        <RecetDeposit :rowData="rowData" :resData="resData" />
+        <RecetDeposit :rowDt="rowDt" :resDt="resDt" />
       </el-row>
-      <el-row v-if="resData">
+      <el-row v-if="resDt">
         <!-- 备注 -->
-        <Record :rowData="rowData" :resData="resData" />
+        <Record :rowDt="rowDt" :resDt="resDt" />
       </el-row>
     </div>
   </el-scrollbar>
 </template>
 <style lang="scss" scoped>
-@import url("./styles/index.scss"); // 样式通过 scoped 限制
+@import url("./styles/index.scss");
 </style>

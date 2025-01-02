@@ -31,13 +31,11 @@ const calculate = (
 ) => {
   const offset = el.getBoundingClientRect();
 
-  // 获取点击位置距离 el 的垂直和水平距离
   let localX = e.clientX - offset.left;
   let localY = e.clientY - offset.top;
 
   let radius = 0;
   let scale = 0.3;
-  // 计算点击位置到 el 顶点最远距离，即为圆的最大半径（勾股定理）
   if (el._ripple?.circle) {
     scale = 0.15;
     radius = el.clientWidth / 2;
@@ -48,7 +46,6 @@ const calculate = (
     radius = Math.sqrt(el.clientWidth ** 2 + el.clientHeight ** 2) / 2;
   }
 
-  // 中心点坐标
   const centerX = `${(el.clientWidth - radius * 2) / 2}px`;
   const centerY = `${(el.clientHeight - radius * 2) / 2}px`;
 

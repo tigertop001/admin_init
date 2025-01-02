@@ -1,9 +1,6 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-/**
- * 相关状态管理
- */
 const useSecurtyStore = defineStore({
   id: "securty",
   state: () => ({}),
@@ -14,7 +11,7 @@ const useSecurtyStore = defineStore({
         return response;
       } catch (error) {
         console.error("获取失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     },
     async reLog(params) {
@@ -23,7 +20,7 @@ const useSecurtyStore = defineStore({
         return response;
       } catch (error) {
         console.error("获取失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     },
     async rePay(params) {
@@ -32,7 +29,7 @@ const useSecurtyStore = defineStore({
         return response;
       } catch (error) {
         console.error("获取失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     },
     async chgInfo(params) {
@@ -41,16 +38,12 @@ const useSecurtyStore = defineStore({
         return response;
       } catch (error) {
         console.error("获取失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     }
   }
 });
 
-/**
- * Store 封装 Hook
- * @returns 返回相关的状态和方法
- */
 export function useSecurty() {
   return useSecurtyStore();
 }

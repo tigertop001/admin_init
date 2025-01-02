@@ -6,16 +6,15 @@ export interface SearchEmits {
 }
 
 export function useColumns(emit: (event: string, ...args: any[]) => void) {
-  const dataList = ref<ConditionItem[]>([]);
+  const dtLst = ref<ConditionItem[]>([]);
 
-  // 处理输入值变化
   const onInpChg = (value: string, row: any) => {
-    dataList.value.findIndex(item => item.id === row.id);
+    dtLst.value.findIndex(item => item.id === row.id);
   };
 
   const onChg = () => {
     {
-      const formattedData = dataList.value.map(({ amount, ratio }) => ({
+      const formattedData = dtLst.value.map(({ amount, ratio }) => ({
         amount: Number(amount) || 0,
         ratio: Number(ratio) || 0
       }));
@@ -57,8 +56,8 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
   ];
 
   function onAdd() {
-    dataList.value.push({
-      id: dataList.value.length + 1,
+    dtLst.value.push({
+      id: dtLst.value.length + 1,
       amount: null,
       ratio: null
     });
@@ -66,16 +65,16 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
   }
 
   function onDel(row: ConditionItem) {
-    const index = dataList.value.indexOf(row);
+    const index = dtLst.value.indexOf(row);
     if (index !== -1) {
-      dataList.value.splice(index, 1);
+      dtLst.value.splice(index, 1);
       onChg();
     }
   }
 
   return {
     columns,
-    dataList,
+    dtLst,
     onAdd,
     onDel,
     onChg

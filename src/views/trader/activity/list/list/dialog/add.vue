@@ -9,8 +9,8 @@ import ComForm from "./comm/index.vue";
 
 const props = defineProps<{
   modelValue: boolean;
-  editData?: any; // 添加编辑数据
-  editType?: number; // 添加编辑类型：0新增，1编辑，2详情
+  editData?: any;
+  editType?: number;
 }>();
 
 const emit = defineEmits<{
@@ -48,24 +48,18 @@ const getActivityData = () => {
 };
 
 const onSubmit = async () => {
-  console.log("---onSubmitonSubmit-");
   try {
-    // 获取当前活动类型组件的表单值
     const activityData = getActivityData();
     delete activityData.activityTimeRange;
     delete activityData.showTimeRange;
-    // 获取公共表单的值
     const commonData = comFormRef.value?.getFormData();
 
-    // 将 userLevel 数组转为以逗号分隔的字符串
     const userLevel = Array.isArray(commonData.userLevel)
       ? commonData.userLevel.join(",")
-      : commonData.userLevel; // 如果 userLevel 不是数组，保持原值
+      : commonData.userLevel;
 
-    // 将 sort 转换为数字格式
-    const sort = Number(commonData.sort); // 将其转换为数字格式
+    const sort = Number(commonData.sort);
     const extend = JSON.stringify(activityData.extend);
-    // 合并数据
     const subData = {
       tagID: type.value,
       type: type.value,
@@ -75,7 +69,6 @@ const onSubmit = async () => {
       sort,
       extend
     };
-    // 触发提交事件
     emit("submit", subData);
     close();
   } catch (error) {
@@ -83,22 +76,19 @@ const onSubmit = async () => {
   }
 };
 
-// 监听编辑数据
 watch(
   () => props.editData,
   async val => {
     if (val) {
-      // 设置活动类型
       type.value = val.type;
 
       await nextTick();
 
-      // 设置公共表单数据
       if (comFormRef.value) {
         const commonFormData = {
           issueMode: val.issueMode,
           userType: val.userType,
-          userLevel: val.userLevel?.split(",").map(Number), // 字符串转数组
+          userLevel: val.userLevel?.split(",").map(Number),
           ipBlacklist: val.ipBlacklist,
           uidBlacklist: val.uidBlacklist,
           tagID: val.tagID,

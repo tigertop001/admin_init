@@ -1,20 +1,11 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-/**
- * 状态管理
- */
 const useWalSetStore = defineStore({
   id: "walSet",
 
-  /**
-   * 状态定义
-   */
   state: () => ({}),
 
-  /**
-   * Actions 定义
-   */
   actions: {
     async add(params) {
       try {
@@ -37,10 +28,6 @@ const useWalSetStore = defineStore({
   }
 });
 
-/**
- * Store 封装 Hook
- * @returns 返回相关的状态和方法
- */
 export function useWalSet() {
   return useWalSetStore();
 }

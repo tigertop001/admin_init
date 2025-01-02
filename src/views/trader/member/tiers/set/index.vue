@@ -6,7 +6,7 @@ import { Plus } from "@element-plus/icons-vue";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -22,9 +22,6 @@ const {
   onDel
 } = useColumns();
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
 });
@@ -49,11 +46,10 @@ onMounted(() => {
     :adaptiveConfig="adapConf"
     :columns="columns"
     :pagination="pagination"
-    :data="dataList"
+    :data="dtLst"
     @page-size-change="onSzChg"
     @page-current-change="onCurChg"
   >
-    <!-- 操作列 -->
     <template #operation="{ row }">
       <el-button link type="warning" size="small" @click="onEdit(row)">
         修改
@@ -64,7 +60,6 @@ onMounted(() => {
     </template>
   </pure-table>
 
-  <!-- 新增弹窗 -->
   <Add
     v-model:visible="addVis"
     :editData="editData"

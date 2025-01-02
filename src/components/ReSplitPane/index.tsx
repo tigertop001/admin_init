@@ -1,6 +1,13 @@
 import "./index.css";
 import resizer from "./resizer";
-import { type PropType, defineComponent, ref, unref, computed } from "vue";
+import {
+  type PropType,
+  defineComponent,
+  ref,
+  unref,
+  computed,
+  Fragment
+} from "vue";
 
 export interface ContextProps {
   minPercent: number;
@@ -103,7 +110,7 @@ export default defineComponent({
     };
 
     return () => (
-      <>
+      <Fragment>
         <div
           class="vue-splitter-container clearfix"
           style={unref(cursor)}
@@ -130,7 +137,7 @@ export default defineComponent({
           </div>
           <div v-show={unref(active)} class="vue-splitter-container-mask"></div>
         </div>
-      </>
+      </Fragment>
     );
   }
 });

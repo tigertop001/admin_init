@@ -5,7 +5,7 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import AddFill from "@iconify-icons/ep/plus";
 import Delete from "@iconify-icons/ep/delete";
 
-const { editMap, columns, dataList, onAdd, onDel, onEdit, onSave, onCxl } =
+const { editMap, columns, dtLst, onAdd, onDel, onEdit, onSave, onCxl } =
   useColumns();
 </script>
 
@@ -18,7 +18,7 @@ const { editMap, columns, dataList, onAdd, onDel, onEdit, onSave, onCxl } =
         background: 'var(--el-fill-color-light)',
         color: 'var(--el-text-color-primary)'
       }"
-      :data="dataList"
+      :data="dtLst"
       :columns="columns"
     >
       <template #empty>

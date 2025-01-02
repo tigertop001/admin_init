@@ -1,31 +1,22 @@
 import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
 import AccountTypeField from "@/components/CgDropDownSearch";
-import { usPullCols } from "@/views/comm/details/comm/form/columns";
-const { getPullData, configData, loading } = usPullCols();
+import { usPullCols } from "@/views/trader/comm/pull/member/form/columns";
+const { getPullData, cfgDt, loading } = usPullCols();
 
-/**
- * 类型定义
- */
 export interface SearchField {
   content: number | string | null;
   type: string;
   label: string;
-}
-// 或者创建一个新的类型来处理扩展字段
-export interface ExtendedSearchField extends SearchField {
-  stype: string;
-  scontent: string | number | null;
-  [key: string]: any; // 允许其他可能的字段
 }
 
 export interface SearchStateType {
   start: number;
   limit: number;
   account: SearchField;
-  startTime: number | null;
-  endTime: number | null;
-  frozenType: number | string | null;
+  levelUpgradeAtBeginTime: number | null;
+  levelUpgradeAtEndTime: number | null;
+  level: number | string | null;
 }
 
 export interface SearchEmits {
@@ -33,36 +24,20 @@ export interface SearchEmits {
   add: () => void;
 }
 
-/**
- * 常量配置
- */
-export const srchOpts = {
-  account: [
-    { label: "UID", value: "uid", typename: "会员" },
-    { label: "用户名", value: "account", typename: "会员" }
-  ]
-} as const;
-
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (): SearchStateType => ({
   account: { content: null, type: "uid", label: "UID" },
-  startTime: null,
-  endTime: null,
-  frozenType: null,
+  levelUpgradeAtBeginTime: null,
+  levelUpgradeAtEndTime: null,
+  level: null,
   start: 0,
   limit: 10
 });
 
-/**
- * 日期处理方法
- */
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
-  startKey: "startTime",
-  endKey: "endTime"
+  startKey: "levelUpgradeAtBeginTime",
+  endKey: "levelUpgradeAtEndTime"
 ) => {
   if (val && Array.isArray(val)) {
     searchState[startKey] = new Date(val[0]).getTime();
@@ -73,23 +48,21 @@ const onDateChg = (
   }
 };
 
-const levelOptions = computed(() => {
-  if (!configData.value?.data?.levelList) {
+const lvlOp = computed(() => {
+  if (!cfgDt.value?.data?.levelList) {
     return [];
   }
-  return configData.value.data.levelList.map(item => ({
+  return cfgDt.value.data.levelList.map(item => ({
     label: item.levelName,
     value: item.id
   }));
 });
 const ensDtLd = async () => {
-  if (!configData.value && !loading.value) {
+  if (!cfgDt.value && !loading.value) {
     await getPullData();
   }
 };
-/**
- * 创建表单列配置
- */
+
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "会员",
@@ -97,21 +70,12 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
     renderField: () => (
       <AccountTypeField
         modelValue={searchState.value.account}
-        options={srchOpts.account}
-        config={{
-          typeKey: "stype",
-          contentKey: "scontent",
-          isStype: true
-        }}
+        options={[
+          { label: "UID", value: "uid", typename: "会员" },
+          { label: "账号", value: "account", typename: "会员" }
+        ]}
         onUpdate:modelValue={(newValue: SearchField) => {
-          if (newValue.type !== searchState.value.account.type) {
-            searchState.value.account = {
-              ...newValue,
-              content: null
-            };
-          } else {
-            searchState.value.account = newValue;
-          }
+          searchState.value.account = newValue;
         }}
       />
     )
@@ -119,9 +83,9 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "VIP等级",
     labelWidth: 150,
-    prop: "vipId",
+    prop: "level",
     valueType: "select",
-    options: levelOptions.value
+    options: lvlOp.value
   },
   {
     label: "晋级时间",
@@ -132,14 +96,16 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
       startPlaceholder: "请选择",
       endPlaceholder: "请选择",
       onChange: (val: any) =>
-        onDateChg(searchState.value, val, "startTime", "endTime")
+        onDateChg(
+          searchState.value,
+          val,
+          "levelUpgradeAtBeginTime",
+          "levelUpgradeAtEndTime"
+        )
     }
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   const searchState = ref<SearchStateType>(crtDFS());
 
@@ -147,18 +113,15 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     const result: Record<string, any> = {
       start: searchState.value.start,
       limit: searchState.value.limit,
-      startTime: searchState.value.startTime,
-      endTime: searchState.value.endTime,
-      frozenType: searchState.value.frozenType
+      levelUpgradeAtBeginTime: searchState.value.levelUpgradeAtBeginTime,
+      levelUpgradeAtEndTime: searchState.value.levelUpgradeAtEndTime,
+      level: searchState.value.level
     };
 
-    // 组件会处理好输出格式，直接展开到结果中
-    const accountField = searchState.value.account as ExtendedSearchField;
-    if (accountField && accountField.stype && accountField.scontent) {
-      result.stype = accountField.stype;
-      result.scontent = accountField.scontent;
+    const accountField = searchState.value.account;
+    if (accountField.content) {
+      result[accountField.type] = accountField.content;
     }
-
     return result;
   });
 

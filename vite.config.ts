@@ -25,7 +25,6 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
     VITE_COMPRESSION
   } = wrapperEnv(env);
 
-  // 确保这些值存在
   if (!VITE_ROUTER_HISTORY) {
     console.warn(
       "VITE_ROUTER_HISTORY not found in env, using default hash mode"

@@ -1,7 +1,6 @@
 const ApiResponse = require("../utils/response");
 
 const errorHandler = (err, req, res, _next) => {
-  // 添加下划线前缀表示有意不使用
   console.error(err.stack);
 
   if (err.name === "ValidationError") {

@@ -8,7 +8,8 @@ import {
   computed,
   nextTick,
   defineComponent,
-  getCurrentInstance
+  getCurrentInstance,
+  Fragment
 } from "vue";
 import {
   delay,
@@ -246,7 +247,7 @@ export default defineComponent({
     };
 
     return () => (
-      <>
+      <Fragment>
         <div
           {...attrs}
           class={[
@@ -270,7 +271,7 @@ export default defineComponent({
                 <div class="flex mr-4">{slots.buttons()}</div>
               ) : null}
               {props.tableRef?.size ? (
-                <>
+                <Fragment>
                   <ExpandIcon
                     class={["w-[16px]", iconClass.value]}
                     style={{
@@ -282,7 +283,7 @@ export default defineComponent({
                     onClick={() => onExpand()}
                   />
                   <el-divider direction="vertical" />
-                </>
+                </Fragment>
               ) : null}
               <RefreshIcon
                 class={[
@@ -387,7 +388,7 @@ export default defineComponent({
             dynamicColumns: dynamicColumns.value
           })}
         </div>
-      </>
+      </Fragment>
     );
   }
 });

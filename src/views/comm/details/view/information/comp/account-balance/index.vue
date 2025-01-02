@@ -1,32 +1,22 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { ref, computed } from "vue";
-/**
- * 导入组件和工具
- */
+
 import Refresh from "@iconify-icons/ri/loop-right-fill";
 
 import type { UserRowData } from "../../types";
 interface Props {
-  rowData?: UserRowData;
-  resData?: Result;
+  rowDt?: UserRowData;
+  resDt?: Result;
 }
 
 import { useColumns } from "./form/columns";
-const { columns, dataList } = useColumns();
+const { columns, dtLst } = useColumns();
 
-/**
- * 父级传来的数据---start
- */
 const props = defineProps<Props>();
-const rowData = props.rowData;
-const resData = props.resData.data.data;
-console.log(rowData, resData);
-/**
- * 父级传来的数据---end
- */
+const rowDt = props.rowDt;
+const resDt = props.resDt.data.data;
+console.log(rowDt, resDt);
+
 const emit = defineEmits<{
   (_e: "shwFndLg"): void;
 }>();
@@ -34,26 +24,18 @@ const emit = defineEmits<{
 const isShow = ref(false);
 const isSpin = ref(false);
 
-/** 事件处理方法 */
 const handlers = {
-  // 显示/隐藏表格
-  // toggleTable() {
-  //   isShow.value = !isShow.value;
-  // },
   shwFndLg() {
-    emit("shwFndLg"); // 触发向上传递的事件
+    emit("shwFndLg");
   },
-  // 刷新处理
   refresh() {
     isSpin.value = true;
     setTimeout(() => {
       isSpin.value = false;
-      // TODO: 添加实际的刷新逻辑
     }, 1000);
   }
 };
 
-/** 计算属性 */
 const refIconCls = computed(() => [
   "text-red-600 cursor-pointer transition-all duration-500 hover:opacity-60",
   { "animate-spin": isSpin.value }
@@ -66,7 +48,7 @@ const refIconCls = computed(() => [
       <span
         >账户钱包余额：
         <span class="text-orange-400"
-          >{{ resData.userInfo?.mainWalletLeft || "--" }} BRL</span
+          >{{ resDt.userInfo?.mainWalletLeft || "--" }} BRL</span
         ></span
       >
       <IconifyIconOffline
@@ -104,14 +86,14 @@ const refIconCls = computed(() => [
       alignWhole="center"
       showOverflowTooltip
       :columns="columns"
-      :data="dataList"
+      :data="dtLst"
       :empty-size="100"
-      :height="dataList.length ? 'auto' : '100'"
+      :height="dtLst.length ? 'auto' : '100'"
       max-height="500"
-      :style="{ height: dataList.length ? '' : '100px' }"
+      :style="{ height: dtLst.length ? '' : '100px' }"
     />
   </el-col>
 </template>
 <style lang="scss" scoped>
-@import url("../../styles/index.scss"); // 样式通过 scoped 限制
+@import url("../../styles/index.scss");
 </style>

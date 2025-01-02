@@ -2,8 +2,8 @@ import { ref, computed } from "vue";
 import { message } from "@/utils/message";
 import type { PlusColumn, FieldValues } from "plus-pro-components";
 import { useInfoLevel } from "../../store";
-import { usPullCols } from "@/views/comm/details/comm/form/columns";
-const { getPullData, configData } = usPullCols();
+import { usPullCols } from "@/views/trader/comm/pull/member/form/columns";
+const { getPullData, cfgDt } = usPullCols();
 let initialized = false;
 
 export function useColumns(uid: number, closeDialog?: () => void) {
@@ -23,9 +23,9 @@ export function useColumns(uid: number, closeDialog?: () => void) {
     ]
   } as const;
 
-  const levelOptions = computed(() => {
-    if (!configData.value?.data?.levelList) return [];
-    return configData.value.data.levelList.map(item => ({
+  const lvlOp = computed(() => {
+    if (!cfgDt.value?.data?.levelList) return [];
+    return cfgDt.value.data.levelList.map(item => ({
       label: item.levelName,
       value: item.id
     }));
@@ -44,7 +44,7 @@ export function useColumns(uid: number, closeDialog?: () => void) {
       labelWidth: 120,
       prop: "levelId",
       valueType: "select",
-      options: levelOptions.value,
+      options: lvlOp.value,
       rules: FORM_RULES.levelSign
     },
     {

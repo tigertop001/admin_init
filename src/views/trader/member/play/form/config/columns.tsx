@@ -6,14 +6,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useMemPlay } from "../store";
 const store = useMemPlay();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -33,10 +31,7 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const addVis = ref(false);
   const addType = ref(0);
@@ -51,9 +46,6 @@ export function useColumns() {
     4: { text: "拉黑", color: "text-gray-500" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       type: "selection",
@@ -163,9 +155,6 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -181,15 +170,11 @@ export function useColumns() {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 弹窗相关方法
-   */
   const shwAdd = (type: number) => {
     if (type === 0) {
       editData.value = null;
@@ -207,9 +192,6 @@ export function useColumns() {
     await getList(searchParam.value);
   };
 
-  /**
-   * CRUD 操作方法
-   */
   const onEdit = (row: any) => {
     editData.value = row;
     shwAdd(1);
@@ -220,14 +202,11 @@ export function useColumns() {
     data: FieldValues;
   }) => {
     const { type, data } = formValues;
-    console.log("type----", type);
     try {
       let res;
       if (type === 1) {
-        // 新增陪玩账户
         res = await store.add(data);
       } else {
-        // 添加已有账户
         res = await store.addNow(data);
       }
       if (res?.code === 0) {
@@ -256,8 +235,8 @@ export function useColumns() {
       const res = await store.add3rd(params);
       if (res?.code === 0) {
         message("操作成功", { type: "success" });
-        seldRows.value = []; // 清空选中数据
-        getList(searchParam.value); // 刷新列表
+        seldRows.value = [];
+        getList(searchParam.value);
       } else {
         message(res?.msg || "操作失败", { type: "error" });
       }
@@ -267,7 +246,6 @@ export function useColumns() {
     }
   };
 
-  // 批量退出三方帐号
   const qt3rd = async () => {
     if (!seldRows.value.length) {
       message("请选择需要操作的账号", { type: "error" });
@@ -281,8 +259,8 @@ export function useColumns() {
       const res = await store.qt3rd(params);
       if (res?.code === 0) {
         message("操作成功", { type: "success" });
-        seldRows.value = []; // 清空选中数据
-        getList(searchParam.value); // 刷新列表
+        seldRows.value = [];
+        getList(searchParam.value);
       } else {
         message(res?.msg || "操作失败", { type: "error" });
       }
@@ -292,7 +270,6 @@ export function useColumns() {
     }
   };
 
-  // 是否进三方
   const onE3rdChg = async (row: any, value: boolean) => {
     try {
       const params = {
@@ -302,31 +279,24 @@ export function useColumns() {
       const res = await store.ent3rd(params);
       if (res?.code === 0) {
         message("设置成功", { type: "success" });
-        // 刷新列表数据
         getList(searchParam.value);
       } else {
         message(res?.msg || "设置失败", { type: "error" });
-        // 如果设置失败，需要回滚开关状态
         row.enterThird = !value;
       }
     } catch (error) {
       console.error("设置失败:", error);
       message("设置失败", { type: "error" });
-      // 发生错误时，也需要回滚开关状态
       row.enterThird = !value;
     }
   };
 
-  // 选择行变化的处理函数
   const onSelChg = (rows: any[]) => {
     seldRows.value = rows;
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -334,7 +304,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

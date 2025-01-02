@@ -5,7 +5,8 @@ import {
   watch,
   nextTick,
   computed,
-  defineComponent
+  defineComponent,
+  Fragment
 } from "vue";
 import "./index.scss";
 import propTypes from "@/utils/propTypes";
@@ -24,30 +25,23 @@ interface QrcodeLogo {
 }
 
 const props = {
-  // img 或者 canvas,img不支持logo嵌套
   tag: propTypes.string
     .validate((v: string) => ["canvas", "img"].includes(v))
     .def("canvas"),
-  // 二维码内容
   text: {
     type: [String, Array] as PropType<string | Recordable[]>,
     default: null
   },
-  // qrcode.js配置项
   options: {
     type: Object as PropType<QRCodeRenderersOptions>,
     default: (): QRCodeRenderersOptions => ({})
   },
-  // 宽度
   width: propTypes.number.def(200),
-  // logo
   logo: {
     type: [String, Object] as PropType<Partial<QrcodeLogo> | string>,
     default: (): QrcodeLogo | string => ""
   },
-  // 是否过期
   disabled: propTypes.bool.def(false),
-  // 过期提示内容
   disabledText: propTypes.string.def("")
 };
 
@@ -70,7 +64,6 @@ export default defineComponent({
       await nextTick();
       const options = cloneDeep(props.options || {});
       if (props.tag === "canvas") {
-        // 容错率，默认对内容少的二维码采用高容错率，内容多的二维码采用低容错率
         options.errorCorrectionLevel =
           options.errorCorrectionLevel ||
           getErrorCorrectionLevel(unref(renderText));
@@ -140,7 +133,6 @@ export default defineComponent({
       const logoBgXY = (canvasWidth * (1 - logoSize - borderSize)) / 2;
       const ctx = canvasRef.getContext("2d");
       if (!ctx) return;
-      // logo 底色
       canvasRoundRect(ctx)(
         logoBgXY,
         logoBgXY,
@@ -227,7 +219,7 @@ export default defineComponent({
       emit("disabled-click");
     };
     return () => (
-      <>
+      <Fragment>
         <div
           v-loading={unref(loading)}
           class="qrcode relative inline-block"
@@ -255,7 +247,7 @@ export default defineComponent({
             </div>
           )}
         </div>
-      </>
+      </Fragment>
     );
   }
 });

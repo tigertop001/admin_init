@@ -2,29 +2,20 @@ import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
 import AccountTypeField from "@/components/CgDropDownSearch";
 
-/**
- * 类型定义
- */
 export interface SearchField {
   content: number | string | null;
   type: string;
   label: string;
-}
-// 或者创建一个新的类型来处理扩展字段
-export interface ExtendedSearchField extends SearchField {
-  stype: string;
-  scontent: string | number | null;
-  [key: string]: any; // 允许其他可能的字段
 }
 
 export interface SearchStateType {
   start: number;
   limit: number;
   account: SearchField;
-  sendTimeStart: number | null;
-  sendTimeEnd: number | null;
-  getTimeStart: number | null;
-  getTimeEnd: number | null;
+  createdAtBeginTime: number | null;
+  createdAtEndTime: number | null;
+  claimAtBeginTime: number | null;
+  claimAtEndTime: number | null;
   status: number | string | null;
   prizeType: number | string | null;
 }
@@ -44,29 +35,23 @@ export const srchOpts = {
   ]
 } as const;
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (): SearchStateType => ({
   account: { content: null, type: "uid", label: "UID" },
-  sendTimeStart: null,
-  sendTimeEnd: null,
-  getTimeStart: null,
-  getTimeEnd: null,
+  createdAtBeginTime: null,
+  createdAtEndTime: null,
+  claimAtBeginTime: null,
+  claimAtEndTime: null,
   status: null,
   prizeType: null,
   start: 0,
   limit: 10
 });
 
-/**
- * 日期处理方法
- */
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
-  startKey: "sendTimeStart" | "getTimeStart",
-  endKey: "sendTimeEnd" | "getTimeEnd"
+  startKey: "createdAtBeginTime" | "claimAtBeginTime",
+  endKey: "createdAtEndTime" | "claimAtEndTime"
 ) => {
   if (val && Array.isArray(val)) {
     searchState[startKey] = new Date(val[0]).getTime();
@@ -77,9 +62,6 @@ const onDateChg = (
   }
 };
 
-/**
- * 创建表单列配置
- */
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "会员",
@@ -87,21 +69,12 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
     renderField: () => (
       <AccountTypeField
         modelValue={searchState.value.account}
-        options={srchOpts.account}
-        config={{
-          typeKey: "stype",
-          contentKey: "scontent",
-          isStype: true
-        }}
+        options={[
+          { label: "UID", value: "uid", typename: "会员" },
+          { label: "账号", value: "account", typename: "会员" }
+        ]}
         onUpdate:modelValue={(newValue: SearchField) => {
-          if (newValue.type !== searchState.value.account.type) {
-            searchState.value.account = {
-              ...newValue,
-              content: null
-            };
-          } else {
-            searchState.value.account = newValue;
-          }
+          searchState.value.account = newValue;
         }}
       />
     )
@@ -109,7 +82,7 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "奖金类型",
     labelWidth: 150,
-    prop: "prizeType",
+    prop: "rewardType",
     valueType: "select",
     options: [
       { label: "全部", value: 0 },
@@ -121,7 +94,7 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "奖金状态",
     labelWidth: 150,
-    prop: "status",
+    prop: "isClaim",
     valueType: "select",
     options: [
       { label: "全部", value: 0 },
@@ -138,7 +111,12 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
       startPlaceholder: "请选择",
       endPlaceholder: "请选择",
       onChange: (val: any) =>
-        onDateChg(searchState.value, val, "sendTimeStart", "sendTimeEnd")
+        onDateChg(
+          searchState.value,
+          val,
+          "createdAtBeginTime",
+          "createdAtEndTime"
+        )
     }
   },
   {
@@ -150,14 +128,11 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
       startPlaceholder: "请选择",
       endPlaceholder: "请选择",
       onChange: (val: any) =>
-        onDateChg(searchState.value, val, "getTimeStart", "getTimeEnd")
+        onDateChg(searchState.value, val, "claimAtBeginTime", "claimAtEndTime")
     }
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   const searchState = ref<SearchStateType>(crtDFS());
 
@@ -165,19 +140,17 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     const result: Record<string, any> = {
       start: searchState.value.start,
       limit: searchState.value.limit,
-      sendTimeStart: searchState.value.sendTimeStart,
-      sendTimeEnd: searchState.value.sendTimeEnd,
-      getTimeStart: searchState.value.getTimeStart,
-      getTimeEnd: searchState.value.getTimeEnd,
+      createdAtBeginTime: searchState.value.createdAtBeginTime,
+      createdAtEndTime: searchState.value.createdAtEndTime,
+      claimAtBeginTime: searchState.value.claimAtBeginTime,
+      claimAtEndTime: searchState.value.claimAtEndTime,
       status: searchState.value.status,
       prizeType: searchState.value.prizeType
     };
 
-    // 组件会处理好输出格式，直接展开到结果中
-    const accountField = searchState.value.account as ExtendedSearchField;
-    if (accountField && accountField.stype && accountField.scontent) {
-      result.stype = accountField.stype;
-      result.scontent = accountField.scontent;
+    const accountField = searchState.value.account;
+    if (accountField.content) {
+      result[accountField.type] = accountField.content;
     }
 
     return result;

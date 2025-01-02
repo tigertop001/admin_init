@@ -2,10 +2,7 @@ import type { AdaptiveConfig } from "@pureadmin/table";
 import { ref } from "vue";
 
 export function useColumns2() {
-  /**
-   * 基础数据
-   */
-  const dataList2 = ref([
+  const dtLst2 = ref([
     {
       real_name: "未绑定",
       kahao: "未绑定",
@@ -14,9 +11,6 @@ export function useColumns2() {
     }
   ]);
 
-  /**
-   * 表格列配置
-   */
   const columns2 = [
     {
       label: "姓名",
@@ -44,22 +38,18 @@ export function useColumns2() {
     }
   ];
 
-  /**
-   * 自适应高度配置
-   */
   const adapConf2: AdaptiveConfig = {
     offsetBottom: 110,
     fixHeader: false
   };
 
-  // 设置表格数据
   const setData2 = (data: any[]) => {
-    dataList2.value = data;
+    dtLst2.value = data;
   };
 
   return {
     columns2,
-    dataList2,
+    dtLst2,
     adapConf2,
     setData2
   };

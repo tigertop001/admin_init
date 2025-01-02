@@ -5,14 +5,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useAgRec } from "../store";
 const store = useAgRec();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -32,10 +30,7 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 状态管理
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   /**
    * 映射配置
    */
@@ -46,9 +41,6 @@ export function useColumns() {
     4: { text: "已提佣", color: "text-green-400" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "订单号",
@@ -131,18 +123,12 @@ export function useColumns() {
     getList(newParam);
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
 
-  /**
-   * 列表
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -180,7 +166,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

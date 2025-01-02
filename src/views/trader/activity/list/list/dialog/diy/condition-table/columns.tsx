@@ -26,9 +26,9 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
   const onUplodSucc = (response: any, row: any) => {
     if (response.code === 0 && response.data) {
       const imageUrl = response.data.url;
-      const index = dataList.value.indexOf(row);
+      const index = dtLst.value.indexOf(row);
       if (index !== -1) {
-        dataList.value[index].icon = imageUrl;
+        dtLst.value[index].icon = imageUrl;
         onChg(row);
       }
     }
@@ -52,7 +52,7 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
     fileInput.click();
   };
 
-  const dataList = ref([
+  const dtLst = ref([
     {
       icon: null,
       amount: { min: null, max: null },
@@ -111,25 +111,23 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
     }
   ]);
 
-  // 处理输入值变化
   const onInpChg = (value: string, row: any, field?: string) => {
-    const index = dataList.value.indexOf(row);
+    const index = dtLst.value.indexOf(row);
     if (index !== -1) {
-      // 根据字段更新值
       if (field === "amount.min" || field === "amount.max") {
         const [parent, child] = field.split(".");
-        dataList.value[index][parent][child] = value;
+        dtLst.value[index][parent][child] = value;
       } else {
-        dataList.value[index][field] = value;
+        dtLst.value[index][field] = value;
       }
-      onChg(row); // 传入对应的参数
+      onChg(row);
     }
   };
 
   const onChg = (row: any) => {
-    const index = dataList.value.indexOf(row);
+    const index = dtLst.value.indexOf(row);
     if (index !== -1) {
-      const formattedData = dataList.value.map(
+      const formattedData = dtLst.value.map(
         ({ amount, icon, weight, title, type }) => ({
           icon: Number(icon) || 0,
           amount: {
@@ -234,7 +232,7 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
 
   return {
     columns,
-    dataList,
+    dtLst,
     onChg
   };
 }

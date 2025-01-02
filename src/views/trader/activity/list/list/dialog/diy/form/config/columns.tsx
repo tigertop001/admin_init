@@ -12,10 +12,10 @@ export function useColumns() {
     walletType: null,
     extend: {
       plaids: [],
-      firstAmount: null, // 单位分
-      reward: null, // 单位元
+      firstAmount: null,
+      reward: null,
       rule: null,
-      auditMultiple: null // 稽核倍数  当钱包类型为帐户主钱包时需要配置
+      auditMultiple: null
     }
   });
 

@@ -10,7 +10,6 @@ import { useTableSelection } from "@/hooks/useSelection";
 
 const store = useAgtRev();
 
-// 初始查询参数
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
@@ -18,17 +17,13 @@ interface BaseObject {
   [key: string]: string | number | boolean | null;
 }
 export function useColumns() {
-  /**
-   * 基础数据和状态
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const editVis = ref(false);
   const editType = ref(0);
   const recVis = ref(false);
   const infoData = ref<BaseObject>({});
 
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -48,21 +43,14 @@ export function useColumns() {
     }
   });
 
-  // 使用选择 hook
-  const { seldRows, isAllSeld, onSelChg, onSelAll, getSelRws, clrSel } =
-    useTableSelection(dataList);
-  /**
-   * 状态映射配置
-   */
+  const { onSelChg, clrSel, getSelRws } = useTableSelection(dtLst);
+
   const osMap = {
     1: { text: "待审核", color: "text-orange-600" },
     2: { text: "审核通过", color: "text-green-600" },
     3: { text: "已取消", color: "text-gray-400" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       type: "selection",
@@ -167,7 +155,6 @@ export function useColumns() {
     }
   ];
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     if (
       Object.keys(newParam).length === 2 &&
@@ -180,24 +167,18 @@ export function useColumns() {
     getList(newParam);
   };
 
-  /**
-   * 设置数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
 
-  /**
-   * 列表
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
       if (res?.code === 0) {
         setData(res.data.list || [], res.data.total || 0);
-        clrSel(); // 获取新数据时清空选择
+        clrSel();
       } else {
         setData([], 0);
         message("未找到数据", { type: "error" });
@@ -208,7 +189,6 @@ export function useColumns() {
     }
   };
 
-  // 获取统计信息
   const getInfo = async () => {
     try {
       const res = await store.info();
@@ -229,9 +209,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 弹窗相关方法
-   */
   const shwEdit = (type: number, row?: any) => {
     if (type === 0) {
       editData.value = row;
@@ -274,7 +251,7 @@ export function useColumns() {
     }
   };
 
-  const handleBatchOpt = async (type: 2 | 3) => {
+  const onBchOpt = async (type: 2 | 3) => {
     const selectedRows = getSelRws();
     if (!selectedRows.length) {
       message("请先选择要操作的记录", { type: "warning" });
@@ -300,9 +277,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 导出处理
-   */
   const expExcel = (data: any[]) => {
     ExcelExporter.exportToExcel({
       columns,
@@ -311,10 +285,9 @@ export function useColumns() {
     });
   };
   return {
-    // 状态
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,
@@ -322,10 +295,8 @@ export function useColumns() {
     editData,
     editType,
     recVis,
-    seldRows,
-    isAllSeld,
     infoData,
-    // 方法
+
     onSzChg,
     onCurChg,
     expExcel,
@@ -335,9 +306,7 @@ export function useColumns() {
     shwEdit,
     onEditSub,
     onSelChg,
-    onSelAll,
-    getSelRws,
     getInfo,
-    handleBatchOpt
+    onBchOpt
   };
 }

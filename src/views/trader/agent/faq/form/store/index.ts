@@ -1,24 +1,10 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-/**
- * 相关状态管理
- */
 const useAgFaqStore = defineStore({
   id: "agFaq",
-
-  /**
-   * 状态定义
-   */
   state: () => ({}),
-
-  /**
-   * Actions 定义
-   */
   actions: {
-    /**
-     * 获取列表数据
-     */
     async list(params) {
       try {
         let response = await api.list(params);
@@ -56,52 +42,42 @@ const useAgFaqStore = defineStore({
         return response;
       } catch (error) {
         console.error("获取列表数据失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     },
-    /**
-     * 新增
-     */
+
     async add(params) {
       try {
         const response = await api.add(params);
         return response;
       } catch (error) {
         console.error("新增失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     },
-    /**
-     * 编辑
-     */
+
     async edit(params) {
       try {
         const response = await api.edit(params);
         return response;
       } catch (error) {
         console.error("编辑失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     },
-    /**
-     * 删除
-     */
+
     async del(params) {
       try {
         const response = await api.del(params);
         return response;
       } catch (error) {
         console.error("删除失败:", error);
-        throw error; // 向上抛出错误，让调用者处理
+        throw error;
       }
     }
   }
 });
 
-/**
- * Store 封装 Hook
- * @returns 返回相关的状态和方法
- */
 export function useAgFaq() {
   return useAgFaqStore();
 }

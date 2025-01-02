@@ -1,7 +1,4 @@
 export function useColumns(data: any) {
-  /**
-   * 表格列配置
-   */
   const columnData = [
     {
       id: 1,

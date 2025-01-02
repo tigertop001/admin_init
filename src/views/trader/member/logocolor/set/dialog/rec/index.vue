@@ -14,7 +14,7 @@ const searchParam = ref(searchVal.value);
 
 const props = defineProps<{
   visible: boolean;
-  rowData: any;
+  rowDt: any;
 }>();
 
 const emit = defineEmits<{
@@ -22,7 +22,6 @@ const emit = defineEmits<{
   (_e: "update:visible", _visible: boolean): void;
 }>();
 
-// 使用分页 hook
 const {
   loading,
   pagination,
@@ -42,7 +41,7 @@ const {
   }
 });
 
-const dataList = ref([]);
+const dtLst = ref([]);
 const seldRows = ref<any[]>([]);
 
 // 表格列配置
@@ -83,12 +82,11 @@ const columns = [
   }
 ];
 
-// 获取列表数据
 const getList = async (params = searchParam.value) => {
   const queryParams = {
     ...params,
-    id: props.rowData?.id,
-    account: props.rowData?.account
+    id: props.rowDt?.id,
+    account: props.rowDt?.account
   };
 
   try {
@@ -105,34 +103,31 @@ const getList = async (params = searchParam.value) => {
   }
 };
 
-// 设置表格数据
 const setData = (data: any[], total: number) => {
-  dataList.value = data;
+  dtLst.value = data;
   setTotal(total);
   setLd(false);
 };
 
-// 搜索参数更新
 const onPrmUp = (newParam: any) => {
   const updatedParams = {
     ...newParam,
-    id: props.rowData?.id,
-    account: props.rowData?.account
+    id: props.rowDt?.id,
+    account: props.rowDt?.account
   };
   searchParam.value = updatedParams;
   getList(updatedParams);
 };
 
-// 选择行变化的处理函数
 const onSelChg = (rows: any[]) => {
   seldRows.value = rows;
 };
 
-const handleRemove = async (row: any) => {
+const onRm = async (row: any) => {
   try {
     const params = {
-      id: props.rowData?.id, // 当前用户的id
-      uid: String(row.uid) // 要移除的用户id
+      id: props.rowDt?.id,
+      uid: String(row.uid)
     };
     const res = await store.qtBtch(params);
     if (res?.code === 0) {
@@ -147,7 +142,6 @@ const handleRemove = async (row: any) => {
   }
 };
 
-// 批量移除
 const qtBtch = async () => {
   if (!seldRows.value.length) {
     message("请选择需要移除的用户", { type: "error" });
@@ -156,14 +150,14 @@ const qtBtch = async () => {
 
   try {
     const params = {
-      id: props.rowData?.id, // 当前用户的id
-      uid: seldRows.value.map(row => row.uid).join(",") // 选中的用户id，用逗号分隔
+      id: props.rowDt?.id,
+      uid: seldRows.value.map(row => row.uid).join(",")
     };
     const res = await store.qtBtch(params);
     if (res?.code === 0) {
       message("批量移除成功", { type: "success" });
-      seldRows.value = []; // 清空选中数据
-      getList(searchParam.value); // 刷新列表
+      seldRows.value = [];
+      getList(searchParam.value);
     } else {
       message(res?.msg || "批量移除失败", { type: "error" });
     }
@@ -173,7 +167,6 @@ const qtBtch = async () => {
   }
 };
 
-// dialog 相关
 const dlgVis = computed({
   get: () => props.visible,
   set: val => emit("update:visible", val)
@@ -183,12 +176,12 @@ const onCls = () => {
   emit("update:visible", false);
 };
 
-// 监听 rowData 变化
+// 监听 rowDt 变化
 watch(
-  () => props.rowData,
+  () => props.rowDt,
   newVal => {
     if (newVal) {
-      console.log("rowData changed:", newVal);
+      console.log("rowDt changed:", newVal);
       const params = {
         ...searchParam.value,
         id: newVal.id,
@@ -213,12 +206,10 @@ watch(
     :close-on-click-modal="false"
     @close="onCls"
   >
-    <!-- 搜索区域 -->
     <div class="mb-4">
-      <Search :exportData="dataList" @update:param="onPrmUp" @qtBtch="qtBtch" />
+      <Search :exportData="dtLst" @update:param="onPrmUp" @qtBtch="qtBtch" />
     </div>
 
-    <!-- 数据表格 -->
     <pure-table
       ref="tableRef"
       adaptive
@@ -232,14 +223,13 @@ watch(
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
       @selection-change="onSelChg"
     >
-      <!-- 操作列 -->
       <template #operation="{ row }">
-        <el-button link type="primary" size="small" @click="handleRemove(row)">
+        <el-button link type="primary" size="small" @click="onRm(row)">
           移除该标识
         </el-button>
       </template>

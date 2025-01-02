@@ -21,7 +21,7 @@ const props = defineProps({
     type: Array as PropType<any[]>,
     required: true
   },
-  handleBatchOpt: {
+  onBchOpt: {
     type: Function as PropType<(_type: 2 | 3) => void>,
     required: true
   }
@@ -31,9 +31,6 @@ const emit = defineEmits<{
   (_e: "update:param", _param: Record<string, any>): void;
 }>();
 
-/**
- * 搜索逻辑
- */
 const { searchState, searchVal, columns, onSearch, onReset, onPrmUp } =
   useSearch(emit);
 
@@ -70,14 +67,14 @@ defineExpose({ searchVal });
         <el-button
           type="primary"
           :icon="Upload"
-          @click="() => props.handleBatchOpt(2)"
+          @click="() => props.onBchOpt(2)"
         >
           批量通过
         </el-button>
         <el-button
           type="primary"
           :icon="Delete"
-          @click="() => props.handleBatchOpt(3)"
+          @click="() => props.onBchOpt(3)"
         >
           批量取消
         </el-button>

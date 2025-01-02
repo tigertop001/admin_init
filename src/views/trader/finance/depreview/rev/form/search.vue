@@ -24,9 +24,7 @@ const props = defineProps({
     required: true
   }
 });
-/**
- * 搜索逻辑
- */
+
 const { searchState, searchVal, columns, onSearch, onReset, onPrmUp } =
   useSearch(emit);
 

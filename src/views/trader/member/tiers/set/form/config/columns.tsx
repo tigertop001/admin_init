@@ -8,19 +8,14 @@ import { usePagination } from "@/hooks/usePagination";
 
 const store = useMemSet();
 
-// 初始查询参数
 const searchParam = ref(crtDFS());
 
 export function useColumns() {
-  /**
-   * 基础数据和状态
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const addVis = ref(false);
   const addType = ref(0);
 
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -57,9 +52,6 @@ export function useColumns() {
     2: { text: "否", color: "text-red" }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "层级名称",
@@ -116,18 +108,12 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
 
-  /**
-   * 列表
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -143,9 +129,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 弹窗相关方法
-   */
   const shwAdd = (type: number) => {
     if (type === 0) {
       editData.value = null;
@@ -247,7 +230,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

@@ -17,7 +17,6 @@ import { usePermissionStoreHook } from "./permission";
 export const useMultiTagsStore = defineStore({
   id: "multiTags",
   state: () => ({
-    // 存储标签页信息（路由信息）
     multiTags: storageLocal().getItem<StorageConfigs>(
       `${responsiveStorageNameSpace()}configure`
     )?.multiTagsCache

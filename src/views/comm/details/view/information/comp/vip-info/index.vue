@@ -1,22 +1,14 @@
 <script setup lang="ts">
-/**
- * 导入组件和工具
- */
 import type { UserRowData } from "../../types";
 interface Props {
-  rowData?: UserRowData;
-  resData?: any;
+  rowDt?: UserRowData;
+  resDt?: any;
 }
-/**
- * 父级传来的数据---start
- */
+
 const props = defineProps<Props>();
-const rowData = props.rowData;
-const resData = props.resData.data.data;
-console.log(rowData, resData);
-/**
- * 父级传来的数据---end
- */
+const rowDt = props.rowDt;
+const resDt = props.resDt.data.data;
+console.log(rowDt, resDt);
 </script>
 <template>
   <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
@@ -24,5 +16,5 @@ console.log(rowData, resData);
   </el-col>
 </template>
 <style lang="scss" scoped>
-@import url("../../styles/index.scss"); // 样式通过 scoped 限制
+@import url("../../styles/index.scss");
 </style>

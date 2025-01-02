@@ -45,7 +45,6 @@ export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
     }
   ];
 
-  // 搜索会员
   const onSrch = async () => {
     if (!srchAcct.value.content) {
       message("请输入搜索内容", { type: "warning" });
@@ -78,7 +77,6 @@ export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
     }
   };
 
-  // 监听搜索条件变化
   const onSrchChg = newValue => {
     if (newValue.type !== srchAcct.value.type) {
       srchAcct.value = {
@@ -91,12 +89,10 @@ export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
     onSrch();
   };
 
-  // 删除选中的用户
   const onDelUser = (index: number) => {
     selUsers.value.splice(index, 1);
   };
 
-  // 添加用户
   const onAdd = (user: UserInfo) => {
     if (selUsers.value.some(item => item.uid === user.uid)) {
       message("该用户已添加", { type: "warning" });
@@ -105,7 +101,6 @@ export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
     selUsers.value.push(user);
   };
 
-  // 提交
   const onSub = () => {
     if (!selUsers.value.length) {
       message("请选择需要加入黑名单的用户", { type: "warning" });

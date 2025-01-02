@@ -6,14 +6,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useLblTag } from "../store";
 const store = useLblTag();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -33,10 +31,7 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const addVis = ref(false);
   const addType = ref(0);
@@ -45,9 +40,7 @@ export function useColumns() {
     1: { text: "关闭", color: "text-red-500" },
     2: { text: "开启", color: "text-green-600" }
   };
-  /**
-   * 表格列配置
-   */
+
   const columns = [
     {
       label: "ID",
@@ -105,9 +98,6 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -123,15 +113,11 @@ export function useColumns() {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 弹窗相关方法
-   */
   const shwAdd = (type: number) => {
     if (type === 0) {
       editData.value = null;
@@ -149,9 +135,6 @@ export function useColumns() {
     await getList(searchParam.value);
   };
 
-  /**
-   * CRUD 操作方法
-   */
   const onEdit = (row: any) => {
     editData.value = row;
     shwAdd(1);
@@ -219,11 +202,8 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -231,7 +211,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

@@ -1,12 +1,6 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { onMounted } from "vue";
 
-/**
- * 导入组件和工具
- */
 import Refresh from "@iconify-icons/ri/loop-right-fill";
 import { useColumns } from "./form/config/columns";
 import { useAgSet } from "./form/store";
@@ -17,7 +11,7 @@ const store = useAgSet();
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -42,7 +36,6 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 220px)' }">
-    <!-- 搜索区域 -->
     <template #header>
       <el-row class="mb-4">
         <el-col :span="24" class="text-lg">佣金结算设置 </el-col>
@@ -73,7 +66,7 @@ onMounted(() => {
         />
       </el-col>
     </el-row>
-    <!-- 数据表格 -->
+
     <pure-table
       ref="tableRef"
       adaptive
@@ -87,14 +80,13 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
     >
-      <!-- 操作列 -->
       <template #operation="{ row, index }">
         <el-button
-          v-if="!dataList[index]?.editable"
+          v-if="!dtLst[index]?.editable"
           link
           type="primary"
           size="small"

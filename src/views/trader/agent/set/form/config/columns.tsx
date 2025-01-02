@@ -1,12 +1,11 @@
 import { delObjectProperty } from "@pureadmin/utils";
-import { ref, computed } from "vue";
+import { ref, computed, Fragment } from "vue";
 import { message } from "@/utils/message";
 import { fmtTs } from "@/utils/dateFormat";
 import { IconifyIconOffline } from "@/components/ReIcon";
 import Subtract from "@iconify-icons/ri/indeterminate-circle-line";
 import { usePagination } from "@/hooks/usePagination";
 
-// 初始查询参数
 import { crtDFS } from "./searchConfig";
 const searchParam = ref(crtDFS());
 
@@ -24,7 +23,6 @@ interface BaseObject {
  *
  */
 export function useColumns(store: any) {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -44,21 +42,15 @@ export function useColumns(store: any) {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const infoData = ref<BaseObject>({});
 
-  /**
-   * 设置数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
-  // 列表
+
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params);
@@ -114,7 +106,7 @@ export function useColumns(store: any) {
   ]);
 
   const onEdit = (row, index) => {
-    dataList.value[index] = Object.assign({ ...row, editable: true });
+    dtLst.value[index] = Object.assign({ ...row, editable: true });
   };
   interface SaveParams {
     id?: number;
@@ -152,18 +144,15 @@ export function useColumns(store: any) {
       console.error("操作失败:", error);
       message("操作失败", { type: "error" });
     }
-    dataList.value[index].editable = false;
+    dtLst.value[index].editable = false;
   };
   const onCxl = index => {
-    dataList.value[index].editable = false;
-    dataList.value[index] = delObjectProperty(
-      dataList.value[index],
-      "editable"
-    );
+    dtLst.value[index].editable = false;
+    dtLst.value[index] = delObjectProperty(dtLst.value[index], "editable");
   };
 
   const onAdd = () => {
-    dataList.value.push({
+    dtLst.value.push({
       level: null,
       name: null,
       totalPerformance: null,
@@ -173,13 +162,10 @@ export function useColumns(store: any) {
   };
 
   const onDel = row => {
-    const index = dataList.value.indexOf(row);
-    if (index !== -1) dataList.value.splice(index, 1);
+    const index = dtLst.value.indexOf(row);
+    if (index !== -1) dtLst.value.splice(index, 1);
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "序号",
@@ -191,52 +177,54 @@ export function useColumns(store: any) {
       label: "级别名称",
       prop: "name",
       cellRenderer: ({ row, index }) => (
-        <>
-          {dataList.value[index]?.editable ? (
+        <Fragment>
+          {dtLst.value[index]?.editable ? (
             <el-input v-model={row.name} />
           ) : (
             <p>{row.name || "--"}</p>
           )}
-        </>
+        </Fragment>
       )
     },
     {
       label: "业绩≥",
       prop: "totalPerformance",
       cellRenderer: ({ row, index }) => (
-        <>
-          {dataList.value[index]?.editable ? (
+        <Fragment>
+          {dtLst.value[index]?.editable ? (
             <el-input v-model={row.totalPerformance} type="number" />
           ) : (
             <p>{row.totalPerformance || "--"}</p>
           )}
-        </>
+        </Fragment>
       )
     },
     {
       label: "万/返佣",
       prop: "profitRate",
       cellRenderer: ({ row, index }) => (
-        <>
-          {dataList.value[index]?.editable ? (
+        <Fragment>
+          {dtLst.value[index]?.editable ? (
             <el-input v-model={row.profitRate} />
           ) : (
             <p>{row.profitRate || "--"}</p>
           )}
-        </>
+        </Fragment>
       )
     },
     {
       label: "操作人",
       prop: "operatorID",
-      cellRenderer: ({ row }) => <>{row.operatorID || "--"}</>
+      cellRenderer: ({ row }) => <Fragment>{row.operatorID || "--"}</Fragment>
     },
     {
       label: "最后操作时间",
       prop: "updatedAt",
       sortable: true,
       cellRenderer: ({ row }) => (
-        <>{fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}</>
+        <Fragment>
+          {fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}
+        </Fragment>
       ),
       minWidth: 110
     },
@@ -263,7 +251,7 @@ export function useColumns(store: any) {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

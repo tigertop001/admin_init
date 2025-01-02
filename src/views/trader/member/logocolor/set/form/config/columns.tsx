@@ -6,7 +6,6 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useMemLGSet } from "../store";
 const store = useMemLGSet();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
@@ -23,7 +22,6 @@ const clrMap = {
 };
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -43,10 +41,7 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
+  const dtLst = ref([]);
   const editData = ref();
   const addVis = ref(false);
   const recVis = ref(false);
@@ -105,9 +100,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 表格列配置
-   */
   const columns = [
     {
       label: "序号",
@@ -190,9 +182,6 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -208,17 +197,17 @@ export function useColumns() {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 弹窗相关方法
-   */
-  const shwAdd = () => {
+  const shwAdd = (row?: any) => {
     editData.value = null;
+    if (row) {
+      currRow.value = { ...row };
+      console.log("Setting currRow to:", currRow.value);
+    }
     setTimeout(() => {
       addVis.value = true;
     }, 0);
@@ -230,9 +219,7 @@ export function useColumns() {
     currRow.value = { ...row }; // 设置当前选中行
     recVis.value = true; // 显示弹窗
   };
-  /**
-   * CRUD 操作方法
-   */
+
   const onUp = async (formValues: FieldValues) => {
     try {
       const params = {
@@ -254,11 +241,8 @@ export function useColumns() {
     addVis.value = false;
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -273,7 +257,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

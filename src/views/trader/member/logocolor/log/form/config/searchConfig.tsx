@@ -11,18 +11,12 @@ export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
 }
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (): SearchStateType => ({
   account: null,
   start: 0,
   limit: 10
 });
 
-/**
- * 创建表单列配置
- */
 const crtCols = (): PlusColumn[] => [
   {
     label: "会员帐号",
@@ -31,9 +25,6 @@ const crtCols = (): PlusColumn[] => [
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   const searchState = ref<SearchStateType>(crtDFS());
 

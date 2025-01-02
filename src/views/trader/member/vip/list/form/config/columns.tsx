@@ -5,14 +5,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useMemVipLis } from "../store";
 const store = useMemVipLis();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns(emit) {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -32,13 +30,8 @@ export function useColumns(emit) {
     }
   });
 
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
-  /**
-   * 表格列配置
-   */
+  const dtLst = ref([]);
+
   const columns = [
     {
       label: "UID/账号/会员标识",
@@ -60,18 +53,18 @@ export function useColumns(emit) {
     {
       label: "当前等级",
       prop: "level",
-      formatter: row => `${row.level || "-暂无接口字段-"}`
+      formatter: row => `${row.level || "--"}`
     },
     {
       label: "累计有效投注",
-      prop: "bet",
-      formatter: row => `${row.bet || "--"}`
+      prop: "totalBet",
+      formatter: row => `${row.totalBet || "--"}`
     },
     {
       label: "累计充值",
-      prop: "charge",
+      prop: "totalRecharge",
       sortable: true,
-      formatter: row => `${row.charge || "--"}`
+      formatter: row => `${row.totalRecharge || "--"}`
     },
     {
       label: "晋级时间",
@@ -82,23 +75,23 @@ export function useColumns(emit) {
     },
     {
       label: "累计晋级奖金",
-      prop: "advancementMoney",
-      formatter: row => `${row.advancementMoney || "--"}`
+      prop: "totalLevelReward",
+      formatter: row => `${row.totalLevelReward || "--"}`
     },
     {
       label: "累计周奖金",
-      prop: "wekkMoney",
-      formatter: row => `${row.wekkMoney || "--"}`
+      prop: "totalWeeklyReward",
+      formatter: row => `${row.totalWeeklyReward || "--"}`
     },
     {
       label: "累计月奖金",
-      prop: "monthMoney",
-      formatter: row => `${row.monthMoney || "--"}`
+      prop: "totalMonthlyReward",
+      formatter: row => `${row.totalMonthlyReward || "--"}`
     },
     {
       label: "累计领取",
-      prop: "totalGet",
-      formatter: row => `${row.totalGet || "--"}`
+      prop: "totalClaim",
+      formatter: row => `${row.totalClaim || "--"}`
     },
     {
       label: "操作",
@@ -108,9 +101,6 @@ export function useColumns(emit) {
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -126,7 +116,6 @@ export function useColumns(emit) {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
@@ -136,11 +125,8 @@ export function useColumns(emit) {
     emit("swchTab", "3");
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -148,7 +134,7 @@ export function useColumns(emit) {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

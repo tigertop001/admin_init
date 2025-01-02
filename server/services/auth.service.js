@@ -25,7 +25,7 @@ class AuthService {
     const needGoogleAuth = googleAuth && googleAuth.isEnabled;
     const needBindGoogle = !googleAuth;
 
-    const userData = {
+    const userDt = {
       userId: user._id,
       username: user.username,
       roles: user.roles,
@@ -36,10 +36,10 @@ class AuthService {
 
     if (!needGoogleAuth) {
       // 如果不需要谷歌验证，直接生成token
-      const tokens = generateTokens(userData);
+      const tokens = generateTokens(userDt);
       return {
         ...tokens,
-        user: userData,
+        user: userDt,
         needGoogleAuth,
         needBindGoogle
       };
@@ -47,7 +47,7 @@ class AuthService {
 
     // 如果需要谷歌验证，返回状态信息
     return {
-      user: userData,
+      user: userDt,
       needGoogleAuth,
       needBindGoogle
     };

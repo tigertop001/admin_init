@@ -5,7 +5,8 @@ import {
   nextTick,
   onBeforeMount,
   defineComponent,
-  getCurrentInstance
+  getCurrentInstance,
+  Fragment
 } from "vue";
 import { addClass, removeClass, toggleClass } from "@pureadmin/utils";
 
@@ -290,7 +291,7 @@ export default defineComponent({
     });
 
     return () => (
-      <>
+      <Fragment>
         <table cellspacing="0" cellpadding="0">
           <tbody>
             <tr>
@@ -321,7 +322,7 @@ export default defineComponent({
             </tr>
           </tbody>
         </table>
-      </>
+      </Fragment>
     );
   }
 });

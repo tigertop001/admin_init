@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 import { useColumns } from "./columns";
 const props = defineProps({
-  dataList: {
+  dtLst: {
     type: Array,
     required: true
   },
@@ -22,7 +22,7 @@ const columns = reactive(columnsMap[props.type] || []);
 </script>
 
 <template>
-  <pure-table :data="dataList" :columns="columns">
+  <pure-table :data="dtLst" :columns="columns">
     <template #empty>
       <el-empty description="暂无数据" :image-size="60">
         <template #image>
@@ -47,5 +47,5 @@ const columns = reactive(columnsMap[props.type] || []);
 </style>
 
 <style lang="scss" scoped>
-@import url("./styles/index.scss"); // 样式通过 scoped 限制
+@import url("./styles/index.scss");
 </style>

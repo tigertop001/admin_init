@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/**
- * 导入依赖和组件
- */
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
 import Add from "./dialog/add.vue";
@@ -11,7 +8,7 @@ import Details from "@/views/comm/details/index.vue";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -28,21 +25,16 @@ const {
   onSelChg
 } = useColumns();
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
 });
 </script>
 
 <template>
-  <!-- 搜索区域 -->
   <div class="mb-4">
-    <Search :exportData="dataList" @update:param="onPrmUp" @add="onAdd" />
+    <Search :exportData="dtLst" @update:param="onPrmUp" @add="onAdd" />
   </div>
 
-  <!-- 数据表格 -->
   <pure-table
     ref="tableRef"
     adaptive
@@ -56,12 +48,11 @@ onMounted(() => {
     :adaptiveConfig="adapConf"
     :columns="columns"
     :pagination="pagination"
-    :data="dataList"
+    :data="dtLst"
     @page-size-change="onSzChg"
     @page-current-change="onCurChg"
     @selection-change="onSelChg"
   >
-    <!-- 操作列 -->
     <template #operation="{ row }">
       <el-button link type="primary" size="small" @click="onDetail(row)">
         移出
@@ -80,5 +71,5 @@ onMounted(() => {
   />
 
   <!-- 会员详情 -->
-  <Details v-model:visible="dtlsVis" title="会员详情" :rowData="curRow" />
+  <Details v-model:visible="dtlsVis" title="会员详情" :rowDt="curRow" />
 </template>

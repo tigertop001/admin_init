@@ -35,7 +35,7 @@ export function useColumns(activeType: Ref<number>) {
     }
   });
 
-  const dataList = ref([]);
+  const dtLst = ref([]);
 
   const statusMap = {
     1: { text: "待发放", color: "text-yellow-500" },
@@ -44,9 +44,7 @@ export function useColumns(activeType: Ref<number>) {
     4: { text: "已取消", color: "text-orange-400" },
     5: { text: "发放中", color: "text-red-500" }
   };
-  /**
-   * 表格列配置
-   */
+
   const columns = [
     {
       label: "会员UID/会员账号",
@@ -148,38 +146,30 @@ export function useColumns(activeType: Ref<number>) {
     getList(newParam);
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
-  /**
-   * 自定义活动发放/取消
-   */
-  const onCxl = async (row: any) => {
+
+  const onCxl = async (row: any, stype) => {
     if (!row || !row.id) {
       message("数据异常", { type: "error" });
       return;
     }
     let str = "取消";
-    let status = row.status;
     if (row.status == 1) {
       str = "发放";
-      status = 5;
     }
     if (row.status == 5) {
       str = "取消";
-      status = 4;
     }
 
     try {
       const params = {
         uid: row.uid,
-        status: status,
-        activityId: row.activityID,
+        status: stype,
+        id: row.id,
         type: activeType.value
       };
       const res = await store.cxl(params);
@@ -198,7 +188,7 @@ export function useColumns(activeType: Ref<number>) {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

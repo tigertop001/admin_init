@@ -1,6 +1,8 @@
 import { ref } from "vue";
 import { message } from "@/utils/message";
 import AccountTypeField from "@/components/CgDropDownSearch";
+import { useMemLogAdd } from "../store";
+const store = useMemLogAdd();
 
 interface UserInfo {
   uid: string | number;
@@ -8,7 +10,10 @@ interface UserInfo {
   uname: string;
 }
 
-export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
+export function useAddDialog(
+  emit: (event: string, ...args: any[]) => void,
+  props: any
+) {
   const srchAcct = ref({
     content: null,
     type: "uid",
@@ -43,7 +48,6 @@ export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
     }
   ];
 
-  // 添加用户
   const onAdd = (user: UserInfo) => {
     if (selUsers.value.some(item => item.uid === user.uid)) {
       message("该用户已添加", { type: "warning" });
@@ -52,19 +56,30 @@ export function useAddDialog(emit: (event: string, ...args: any[]) => void) {
     selUsers.value.push(user);
   };
 
-  // 提交
-  const onSub = () => {
+  const onSub = async () => {
     if (!remark.value) {
-      message("请输入备注", { type: "warning" });
+      message("请输入用户名", { type: "warning" });
       return;
     }
 
-    const subData = {
-      uids: selUsers.value.map(user => user.uid).join(","),
-      remark: remark.value
-    };
+    try {
+      const params = {
+        id: props.rowDt?.id, // 从父组件传入的行数据中获取 id
+        account: remark.value // 用户名输入框的值
+      };
 
-    emit("submit", subData);
+      const res = await store.add(params);
+      if (res?.code === 0) {
+        message("添加成功", { type: "success" });
+        emit("submit", params);
+        emit("update:visible", false); // 关闭弹窗
+      } else {
+        message(res?.msg || "添加失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("添加失败:", error);
+      message("添加失败", { type: "error" });
+    }
   };
 
   // 重置

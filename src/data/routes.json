@@ -377,16 +377,6 @@
           }
         },
         {
-          "path": "/trader/member/risk/index",
-          "name": "risk",
-          "meta": {
-            "title": "风险会员",
-            "roles": [
-              "trader"
-            ]
-          }
-        },
-        {
           "path": "/trader/member/tiers/index",
           "name": "tiers",
           "meta": {

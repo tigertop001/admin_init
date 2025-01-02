@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-
-// https://plus-pro-components.com/components/form.html
 import "plus-pro-components/es/components/form/style/css";
 import { PlusForm } from "plus-pro-components";
 import { useColumns } from "./form/config/columns";

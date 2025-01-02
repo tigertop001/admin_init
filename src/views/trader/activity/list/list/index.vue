@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
-import AddDialog from "./dialog/add.vue"; // 添加导入
+import AddDialog from "./dialog/add.vue";
 import { useColumns } from "./form/config/columns";
 
 /**
@@ -10,7 +10,7 @@ import { useColumns } from "./form/config/columns";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -37,16 +37,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- 搜索区域 -->
   <div class="mb-4">
     <Search
-      :exportData="dataList"
+      :exportData="dtLst"
       @update:param="onPrmUp"
       @add="shwAdd(0, null)"
     />
   </div>
 
-  <!-- 数据表格 -->
   <pure-table
     ref="tableRef"
     adaptive
@@ -60,11 +58,10 @@ onMounted(() => {
     :adaptiveConfig="adapConf"
     :columns="columns"
     :pagination="pagination"
-    :data="dataList"
+    :data="dtLst"
     @page-size-change="onSzChg"
     @page-current-change="onCurChg"
   >
-    <!-- 操作列 -->
     <template #operation="{ row }">
       <el-button
         v-if="row.status == 1"

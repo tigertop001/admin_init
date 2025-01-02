@@ -6,10 +6,8 @@ import DepAct from "./dep-act/index.vue";
 import Invit from "./invit/index.vue";
 import Relief from "./relief/index.vue";
 
-// 定义选中的 tab 名称
 const actName = ref("5");
 
-// 定义 tabs 数据
 const tabs = [
   { label: "自定义活动", name: "5", component: Diy },
   { label: "帐号首充", name: "1", component: FirstDep },
@@ -18,15 +16,12 @@ const tabs = [
   { label: "救济金", name: "4", component: Relief }
 ];
 
-// 发射改变事件给子组件
 const emit = defineEmits(["update:activeType"]);
 
-// 点击 tab 时的处理函数
 const onClick = (tab: any) => {
   emit("update:activeType", Number(tab.paneName));
 };
 
-// 根据选中的 tab 动态渲染对应的组件
 const curCmp = computed(() => {
   const tab = tabs.find(tab => tab.name === actName.value);
   return tab ? tab.component : null;

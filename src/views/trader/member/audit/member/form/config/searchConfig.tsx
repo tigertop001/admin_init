@@ -2,19 +2,16 @@ import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
 import AccountTypeField from "@/components/CgDropDownSearch";
 
-/**
- * 类型定义
- */
 export interface SearchField {
   content: number | string | null;
   type: string;
   label: string;
 }
-// 或者创建一个新的类型来处理扩展字段
+
 export interface ExtendedSearchField extends SearchField {
   stype: string;
   scontent: string | number | null;
-  [key: string]: any; // 允许其他可能的字段
+  [key: string]: any;
 }
 
 export interface SearchStateType {
@@ -30,30 +27,22 @@ export interface SearchEmits {
   add: () => void;
 }
 
-/**
- * 常量配置
- */
 export const srchOpts = {
   account: [
-    { label: "IP", value: "ip", typename: "会员" },
-    { label: "归属地", value: "area", typename: "会员" }
+    { label: "UID", value: "uid", typename: "会员" },
+    { label: "用户名", value: "account", typename: "会员" },
+    { label: "昵称", value: "nickname", typename: "会员" }
   ]
 } as const;
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (): SearchStateType => ({
-  account: { content: null, type: "ip", label: "IP" },
+  account: { content: null, type: "uid", label: "UID" },
   startTime: null,
   endTime: null,
   start: 0,
   limit: 10
 });
 
-/**
- * 日期处理方法
- */
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
@@ -69,9 +58,6 @@ const onDateChg = (
   }
 };
 
-/**
- * 创建表单列配置
- */
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "审核状态",
@@ -150,7 +136,7 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   },
   {
     label: "日期",
-    prop: "regTime",
+    prop: "time",
     valueType: "date-picker",
     fieldProps: {
       type: "datetimerange",
@@ -162,9 +148,6 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   const searchState = ref<SearchStateType>(crtDFS());
 
@@ -176,7 +159,6 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
       endTime: searchState.value.endTime
     };
 
-    // 组件会处理好输出格式，直接展开到结果中
     const accountField = searchState.value.account as ExtendedSearchField;
     if (accountField && accountField.stype && accountField.scontent) {
       result.stype = accountField.stype;

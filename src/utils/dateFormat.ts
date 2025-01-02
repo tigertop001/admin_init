@@ -13,7 +13,6 @@ export const fmtTs = (
 ): string => {
   if (!timestamp) return "--";
 
-  // 处理时间戳长度
   const time =
     String(timestamp).length === 10
       ? Number(timestamp) * 1000

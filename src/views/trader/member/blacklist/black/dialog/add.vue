@@ -52,7 +52,6 @@ const onCfm = () => {
     @close="onCls"
   >
     <div class="flex flex-col gap-4">
-      <!-- 搜索区域 -->
       <div class="w-full">
         <AccountTypeField
           :modelValue="srchAcct"

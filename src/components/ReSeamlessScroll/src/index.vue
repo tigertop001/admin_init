@@ -38,22 +38,15 @@ const xPos = ref<number>(0);
 const yPos = ref<number>(0);
 const delay = ref<number>(0);
 const height = ref<number>(0);
-// 外容器宽度
 const width = ref<number>(0);
-// 内容实际宽度
 const realBoxWidth = ref<number>(0);
 const realBoxHeight = ref<number>(0);
 const copyHtml = ref("");
-// single 单步滚动的定时器
 let singleWaitTime = null;
-// move动画的animationFrame定时器
 let reqFrame = null;
 let startPos = null;
-//记录touchStart时候的posY
 let startPosY = null;
-//记录touchStart时候的posX
 let startPosX = null;
-// mouseenter mouseleave 控制scrollMove()的开关
 let isHover = false;
 let ease = "ease-in";
 

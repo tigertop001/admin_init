@@ -4,7 +4,8 @@ import {
   unref,
   onBeforeMount,
   defineComponent,
-  onBeforeUnmount
+  onBeforeUnmount,
+  Fragment
 } from "vue";
 import { reboundProps } from "./props";
 
@@ -38,7 +39,7 @@ export default defineComponent({
     });
 
     return () => (
-      <>
+      <Fragment>
         <div
           class="scroll-num"
           style={{ "--i": props.i, "--delay": props.delay }}
@@ -66,7 +67,7 @@ export default defineComponent({
             </filter>
           </svg>
         </div>
-      </>
+      </Fragment>
     );
   }
 });

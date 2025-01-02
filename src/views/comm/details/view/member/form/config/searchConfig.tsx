@@ -2,19 +2,16 @@ import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
 import AccountTypeField from "@/components/CgDropDownSearch";
 
-/**
- * 类型定义
- */
 export interface SearchField {
   content: number | string | null;
   type: string;
   label: string;
 }
-// 或者创建一个新的类型来处理扩展字段
+
 export interface ExtendedSearchField extends SearchField {
   stype: string;
   scontent: string | number | null;
-  [key: string]: any; // 允许其他可能的字段
+  [key: string]: any;
 }
 
 export interface SearchStateType {
@@ -43,9 +40,6 @@ export const srchOpts = {
   ]
 } as const;
 
-/**
- * 创建默认搜索状态
- */
 export const crtDFS = (uid): SearchStateType => ({
   account: { content: null, type: "ip", label: "IP" },
   startTime: null,
@@ -55,9 +49,6 @@ export const crtDFS = (uid): SearchStateType => ({
   limit: 10
 });
 
-/**
- * 日期处理方法
- */
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
@@ -73,9 +64,6 @@ const onDateChg = (
   }
 };
 
-/**
- * 创建表单列配置
- */
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
     label: "会员行为",
@@ -143,9 +131,6 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   }
 ];
 
-/**
- * 搜索参数处理 hook
- */
 export const useSearch = (
   emit: (event: string, ...args: any[]) => void,
   uid

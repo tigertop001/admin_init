@@ -5,14 +5,12 @@ import { fmtTs } from "@/utils/dateFormat";
 import { useMemVipRec } from "../store";
 const store = useMemVipRec();
 
-// 初始查询参数
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);
 const searchParam = ref(searchVal.value);
 
 export function useColumns() {
-  // 使用分页 hook
   const {
     loading,
     pagination,
@@ -32,26 +30,18 @@ export function useColumns() {
     }
   });
 
-  /**
-   * 状态映射配置
-   */
   const statusMap = {
-    1: { text: "正常", color: "text-green-600" },
-    2: { text: "冻结", color: "text-orange-400" },
-    3: { text: "禁止登录", color: "text-red-500" },
-    4: { text: "拉黑", color: "text-gray-700" }
+    1: { text: "已领取", color: "text-green-600" },
+    2: { text: "待领取", color: "text-orange-400" }
   };
   const przMap = {
-    1: { text: "待领取", color: "text-orange-600" },
-    2: { text: "已领取", color: "text-green-600" }
+    1: { text: "周奖金", color: "text-orange" },
+    2: { text: "月奖金", color: "text-red" },
+    3: { text: "晋级奖金", color: "text-green-600" }
   };
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
-  /**
-   * 表格列配置
-   */
+
+  const dtLst = ref([]);
+
   const columns = [
     {
       label: "UID/账号/会员标识",
@@ -77,9 +67,9 @@ export function useColumns() {
     },
     {
       label: "奖金类型",
-      prop: "prizeType",
+      prop: "rewardType",
       cellRenderer: ({ row }) => {
-        const przSt = przMap[row.prizeType] || {
+        const przSt = przMap[row.rewardType] || {
           text: "--",
           color: "text-gray-400"
         };
@@ -88,16 +78,16 @@ export function useColumns() {
     },
     {
       label: "奖金金额",
-      prop: "amount",
+      prop: "reward.amount",
       sortable: true,
-      formatter: row => `${row.amount || "--"}`
+      formatter: row => `${row.reward.amount || "--"}`
     },
     {
       label: "状态",
-      prop: "status",
+      prop: "isClaim",
       sortable: true,
       cellRenderer: ({ row }) => {
-        const status = statusMap[row.status] || {
+        const status = statusMap[row.isClaim] || {
           text: "--",
           color: "text-gray-400"
         };
@@ -113,16 +103,13 @@ export function useColumns() {
     },
     {
       label: "领取时间",
-      prop: "updatedAt",
+      prop: "claimAt",
       sortable: true,
       formatter: row =>
-        `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
+        `${fmtTs(row.claimAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     }
   ];
 
-  /**
-   * 数据处理方法
-   */
   const getList = async (params = searchParam.value) => {
     try {
       const res = await store.list(params as object);
@@ -138,17 +125,13 @@ export function useColumns() {
     }
   };
 
-  // 搜索参数更新
   const onPrmUp = (newParam: any) => {
     searchParam.value = newParam;
     getList(newParam);
   };
 
-  /**
-   * 设置表格数据
-   */
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
+    dtLst.value = data;
     setTotal(total);
     setLd(false);
   };
@@ -156,7 +139,7 @@ export function useColumns() {
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,

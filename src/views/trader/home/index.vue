@@ -308,7 +308,7 @@ const onDayChg = async () => {
               <p class="text-md font-medium pl-3">{{ rankData.title }}</p>
               <WelcomeTable
                 class="mt-3"
-                :dataList="rankData.data"
+                :dtLst="rankData.data"
                 :type="rankData.type"
               />
             </re-col>
@@ -320,5 +320,5 @@ const onDayChg = async () => {
 </template>
 
 <style lang="scss" scoped>
-@import url("./styles/index.scss"); // 样式通过 scoped 限制
+@import url("./styles/index.scss");
 </style>

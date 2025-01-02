@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/**
- * 导入依赖和组件
- */
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
 import Edit from "./dialog/change.vue";
@@ -10,7 +7,7 @@ import { useColumns } from "./form/config/columns";
 const {
   loading,
   columns,
-  dataList,
+  dtLst,
   pagination,
   lodConf,
   adapConf,
@@ -26,13 +23,10 @@ const {
   onPrmUp,
   infoData,
   editType,
-  handleBatchOpt,
+  onBchOpt,
   onSelChg
 } = useColumns();
 
-/**
- * 生命周期钩子
- */
 onMounted(() => {
   getList();
   getInfo();
@@ -41,12 +35,11 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
-    <!-- 搜索区域 -->
     <template #header>
       <Search
         :expExcel="expExcel"
-        :exportData="dataList"
-        :handleBatchOpt="handleBatchOpt"
+        :exportData="dtLst"
+        :onBchOpt="onBchOpt"
         @update:param="onPrmUp"
       />
     </template>
@@ -76,7 +69,7 @@ onMounted(() => {
         <span class="text-red-500">{{ infoData.totalCount || 0 }}</span>
       </span>
     </div>
-    <!-- 数据表格 -->
+
     <pure-table
       ref="tableRef"
       adaptive
@@ -90,12 +83,11 @@ onMounted(() => {
       :adaptiveConfig="adapConf"
       :columns="columns"
       :pagination="pagination"
-      :data="dataList"
+      :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
       @selection-change="onSelChg"
     >
-      <!-- 操作列 -->
       <template #operation="{ row }">
         <el-button link type="primary" size="small" @click="shwEdit(0, row)">
           编辑

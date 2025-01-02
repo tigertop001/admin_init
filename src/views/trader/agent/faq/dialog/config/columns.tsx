@@ -61,8 +61,8 @@ export function useColumns(formData: any) {
       prop: "isDisplay",
       valueType: "switch",
       fieldProps: {
-        "active-value": 1, // 显示
-        "inactive-value": 2 // 不显示
+        "active-value": 1,
+        "inactive-value": 2
       }
     }
   ]);

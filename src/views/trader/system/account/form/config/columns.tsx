@@ -1,68 +1,112 @@
-import type {
-  LoadingConfig,
-  AdaptiveConfig,
-  PaginationProps
-} from "@pureadmin/table";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import { message } from "@/utils/message";
+import type { FieldValues } from "plus-pro-components";
+import { usePagination } from "@/hooks/usePagination";
 import { fmtTs } from "@/utils/dateFormat";
+import { useSysAcct } from "../store";
+const store = useSysAcct();
 
-/**
- * 列表相关配置和方法
- * @param handleTagClick - 会员标识点击处理函数
- */
+import { useSearch, crtDFS } from "./searchConfig";
+const searchState = ref(crtDFS);
+const { searchVal } = useSearch(searchState.value);
+const searchParam = ref(searchVal.value);
+
 export function useColumns() {
-  /**
-   * 基础数据
-   */
-  const dataList = ref([]);
-  const loading = ref(true);
+  const {
+    loading,
+    pagination,
+    lodConf,
+    adapConf,
+    onSzChg,
+    onCurChg,
+    setLd,
+    setTotal
+  } = usePagination({
+    onPageChange: params => {
+      searchParam.value = {
+        ...searchParam.value,
+        ...params
+      };
+      getList(searchParam.value);
+    }
+  });
 
-  /**
-   * 表格列配置
-   */
+  const dtLst = ref([]);
+  const editData = ref();
+  const addVis = ref(false);
+  const addType = ref(0);
+
+  const statusMap = {
+    1: { text: "正常", color: "text-green-600" },
+    2: { text: "禁止", color: "text-red" }
+  };
+
+  const gMap = {
+    1: { text: "开启", color: "text-green-600" },
+    2: { text: "关闭", color: "text-red" }
+  };
+
   const columns = [
     {
-      label: "ID",
-      prop: "id",
+      label: "后台账号",
+      prop: "account",
       width: 100,
-      formatter: row => `${row.id || "--"}`
+      formatter: row => `${row.account || "--"}`
     },
     {
-      label: "活动标签",
+      label: "角色",
       prop: "name",
-      formatter: row => `${row.name || "--"}`
+      formatter: row => `${row.name || "-暂无接口字段-"}`
     },
     {
-      label: "进行中活动数量",
-      prop: "ProcessingActivityNum",
-      formatter: row => `${row.ProcessingActivityNum || "--"}`
+      label: "创建时间",
+      prop: "ctime",
+      formatter: row =>
+        `${fmtTs(row.createdAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
-      label: "排序",
+      label: "创建人员",
       prop: "order",
-      formatter: row => `${row.order || "--"}`
+      formatter: row => `${row.order || "-暂无接口字段-"}`
     },
     {
-      label: "操作人",
+      label: "商户权限",
       prop: "operator",
-      formatter: row => `${row.operator || "--"}`
+      formatter: row => `${row.operator || "-暂无接口字段-"}`
     },
     {
-      label: "最后操作时间",
+      label: "权限数",
       prop: "updatedAt",
       sortable: true,
+      formatter: row => `${row.operator || "-暂无接口字段-"}`
+    },
+    {
+      label: "最后登录时间/ip",
+      prop: "ltime",
       formatter: row =>
-        `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
+        `${fmtTs(row.loginTime, "YYYY-MM-DD HH:mm:ss.SSS") || "--"} / ${row.loginIp || "--"}`
     },
     {
-      label: "状态",
+      label: "Google验证",
+      prop: "googleLogin",
+      cellRenderer: ({ row }) => {
+        const status = gMap[row.googleLogin] || {
+          text: "--",
+          color: "text-gray-400"
+        };
+        return <span class={`${status.color} font-medium`}>{status.text}</span>;
+      }
+    },
+    {
+      label: "账号状态",
       prop: "status",
-      formatter: row => `${row.status || "--"}`
-    },
-    {
-      label: "备注",
-      prop: "remark",
-      formatter: row => `${row.remark || "--"}`
+      cellRenderer: ({ row }) => {
+        const status = statusMap[row.status] || {
+          text: "--",
+          color: "text-gray-400"
+        };
+        return <span class={`${status.color} font-medium`}>{status.text}</span>;
+      }
     },
     {
       label: "操作",
@@ -71,84 +115,154 @@ export function useColumns() {
     }
   ];
 
-  /**
-   * 分页配置
-   */
-  const pagination = reactive<PaginationProps>({
-    pageSize: 10,
-    currentPage: 1,
-    pageSizes: [10, 30, 60],
-    total: 0,
-    align: "right",
-    background: true
-  });
-
-  /**
-   * 加载动画配置
-   */
-  const lodConf = reactive<LoadingConfig>({
-    text: "正在加载第一页...",
-    viewBox: "-10, -10, 50, 50",
-    spinner: `
-        <path class="path" d="
-          M 30 15
-          L 28 17
-          M 25.61 25.61
-          A 15 15, 0, 0, 1, 15 30
-          A 15 15, 0, 1, 1, 27.99 7.5
-          L 15 15
-        " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-      `
-  });
-
-  /**
-   * 自适应高度配置
-   */
-  const adapConf: AdaptiveConfig = {
-    offsetBottom: 110,
-    fixHeader: false
+  const getList = async (params = searchParam.value) => {
+    try {
+      const res = await store.list(params as object);
+      if (res?.code === 0) {
+        setData(res.data.list || [], res.data.total || 0);
+      } else {
+        setData([], 0);
+        message("未找到数据", { type: "error" });
+      }
+    } catch (error) {
+      console.error("获取数据失败:", error);
+      message("获取数据失败", { type: "error" });
+    }
   };
 
-  /**
-   * 分页方法
-   */
-  // 切换每页显示数量
-  const onSzChg = (val: number) => {
-    pagination.pageSize = val;
-    pagination.currentPage = 1;
-    return {
-      page: pagination.currentPage,
-      pageSize: val
-    };
+  const onPrmUp = (newParam: any) => {
+    searchParam.value = newParam;
+    getList(newParam);
   };
 
-  // 切换页码
-  const onCurChg = (val: number) => {
-    pagination.currentPage = val;
-    lodConf.text = `正在加载第${val}页...`;
-    loading.value = true;
-    return {
-      page: val,
-      pageSize: pagination.pageSize
-    };
+  const shwAdd = (type: number) => {
+    if (type === 0) {
+      editData.value = null;
+    }
+    addType.value = type;
+    setTimeout(() => {
+      addVis.value = true;
+    }, 0);
   };
 
-  // 设置表格数据
+  const onSucc = async () => {
+    addVis.value = false;
+    editData.value = null;
+    addType.value = 0;
+    await getList(searchParam.value);
+  };
+
+  const onEdit = async (row: any) => {
+    const res = await getInfo(row);
+    editData.value = res.data;
+    shwAdd(1);
+  };
+
+  const onAddSub = async (formValues: FieldValues) => {
+    if (addType.value === 0) {
+      await putAdd(formValues);
+    } else {
+      await putEdit(formValues);
+    }
+  };
+
+  const putAdd = async (params: any) => {
+    try {
+      const res = await store.add(params as object);
+      if (res?.code === 0) {
+        message("新增成功", { type: "success", showClose: true });
+        await onSucc();
+      } else {
+        message("新增失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("新增失败:", error);
+      message("新增失败", { type: "error" });
+    }
+  };
+
+  const putEdit = async (params: any) => {
+    if (!params || !params.id) {
+      message("数据异常", { type: "error" });
+      return;
+    }
+    try {
+      const res = await store.edit(params);
+      if (res?.code === 0) {
+        message("修改成功", { type: "success", showClose: true });
+        await onSucc();
+      } else {
+        message(res?.msg || "修改失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("修改失败:", error);
+      message("修改失败", { type: "error" });
+    }
+  };
+
+  const getInfo = async (row: any) => {
+    if (!row || !row.id) {
+      message("数据异常", { type: "error" });
+      return;
+    }
+    try {
+      const params = { id: row.id };
+      const res: Result = await store.info(params);
+      if (res?.code === 0) {
+        return res;
+      } else {
+        message(res?.msg || "获取信息失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("获取信息失败:", error);
+      message("获取信息失败", { type: "error" });
+    }
+  };
+
+  const onDel = async (row: any) => {
+    if (!row || !row.id) {
+      message("数据异常", { type: "error" });
+      return;
+    }
+    try {
+      const params = { id: row.id };
+      const res = await store.info(params);
+      if (res?.code === 0) {
+        message("删除成功", { type: "success", showClose: true });
+        await getList(searchParam.value);
+      } else {
+        message(res?.msg || "删除失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("删除失败:", error);
+      message("删除失败", { type: "error" });
+    }
+  };
+
   const setData = (data: any[], total: number) => {
-    dataList.value = data;
-    pagination.total = total;
-    loading.value = false;
+    dtLst.value = data;
+    setTotal(total);
+    setLd(false);
   };
 
   return {
     loading,
     columns,
-    dataList,
+    dtLst,
     pagination,
     lodConf,
     adapConf,
+    editData,
+    addVis,
+    addType,
     onSzChg,
     onCurChg,
+    getList,
+    onPrmUp,
+    shwAdd,
+    onEdit,
+    onAddSub,
+    onDel,
     setData
   };
 }

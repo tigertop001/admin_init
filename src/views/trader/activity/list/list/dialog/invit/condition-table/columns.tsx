@@ -7,52 +7,7 @@ export interface SearchEmits {
 }
 
 export function useColumns(emit: (event: string, ...args: any[]) => void) {
-  // const store = useActiveList();
-  // const onUplod = (file: File) => {
-  //   const isImage = file.type.startsWith("image/");
-  //   const isLt2M = file.size / 1024 / 1024 < 2;
-
-  //   if (!isImage) {
-  //     message("只能上传图片文件", { type: "error" });
-  //     return false;
-  //   }
-  //   if (!isLt2M) {
-  //     message("图片大小不能超过2M", { type: "error" });
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // const onUplodSucc = (response: any, row: any) => {
-  //   if (response.code === 0 && response.data) {
-  //     const imageUrl = response.data.url;
-  //     const index = dataList.value.indexOf(row);
-  //     if (index !== -1) {
-  //       dataList.value[index].icon = imageUrl;
-  //       onChg(row);
-  //     }
-  //   }
-  // };
-
-  // const openUplod = async (row: any) => {
-  //   const fileInput = document.createElement("input");
-  //   fileInput.type = "file";
-  //   fileInput.accept = "image/*";
-  //   fileInput.onchange = async (e: any) => {
-  //     const file = e.target.files[0];
-  //     if (onUplod(file)) {
-  //       try {
-  //         const response = await store.upload(file);
-  //         onUplodSucc(response, row);
-  //       } catch (error) {
-  //         message("上传失败", { type: "error" });
-  //       }
-  //     }
-  //   };
-  //   fileInput.click();
-  // };
-
-  const dataList = ref([
+  const dtLst = ref([
     {
       icon: "icon1",
       amount: { min: null, max: null },
@@ -111,25 +66,23 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
     }
   ]);
 
-  // 处理输入值变化
   const onInpChg = (value: string, row: any, field?: string) => {
-    const index = dataList.value.indexOf(row);
+    const index = dtLst.value.indexOf(row);
     if (index !== -1) {
-      // 根据字段更新值
       if (field === "amount.min" || field === "amount.max") {
         const [parent, child] = field.split(".");
-        dataList.value[index][parent][child] = value;
+        dtLst.value[index][parent][child] = value;
       } else {
-        dataList.value[index][field] = value;
+        dtLst.value[index][field] = value;
       }
-      onChg(row); // 传入对应的参数
+      onChg(row);
     }
   };
 
   const onChg = (row: any) => {
-    const index = dataList.value.indexOf(row);
+    const index = dtLst.value.indexOf(row);
     if (index !== -1) {
-      const formattedData = dataList.value.map(
+      const formattedData = dtLst.value.map(
         ({ amount, icon, weight, title, type }) => ({
           icon: icon,
           amount: {
@@ -215,7 +168,7 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
 
   return {
     columns,
-    dataList,
+    dtLst,
     onChg
   };
 }

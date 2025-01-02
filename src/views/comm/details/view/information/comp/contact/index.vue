@@ -1,38 +1,24 @@
 <script setup lang="ts">
-/**
- * 导入依赖
- */
 import { ref } from "vue";
 
-/**
- * 导入组件和工具
- */
 import Add from "@iconify-icons/ri/add-circle-line";
 import Subtract from "@iconify-icons/ri/indeterminate-circle-line";
 
 import type { UserRowData } from "../../types";
 interface Props {
-  rowData?: UserRowData;
-  resData?: Result;
+  rowDt?: UserRowData;
+  resDt?: Result;
 }
 
 const props = defineProps<Props>();
-const rowData = props.rowData;
-const resData = props.resData.data.data;
-console.log(rowData, resData);
+const rowDt = props.rowDt;
+const resDt = props.resDt.data.data;
+console.log(rowDt, resDt);
 /**
  * 表格相关配置和方法
  */
 import { useColumns } from "./form/columns";
-const { columnData } = useColumns(resData);
-
-/**
- * 父级传来的数据---start
- */
-
-/**
- * 父级传来的数据---end
- */
+const { columnData } = useColumns(resDt);
 
 const isShow = ref(false);
 /** 事件处理方法 */
@@ -48,9 +34,9 @@ const handlers = {
   <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
     <div class="flex items-center gap-2">
       <span>
-        会员信息：（{{ resData.uname || "暂无真实姓名" }}）（{{
-          resData.phoneNum || "暂无手机号"
-        }}）（{{ resData.email || "暂无邮箱" }}）</span
+        会员信息：（{{ resDt.uname || "暂无真实姓名" }}）（{{
+          resDt.phoneNum || "暂无手机号"
+        }}）（{{ resDt.email || "暂无邮箱" }}）</span
       >
       <IconifyIconOffline
         v-if="isShow"
@@ -82,5 +68,5 @@ const handlers = {
   </el-col>
 </template>
 <style lang="scss" scoped>
-@import url("../../styles/index.scss"); // 样式通过 scoped 限制
+@import url("../../styles/index.scss");
 </style>

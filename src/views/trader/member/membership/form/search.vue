@@ -27,9 +27,6 @@ const emit = defineEmits<{
   (_e: "update:param", _param: Record<string, any>): void;
 }>();
 
-/**
- * 搜索逻辑
- */
 const { searchState, searchVal, columns, onSearch, onReset, onAdd, onPrmUp } =
   useSearch(emit);
 
