@@ -5,63 +5,18 @@ import { message } from "@/utils/message";
 export function useColumns() {
   const store = useMemBanSet();
 
-  onMounted(() => {
-    const loginSeconds = formData.value.loginPwdTimes;
-    const loginUnit =
-      timeOptions.find(
-        option =>
-          loginSeconds % option.value === 0 &&
-          loginSeconds / option.value <= 999
-      )?.value || 60;
-    loginTimeUnit.value = loginUnit;
-    displayLoginTime.value = loginSeconds / loginUnit;
-
-    const orderSeconds = formData.value.orderCancelTimes;
-    const orderUnit =
-      timeOptions.find(
-        option =>
-          orderSeconds % option.value === 0 &&
-          orderSeconds / option.value <= 999
-      )?.value || 60;
-    orderTimeUnit.value = orderUnit;
-    displayOrderTime.value = orderSeconds / orderUnit;
-
-    getInfo();
-  });
-
-  interface Option<T = any> {
-    value: T;
-    text: string;
-  }
-  interface BaseObject {
-    [key: string]: Option | string | number | boolean | null;
-  }
-  const infoData = ref<BaseObject>({});
-
-  const getInfo = async () => {
-    try {
-      const res = await store.info();
-      if (res?.code === 0) {
-        infoData.value = res.data;
-      }
-    } catch (error) {
-      console.error("获取数据失败:", error);
-      message("获取数据失败", { type: "error" });
-    }
-  };
-
   const formData = ref({
     loginPwdChecked: true,
-    loginPwdCounts: 5,
+    loginPwdCounts: null,
     loginPwdAuto: 1,
-    loginPwdTimes: 300,
-    loginPwdNotice: "账户已被锁定，请10分钟后再试。",
+    loginPwdTimes: null,
+    loginPwdNotice: null,
 
     orderCancelChecked: true,
-    orderCancelCounts: 300,
+    orderCancelCounts: null,
     orderCancelAuto: 1,
-    orderCancelTimes: 600,
-    orderCancelNotice: "账户已被锁定，请联系在线客服处理。"
+    orderCancelTimes: null,
+    orderCancelNotice: null
   });
 
   const timeOptions = [
@@ -72,17 +27,75 @@ export function useColumns() {
 
   const loginTimeUnit = ref(60);
   const orderTimeUnit = ref(60);
+  const displayLoginTime = ref(null);
+  const displayOrderTime = ref(null);
 
-  const displayLoginTime = ref(5);
-  const displayOrderTime = ref(10);
+  const updateDisplayTimes = () => {
+    const loginSeconds = formData.value.loginPwdTimes;
+    if (loginSeconds) {
+      const loginUnit =
+        timeOptions.find(
+          option =>
+            loginSeconds % option.value === 0 &&
+            loginSeconds / option.value <= 999
+        )?.value || 60;
+      loginTimeUnit.value = loginUnit;
+      displayLoginTime.value = loginSeconds / loginUnit;
+    }
+
+    const orderSeconds = formData.value.orderCancelTimes;
+    if (orderSeconds) {
+      const orderUnit =
+        timeOptions.find(
+          option =>
+            orderSeconds % option.value === 0 &&
+            orderSeconds / option.value <= 999
+        )?.value || 60;
+      orderTimeUnit.value = orderUnit;
+      displayOrderTime.value = orderSeconds / orderUnit;
+    }
+  };
+
+  const getInfo = async () => {
+    try {
+      const res = await store.info();
+      if (res?.code === 0 && res.data?.list) {
+        const { login, cancleOrder } = res.data.list;
+
+        if (login) {
+          formData.value.loginPwdCounts = login.counts || null;
+          formData.value.loginPwdAuto = login.isAuto || 1;
+          formData.value.loginPwdTimes = login.times || null;
+          formData.value.loginPwdNotice = login.notice || null;
+        }
+
+        if (cancleOrder) {
+          formData.value.orderCancelCounts = cancleOrder.counts || null;
+          formData.value.orderCancelAuto = cancleOrder.isAuto || 1;
+          formData.value.orderCancelTimes = cancleOrder.times || null;
+          formData.value.orderCancelNotice = cancleOrder.notice || null;
+        }
+
+        updateDisplayTimes();
+      }
+    } catch (error) {
+      console.error("获取数据失败:", error);
+      message("获取数据失败", { type: "error" });
+    }
+  };
 
   watch([displayLoginTime, loginTimeUnit], () => {
-    formData.value.loginPwdTimes = displayLoginTime.value * loginTimeUnit.value;
+    if (displayLoginTime.value && loginTimeUnit.value) {
+      formData.value.loginPwdTimes =
+        displayLoginTime.value * loginTimeUnit.value;
+    }
   });
 
   watch([displayOrderTime, orderTimeUnit], () => {
-    formData.value.orderCancelTimes =
-      displayOrderTime.value * orderTimeUnit.value;
+    if (displayOrderTime.value && orderTimeUnit.value) {
+      formData.value.orderCancelTimes =
+        displayOrderTime.value * orderTimeUnit.value;
+    }
   });
 
   const saveConfig = async () => {
@@ -119,6 +132,10 @@ export function useColumns() {
       message("保存失败", { type: "error" });
     }
   };
+
+  onMounted(() => {
+    getInfo();
+  });
 
   return {
     formData,
