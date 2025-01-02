@@ -13,10 +13,10 @@ const {
 </script>
 
 <template>
-  <div class="text-16px font-medium mb-24px">条件设置</div>
+  <div class="text-16px font-medium mb-[24px]">条件设置</div>
 
   <!-- 登录密码错误设置 -->
-  <el-row class="mb-24px">
+  <el-row class="mb-[24px]">
     <el-col :span="5">
       <div class="flex items-center text-14px">
         <el-checkbox
@@ -76,7 +76,7 @@ const {
   </el-row>
 
   <!-- 连续取消订单设置 -->
-  <el-row class="mb-24px">
+  <el-row class="mb-[24px]">
     <el-col :span="5">
       <div class="flex items-center text-14px">
         <el-checkbox

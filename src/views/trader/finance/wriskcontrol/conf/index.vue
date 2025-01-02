@@ -238,6 +238,6 @@ const onCancel = () => {
 
 <style>
 :deep(.el-form-item) {
-  @apply mb-24px;
+  @apply mb-[24px];
 }
 </style>
