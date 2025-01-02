@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMonMsgStore = defineStore({
-  id: "monMsg",
+const useOpNmsgStore = defineStore({
+  id: "opNmsg",
   state: () => ({}),
   actions: {
     async list(params) {
@@ -62,6 +62,6 @@ const useMonMsgStore = defineStore({
   }
 });
 
-export function useMonMsg() {
-  return useMonMsgStore();
+export function useOpNmsg() {
+  return useOpNmsgStore();
 }

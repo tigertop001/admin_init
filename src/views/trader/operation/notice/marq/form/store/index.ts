@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMonMarqStore = defineStore({
-  id: "monMarq",
+const useOpNmarStore = defineStore({
+  id: "opNmar",
 
   state: () => ({}),
 
@@ -76,6 +76,6 @@ const useMonMarqStore = defineStore({
   }
 });
 
-export function useMonMarq() {
-  return useMonMarqStore();
+export function useOpNmar() {
+  return useOpNmarStore();
 }

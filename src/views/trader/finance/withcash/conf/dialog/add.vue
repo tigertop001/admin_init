@@ -3,8 +3,6 @@ import { ref, computed, watch } from "vue";
 import {
   type PlusColumn,
   type FieldValues,
-  type TableValueType,
-  type FormItemValueType,
   PlusDialogForm
 } from "plus-pro-components";
 

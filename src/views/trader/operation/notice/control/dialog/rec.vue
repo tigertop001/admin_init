@@ -2,10 +2,10 @@
 import { ref, onMounted, watch } from "vue";
 import { message } from "@/utils/message";
 import { fmtTs } from "@/utils/dateFormat";
-import { useMemCtrl } from "../form/store/index";
+import { useOpNctl } from "../form/store/index";
 import { usePagination } from "@/hooks/usePagination";
 
-const store = useMemCtrl();
+const store = useOpNctl();
 
 const props = defineProps<{
   modelValue: boolean;

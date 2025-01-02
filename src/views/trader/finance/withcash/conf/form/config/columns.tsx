@@ -2,11 +2,11 @@ import { ref } from "vue";
 import { ExcelExporter } from "@/components/CgExportExcel";
 import { message } from "@/utils/message";
 import type { FieldValues } from "plus-pro-components";
-import { useMonPop } from "../store";
+import { useFwConf } from "../store";
 import { crtDFS } from "./searchConfig";
 import { usePagination } from "@/hooks/usePagination";
 
-const store = useMonPop();
+const store = useFwConf();
 
 const searchParam = ref(crtDFS());
 

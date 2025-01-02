@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMonSlwStore = defineStore({
-  id: "monSlw",
+const useOpNsilStore = defineStore({
+  id: "opNsil",
   state: () => ({}),
   actions: {
     async list(params) {
@@ -53,6 +53,6 @@ const useMonSlwStore = defineStore({
   }
 });
 
-export function useMonSlw() {
-  return useMonSlwStore();
+export function useOpNsil() {
+  return useOpNsilStore();
 }

@@ -3,8 +3,8 @@ import { message } from "@/utils/message";
 import { usePagination } from "@/hooks/usePagination";
 import { fmtTs } from "@/utils/dateFormat";
 import { ExcelExporter } from "@/components/CgExportExcel";
-import { useAgRec } from "../store";
-const store = useAgRec();
+import { useRepPor } from "../store";
+const store = useRepPor();
 
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);

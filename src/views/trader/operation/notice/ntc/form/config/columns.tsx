@@ -2,12 +2,12 @@ import { ref } from "vue";
 import { ExcelExporter } from "@/components/CgExportExcel";
 import { message } from "@/utils/message";
 import type { FieldValues } from "plus-pro-components";
-import { useMonntc } from "../store";
+import { useOpNntc } from "../store";
 import { crtDFS } from "./searchConfig";
 import { usePagination } from "@/hooks/usePagination";
 import { fmtTs } from "@/utils/dateFormat";
 
-const store = useMonntc();
+const store = useOpNntc();
 
 const searchParam = ref(crtDFS());
 

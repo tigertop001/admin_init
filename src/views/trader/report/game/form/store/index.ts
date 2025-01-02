@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useAgRecStore = defineStore({
-  id: "AgRec",
+const useRepGamStore = defineStore({
+  id: "repGam",
   state: () => ({}),
   actions: {
     async list(params) {
@@ -25,6 +25,6 @@ const useAgRecStore = defineStore({
     }
   }
 });
-export function useAgRec() {
-  return useAgRecStore();
+export function useRepGam() {
+  return useRepGamStore();
 }

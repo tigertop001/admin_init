@@ -1,12 +1,12 @@
 import { ref } from "vue";
 import { message } from "@/utils/message";
-import { useMemCtrl } from "../store";
+import { useRepFinWD } from "../store";
 import { useSearch, crtDFS } from "./searchConfig";
 import { usePagination } from "@/hooks/usePagination";
 import { fmtTs } from "@/utils/dateFormat";
 import type { FieldValues } from "plus-pro-components";
 
-const store = useMemCtrl();
+const store = useRepFinWD();
 
 const searchState = ref(crtDFS);
 const { searchVal } = useSearch(searchState.value);

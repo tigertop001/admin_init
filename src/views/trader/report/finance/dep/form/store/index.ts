@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMemCtrlStore = defineStore({
-  id: "memCtrl",
+const useRepFinDepStore = defineStore({
+  id: "repFinDep",
   state: () => ({}),
   actions: {
     async list(params) {
@@ -35,6 +35,6 @@ const useMemCtrlStore = defineStore({
   }
 });
 
-export function useMemCtrl() {
-  return useMemCtrlStore();
+export function useRepFinDep() {
+  return useRepFinDepStore();
 }

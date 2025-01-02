@@ -685,65 +685,6 @@
       ]
     },
     {
-      "path": "/trader/risk",
-      "meta": {
-        "icon": "ri:shield-cross-line",
-        "title": "风控管理",
-        "rank": 1
-      },
-      "children": [{
-          "path": "/trader/risk/useroplog/index",
-          "name": "useroplog",
-          "meta": {
-            "title": "用户操作日志",
-            "roles": [
-              "trader"
-            ]
-          }
-        },
-        {
-          "path": "/trader/risk/sameip/index",
-          "name": "sameip",
-          "meta": {
-            "title": "同ip查询",
-            "roles": [
-              "trader"
-            ]
-          }
-        },
-        {
-          "path": "/trader/risk/iprestric/index",
-          "name": "iprestric",
-          "meta": {
-            "title": "ip限制管理",
-            "roles": [
-              "trader"
-            ]
-          }
-        },
-        {
-          "path": "/trader/risk/samedevice/index",
-          "name": "samedevice",
-          "meta": {
-            "title": "同设备号查询",
-            "roles": [
-              "trader"
-            ]
-          }
-        },
-        {
-          "path": "/trader/risk/riskevent/index",
-          "name": "riskevent",
-          "meta": {
-            "title": "风控事件",
-            "roles": [
-              "trader"
-            ]
-          }
-        }
-      ]
-    },
-    {
       "path": "/trader/report",
       "meta": {
         "icon": "ri:folder-chart-line",

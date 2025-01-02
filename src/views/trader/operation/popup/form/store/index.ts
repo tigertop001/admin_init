@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMonPopStore = defineStore({
-  id: "monPop",
+const useOpNpopStore = defineStore({
+  id: "opNpop",
   state: () => ({}),
   actions: {
     async list(params) {
@@ -52,6 +52,6 @@ const useMonPopStore = defineStore({
     }
   }
 });
-export function useMonPop() {
-  return useMonPopStore();
+export function useOpNpop() {
+  return useOpNpopStore();
 }

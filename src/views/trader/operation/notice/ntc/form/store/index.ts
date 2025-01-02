@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMonntcStore = defineStore({
-  id: "monntc",
+const useOpNntcStore = defineStore({
+  id: "opNntc",
 
   state: () => ({}),
 
@@ -64,6 +64,6 @@ const useMonntcStore = defineStore({
   }
 });
 
-export function useMonntc() {
-  return useMonntcStore();
+export function useOpNntc() {
+  return useOpNntcStore();
 }
