@@ -8,47 +8,45 @@ export interface SearchField {
   label: string;
 }
 
+export interface ExtendedSearchField extends SearchField {
+  stype: string;
+  scontent: string | number | null;
+  [key: string]: any;
+}
+
 export interface SearchStateType {
   start: number;
   limit: number;
   account: SearchField;
   beginTime: number | null;
   endTime: number | null;
-  revBeginTime: number | null;
-  revEndTime: number | null;
-  order: number | string | null;
-  name: number | string | null;
-  type: number | string | null;
-  carr: number | string | null;
-  status: number | string | null;
-  orange: number | string | null;
 }
 
 export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
+  add: () => void;
 }
+
+export const srchOpts = {
+  account: [
+    { label: "UID", value: "uid", typename: "会员" },
+    { label: "用户名", value: "account", typename: "会员" }
+  ]
+} as const;
 
 export const crtDFS = (): SearchStateType => ({
   account: { content: null, type: "uid", label: "UID" },
   beginTime: null,
   endTime: null,
   start: 0,
-  limit: 10,
-  revBeginTime: null,
-  revEndTime: null,
-  order: null,
-  name: null,
-  type: null,
-  carr: null,
-  status: null,
-  orange: null
+  limit: 10
 });
 
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
-  startKey: "beginTime" | "revBeginTime",
-  endKey: "endTime" | "revEndTime"
+  startKey: "beginTime",
+  endKey: "endTime"
 ) => {
   if (val && Array.isArray(val)) {
     searchState[startKey] = new Date(val[0]).getTime();
@@ -61,141 +59,7 @@ const onDateChg = (
 
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
-    label: "订单号",
-    prop: "order",
-    valueType: "input"
-  },
-  {
-    label: "会员",
-    prop: "account",
-    renderField: () => (
-      <AccountTypeField
-        modelValue={searchState.value.account}
-        options={[
-          { label: "UID", value: "uid", typename: "会员" },
-          { label: "账号", value: "account", typename: "会员" }
-        ]}
-        onUpdate:modelValue={(newValue: SearchField) => {
-          searchState.value.account = newValue;
-        }}
-      />
-    )
-  },
-  {
-    label: "提现姓名",
-    prop: "name",
-    valueType: "input"
-  },
-  {
-    label: "提现类型",
-    prop: "type",
-    valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "PIX",
-        value: 1
-      },
-      {
-        label: "银行卡",
-        value: 2
-      },
-      {
-        label: "数字人民币",
-        value: 3
-      },
-      {
-        label: "USDT",
-        value: 4
-      }
-    ]
-  },
-  {
-    label: "提现币种",
-    prop: "carr",
-    valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "BRL",
-        value: 1
-      },
-      {
-        label: "CNY",
-        value: 2
-      }
-    ]
-  },
-  {
-    label: "提现状态",
-    prop: "status",
-    valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "待审核",
-        value: 1
-      },
-      {
-        label: "审核通过",
-        value: 2
-      },
-      {
-        label: "复审核",
-        value: 3
-      },
-      {
-        label: "取消提现",
-        value: 4
-      },
-      {
-        label: "冻结",
-        value: 5
-      }
-    ]
-  },
-  {
-    label: "风控原因",
-    prop: "orange",
-    valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "标签1",
-        value: 1
-      },
-      {
-        label: "标签2",
-        value: 2
-      },
-      {
-        label: "标签3",
-        value: 3
-      },
-      {
-        label: "标签4",
-        value: 4
-      },
-      {
-        label: "标签5",
-        value: 5
-      }
-    ]
-  },
-  {
-    label: "申请时间",
+    label: "时间",
     prop: "regTime",
     valueType: "date-picker",
     fieldProps: {
@@ -207,16 +71,49 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
     }
   },
   {
-    label: "审核时间",
-    prop: "revTime",
-    valueType: "date-picker",
-    fieldProps: {
-      type: "datetimerange",
-      startPlaceholder: "请选择",
-      endPlaceholder: "请选择",
-      onChange: (val: any) =>
-        onDateChg(searchState.value, val, "revBeginTime", "revEndTime")
-    }
+    label: "会员",
+    prop: "account",
+    renderField: () => (
+      <AccountTypeField
+        modelValue={searchState.value.account}
+        options={srchOpts.account}
+        config={{
+          typeKey: "stype",
+          contentKey: "scontent",
+          isStype: true
+        }}
+        onUpdate:modelValue={(newValue: SearchField) => {
+          if (newValue.type !== searchState.value.account.type) {
+            searchState.value.account = {
+              ...newValue,
+              content: null
+            };
+          } else {
+            searchState.value.account = newValue;
+          }
+        }}
+      />
+    )
+  },
+  {
+    label: "是否进入三方账户",
+    labelWidth: 150,
+    prop: "status",
+    valueType: "select",
+    options: [
+      {
+        label: "全部",
+        value: 0
+      },
+      {
+        label: "是",
+        value: 1
+      },
+      {
+        label: "否",
+        value: 2
+      }
+    ]
   }
 ];
 
@@ -228,21 +125,15 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
       start: searchState.value.start,
       limit: searchState.value.limit,
       beginTime: searchState.value.beginTime,
-      endTime: searchState.value.endTime,
-      revBeginTime: searchState.value.revBeginTime,
-      revEndTime: searchState.value.revEndTime,
-      order: searchState.value.order,
-      name: searchState.value.name,
-      type: searchState.value.type,
-      carr: searchState.value.carr,
-      status: searchState.value.status,
-      orange: searchState.value.orange
+      endTime: searchState.value.endTime
     };
 
-    const accountField = searchState.value.account;
-    if (accountField.content) {
-      result[accountField.type] = accountField.content;
+    const accountField = searchState.value.account as ExtendedSearchField;
+    if (accountField && accountField.stype && accountField.scontent) {
+      result.stype = accountField.stype;
+      result.scontent = accountField.scontent;
     }
+
     return result;
   });
 
@@ -262,11 +153,15 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     emit("update:param", param.value);
   };
 
-  const onAdd3rd = () => {
-    emit("add3rd");
+  const onAdd = () => {
+    emit("add");
   };
-  const onQt3rd = () => {
-    emit("qt3rd");
+
+  const onBatchk = () => {
+    emit("batchk");
+  };
+  const onBatrej = () => {
+    emit("batrej");
   };
 
   return {
@@ -276,7 +171,8 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     onSearch,
     onReset,
     onPrmUp,
-    onAdd3rd,
-    onQt3rd
+    onAdd,
+    onBatchk,
+    onBatrej
   };
 };

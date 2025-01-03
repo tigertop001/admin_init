@@ -5,11 +5,15 @@ const apiTp = import.meta.env.VITE_APITYPE;
 const API_URLS = {
   LIST: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/agent/commission-list"
+    real: "/api/v1/tenant/wallet/logs/list"
   },
-  PASS: {
+  MTP: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/agent/commission-operation"
+    real: "/api/v1/tenant/wallet/transaction/types"
+  },
+  STP: {
+    mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
+    real: "/api/v1/tenant/wallet/transaction/sub/types"
   }
 } as const;
 
@@ -32,12 +36,14 @@ export const listApi = data => {
   return http.request<Result>("post", getUrl("LIST"), { data });
 };
 
-// 通过/取消
-export const passApi = data => {
-  return http.request<Result>("post", getUrl("PASS"), { data });
+export const mtpApi = data => {
+  return http.request<Result>("post", getUrl("MTP"), { data });
 };
-
+export const stpApi = data => {
+  return http.request<Result>("post", getUrl("STP"), { data });
+};
 export const api = {
   list: listApi,
-  pass: passApi
+  mpt: mtpApi,
+  spt: stpApi
 };

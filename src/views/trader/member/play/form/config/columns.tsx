@@ -61,7 +61,7 @@ export function useColumns() {
           <span>
             {row.uid || "--"}/{row.account || "--"}/
           </span>
-          {row.sign == 2 ? (
+          {row.sign == 1 ? (
             <span class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300">
               会员标识
             </span>

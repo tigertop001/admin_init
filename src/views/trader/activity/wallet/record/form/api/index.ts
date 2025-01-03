@@ -32,7 +32,6 @@ export const listApi = data => {
   return http.request<Result>("post", getUrl("LIST"), { data });
 };
 
-// 通过/取消
 export const passApi = data => {
   return http.request<Result>("post", getUrl("PASS"), { data });
 };

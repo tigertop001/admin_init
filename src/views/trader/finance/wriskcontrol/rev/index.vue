@@ -14,9 +14,14 @@ const {
   onCurChg,
   getList,
   onPrmUp,
-  add3rd,
-  qt3rd,
-  onSelChg
+  onPass,
+  onCxl,
+  onBlK,
+  onClr,
+  onRej,
+  onSelChg,
+  batchk,
+  batrej
 } = useColumns();
 
 onMounted(() => {
@@ -29,8 +34,8 @@ onMounted(() => {
     <Search
       :exportData="dtLst"
       @update:param="onPrmUp"
-      @add3rd="add3rd"
-      @qt3rd="qt3rd"
+      @batchk="batchk"
+      @batrej="batrej"
     />
   </div>
 
@@ -52,11 +57,19 @@ onMounted(() => {
     @page-current-change="onCurChg"
     @selection-change="onSelChg"
   >
-    <template #operation="{}">
-      <el-button link type="primary" size="small">通过</el-button>
-      <el-button link type="primary" size="small">取消</el-button>
-      <el-button link type="primary" size="small">复审</el-button>
-      <el-button link type="primary" size="small">冻结</el-button>
+    <template #operation="{ row }">
+      <el-button link type="primary" size="small" @click="onPass(row)"
+        >通过</el-button
+      >
+      <el-button link type="primary" size="small" @click="onCxl(row)"
+        >取消</el-button
+      >
+      <el-button link type="primary" size="small" @click="onRej(row)"
+        >复审</el-button
+      >
+      <el-button link type="primary" size="small" @click="onBlK(row)"
+        >冻结</el-button
+      >
     </template>
   </pure-table>
 </template>

@@ -1,8 +1,7 @@
 import { ref } from "vue";
 import { ExcelExporter } from "@/components/CgExportExcel";
-// import { ElMessageBox } from "element-plus";
 import { message } from "@/utils/message";
-// import type { FieldValues } from "plus-pro-components";
+import { ElMessageBox } from "element-plus";
 import { useFwWith } from "../store";
 import { useSearch, crtDFS } from "./searchConfig";
 import { usePagination } from "@/hooks/usePagination";
@@ -17,9 +16,6 @@ const searchParam = ref(searchVal.value);
 
 export function useColumns() {
   const dtLst = ref([]);
-
-  const dtlsVis = ref(false);
-  const curRow = ref<Record<string, any>>({});
 
   const {
     loading,
@@ -40,6 +36,19 @@ export function useColumns() {
     }
   });
 
+  const expExcel = (data: any[]) => {
+    ExcelExporter.exportToExcel({
+      columns,
+      data,
+      fileName: "会员数据报表"
+    });
+  };
+
+  const { clrSel } = useTableSelection(dtLst);
+  const onSelChg = (rows: any[]) => {
+    seldRows.value = rows;
+  };
+
   const statusMap = {
     1: { text: "申请提现", color: "text-orange-400" },
     2: { text: "出款成功 ", color: "text-green-600" },
@@ -58,8 +67,6 @@ export function useColumns() {
     1: { text: "在线提现 ", color: "text-green-600" },
     2: { text: "人工提现", color: "text-orange-400" }
   };
-
-  const { onSelChg, clrSel } = useTableSelection(dtLst);
 
   const columns = [
     {
@@ -87,7 +94,7 @@ export function useColumns() {
       cellRenderer: ({ row }) => (
         <div class="flex flex-col gap-2">
           {row.uid || "--"}/{row.account || "--"}
-          {row.sign == 2 ? (
+          {row.sign == 1 ? (
             <span class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300">
               会员标识
             </span>
@@ -224,39 +231,192 @@ export function useColumns() {
     }
   };
 
-  const expExcel = (data: any[]) => {
-    ExcelExporter.exportToExcel({
-      columns,
-      data,
-      fileName: "会员数据报表"
-    });
+  const infVis = ref(false);
+  const curData = ref(null);
+  const isInfo = async (row: any) => {
+    curData.value = row;
+    setTimeout(() => {
+      infVis.value = true;
+    }, 0);
   };
 
-  const onCxl = async () => {
-    // try {
-    //   await ElMessageBox.confirm("确定要提款到余额吗？", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning"
-    //   });
-    //   const params = {
-    //     id: row.id,
-    //     remark,
-    //     actionType
-    //   };
-    //   const res = await store.cxl(params);
-    //   if (res?.code === 0) {
-    //     message("操作成功", { type: "success" });
-    //     getList(searchParam.value);
-    //   } else {
-    //     message(res?.msg || "操作失败", { type: "error" });
-    //   }
-    // } catch (error) {
-    //   if (error !== "cancel") {
-    //     console.error("提款到余额失败:", error);
-    //     message("操作失败", { type: "error" });
-    //   }
-    // }
+  const payVis = ref(false);
+  const isPay = async (row: any) => {
+    curData.value = row;
+    setTimeout(() => {
+      payVis.value = true;
+    }, 0);
+  };
+
+  const onCxl = async (row: any, actionType) => {
+    try {
+      const { value: remark } = await ElMessageBox.prompt(
+        "请输入备注",
+        "确认取消",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          inputPlaceholder: "请输入备注信息"
+        }
+      );
+      const params = {
+        id: row.id,
+        remark: remark || "",
+        actionType
+      };
+      const res = await store.cxl(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      if (error !== "cancel") {
+        console.error("提款到余额失败:", error);
+        message("操作失败", { type: "error" });
+      }
+    }
+  };
+
+  const onBlK = async (row: any) => {
+    try {
+      await ElMessageBox.confirm("确定要将该用户拉黑吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      });
+      const params = {
+        id: row.id,
+        uid: row.uid
+      };
+      const res = await store.black(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      if (error !== "cancel") {
+        console.error("拉黑失败:", error);
+        message("操作失败", { type: "error" });
+      }
+    }
+  };
+
+  const onClr = async (row: any) => {
+    try {
+      await ElMessageBox.confirm("确定要一键清除吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      });
+      const params = {
+        id: row.id,
+        uid: row.uid
+      };
+      const res = await store.clear(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      if (error !== "cancel") {
+        console.error("清除失败:", error);
+        message("操作失败", { type: "error" });
+      }
+    }
+  };
+
+  const onRej = async (row: any) => {
+    console.log("---", row);
+  };
+
+  const seldRows = ref<any[]>([]);
+  const onBatver = async () => {
+    if (!seldRows.value.length) {
+      message("请选择需要操作的账号", { type: "error" });
+      return;
+    }
+    try {
+      const params = {
+        ids: seldRows.value.map(row => row.id).join(",")
+      };
+      const res = await store.betver(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        seldRows.value = [];
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("操作失败:", error);
+      message("操作失败", { type: "error" });
+    }
+  };
+
+  const onBatcxl = async () => {
+    if (!seldRows.value.length) {
+      message("请选择需要操作的账号", { type: "error" });
+      return;
+    }
+    try {
+      const { value: remark } = await ElMessageBox.prompt(
+        "请输入备注",
+        "确认取消",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          inputPlaceholder: "请输入备注信息"
+        }
+      );
+
+      const params = {
+        ids: seldRows.value.map(row => row.id).join(","),
+        remark: remark || ""
+      };
+      const res = await store.betcxl(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        seldRows.value = [];
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("操作失败:", error);
+      message("操作失败", { type: "error" });
+    }
+  };
+
+  const onBatpay = async () => {
+    if (!seldRows.value.length) {
+      message("请选择需要操作的账号", { type: "error" });
+      return;
+    }
+
+    try {
+      const params = {
+        ids: seldRows.value.map(row => row.id).join(",")
+      };
+      const res = await store.betpay(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        seldRows.value = [];
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("操作失败:", error);
+      message("操作失败", { type: "error" });
+    }
   };
 
   return {
@@ -266,15 +426,24 @@ export function useColumns() {
     pagination,
     lodConf,
     adapConf,
-    dtlsVis,
-    curRow,
+    curData,
+    payVis,
+    infVis,
+    isPay,
+    expExcel,
     onSzChg,
     onCurChg,
-    expExcel,
     setData,
     getList,
     onPrmUp,
+    isInfo,
     onCxl,
-    onSelChg
+    onBlK,
+    onClr,
+    onRej,
+    onSelChg,
+    onBatpay,
+    onBatver,
+    onBatcxl
   };
 }

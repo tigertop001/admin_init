@@ -132,7 +132,7 @@ const onRm = async (row: any) => {
     const res = await store.qtBtch(params);
     if (res?.code === 0) {
       message("移除成功", { type: "success" });
-      getList(searchParam.value); // 刷新列表
+      getList(searchParam.value);
     } else {
       message(res?.msg || "移除失败", { type: "error" });
     }

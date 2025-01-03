@@ -31,9 +31,6 @@ export function useColumns() {
   });
 
   const dtLst = ref([]);
-  const editData = ref();
-  const addVis = ref(false);
-  const addType = ref(0);
 
   const statusMap = {
     1: { text: "帐号首充" },
@@ -49,7 +46,7 @@ export function useColumns() {
     totalReward: 0
   });
 
-  const getSummaries = (param: { columns: any[] }) => {
+  const getSum = (param: { columns: any[] }) => {
     const { columns } = param;
     const sums: string[] = [];
     columns.forEach((_, index) => {
@@ -140,13 +137,12 @@ export function useColumns() {
     getList(newParam);
   };
 
-  const shwAdd = (type: number) => {
-    if (type === 0) {
-      editData.value = null;
-    }
-    addType.value = type;
+  const curData = ref(null);
+  const infVis = ref(false);
+  const isInfo = async (row: any) => {
+    curData.value = row;
     setTimeout(() => {
-      addVis.value = true;
+      infVis.value = true;
     }, 0);
   };
 
@@ -163,15 +159,14 @@ export function useColumns() {
     pagination,
     lodConf,
     adapConf,
-    editData,
-    addVis,
-    addType,
     onSzChg,
     onCurChg,
     getList,
     onPrmUp,
-    shwAdd,
     setData,
-    getSummaries
+    getSum,
+    isInfo,
+    infVis,
+    curData
   };
 }

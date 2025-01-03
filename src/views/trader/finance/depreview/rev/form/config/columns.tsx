@@ -205,7 +205,7 @@ export function useColumns() {
       const params = {
         id: row.id,
         actionType: type,
-        remark: remark || "" // 使用输入的备注
+        remark: remark || ""
       };
       const res = await store.arrv(params);
       if (res?.code === 0) {

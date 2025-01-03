@@ -5,31 +5,35 @@ const apiTp = import.meta.env.VITE_APITYPE;
 const API_URLS = {
   LIST: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/virtrualAccountList"
+    real: "/api/v1/tenant/usercenter/check/userOparatorList"
   },
-  ADD: {
+  BLACK: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/addNewAccount"
+    real: "/api/v1/tenant/usercenter/check/userOparatorBlack"
   },
-  ADDNOW: {
+  PASS: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/addExistccount"
+    real: "/api/v1/tenant/usercenter/check/userOparatorPass"
   },
-  ADD3RD: {
+  CANCEL: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/AddThirdAccount"
+    real: "/api/v1/tenant/usercenter/check/userOparatorCancle"
   },
-  QT3RD: {
+  CLEAR: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/quitThirdAccount"
+    real: "/api/v1/tenant/usercenter/check/userOparatorClear"
   },
-  GETMONEY: {
+  REJECT: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/getMoneyByAccount"
+    real: "/api/v1/tenant/usercenter/check/AdminCheckReject"
   },
-  ENT3RD: {
+  BATREJ: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/isEnterThird"
+    real: "/api/v1/tenant/usercenter/check/userBatchReject"
+  },
+  BATCHK: {
+    mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
+    real: "/api/v1/tenant/usercenter/check/userBatchCheck"
   }
 } as const;
 
@@ -51,36 +55,34 @@ const getUrl = (api: keyof typeof API_URLS) => {
 export const listApi = data => {
   return http.request<Result>("post", getUrl("LIST"), { data });
 };
-
-export const addApi = data => {
-  return http.request<Result>("post", getUrl("ADD"), { data });
+export const blackApi = data => {
+  return http.request<Result>("post", getUrl("BLACK"), { data });
 };
-
-export const addNowApi = data => {
-  return http.request<Result>("post", getUrl("ADDNOW"), { data });
+export const passApi = data => {
+  return http.request<Result>("post", getUrl("PASS"), { data });
 };
-
-export const add3rdApi = data => {
-  return http.request<Result>("post", getUrl("ADD3RD"), { data });
+export const cancelApi = data => {
+  return http.request<Result>("post", getUrl("CANCEL"), { data });
 };
-
-export const qt3rdApi = data => {
-  return http.request<Result>("post", getUrl("QT3RD"), { data });
+export const clearApi = data => {
+  return http.request<Result>("post", getUrl("CLEAR"), { data });
 };
-
-export const getMnyApi = data => {
-  return http.request<Result>("post", getUrl("GETMONEY"), { data });
+export const rejectApi = data => {
+  return http.request<Result>("post", getUrl("REJECT"), { data });
 };
-
-export const ent3rdApi = data => {
-  return http.request<Result>("post", getUrl("ENT3RD"), { data });
+export const batrejApi = data => {
+  return http.request<Result>("post", getUrl("BATREJ"), { data });
+};
+export const batchkApi = data => {
+  return http.request<Result>("post", getUrl("BATCHK"), { data });
 };
 export const api = {
   list: listApi,
-  add: addApi,
-  addNow: addNowApi,
-  add3rd: add3rdApi,
-  qt3rd: qt3rdApi,
-  getMny: getMnyApi,
-  ent3rd: ent3rdApi
+  black: blackApi,
+  pass: passApi,
+  cancel: cancelApi,
+  clear: clearApi,
+  reject: rejectApi,
+  batrej: batrejApi,
+  batchk: batchkApi
 };

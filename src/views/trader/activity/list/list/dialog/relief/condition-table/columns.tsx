@@ -14,9 +14,10 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
 
   const onChg = () => {
     {
-      const formattedData = dtLst.value.map(({ amount, ratio }) => ({
+      const formattedData = dtLst.value.map(({ amount, ratio, vipLv }) => ({
         amount: Number(amount) || 0,
-        ratio: Number(ratio) || 0
+        ratio: Number(ratio) || 0,
+        vipLv: Number(vipLv) || 0
       }));
       emit("update:modelValue", formattedData);
     }
@@ -91,7 +92,8 @@ export function useColumns(emit: (event: string, ...args: any[]) => void) {
     dtLst.value.push({
       id: dtLst.value.length + 1,
       amount: null,
-      ratio: null
+      ratio: null,
+      vipLv: null
     });
     onChg();
   }

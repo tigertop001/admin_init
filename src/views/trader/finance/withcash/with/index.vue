@@ -2,7 +2,8 @@
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
 import { useColumns } from "./form/config/columns";
-import Details from "@/views/comm/details/index.vue";
+import Pay from "./dialog/pay.vue";
+import Info from "./dialog/info.vue";
 
 const {
   loading,
@@ -11,15 +12,23 @@ const {
   pagination,
   lodConf,
   adapConf,
-  dtlsVis,
-  curRow,
+  curData,
+  payVis,
+  infVis,
+  isPay,
+  isInfo,
   onSzChg,
   onCurChg,
   expExcel,
   getList,
   onPrmUp,
   onCxl,
-  onSelChg
+  onBlK,
+  onRej,
+  onSelChg,
+  onBatpay,
+  onBatver,
+  onBatcxl
 } = useColumns();
 
 onMounted(() => {
@@ -29,7 +38,14 @@ onMounted(() => {
 
 <template>
   <div class="mb-4">
-    <Search :expExcel="expExcel" :exportData="dtLst" @update:param="onPrmUp" />
+    <Search
+      :expExcel="expExcel"
+      :exportData="dtLst"
+      @update:param="onPrmUp"
+      @batchk="onBatver"
+      @batrej="onBatpay"
+      @batcxl="onBatcxl"
+    />
   </div>
 
   <pure-table
@@ -50,31 +66,33 @@ onMounted(() => {
     @page-current-change="onCurChg"
     @selection-change="onSelChg"
   >
-    <template #operation="{}">
-      <el-button link type="primary" size="small" @click="onCxl()">
+    <template #operation="{ row }">
+      <el-button link type="primary" size="small" @click="isInfo(row)">
         查看
       </el-button>
-      <el-button link type="primary" size="small" @click="onCxl()">
+      <el-button link type="primary" size="small" @click="onCxl(row, 2)">
         取消
       </el-button>
-      <el-button link type="primary" size="small" @click="onCxl()">
+      <el-button link type="primary" size="small" @click="onRej(row)">
         稽核流水
       </el-button>
-      <el-button link type="primary" size="small" @click="onCxl()">
+      <el-button link type="primary" size="small" @click="isPay(row)">
         代付
       </el-button>
     </template>
   </pure-table>
 
-  <!-- 会员标识详情弹窗
-    <Tag v-model:visible="dialogVis" :curTag="curTag" /> -->
+  <Pay
+    v-model:visible="payVis"
+    :curData="curData"
+    @submit="onCxl(curData, 1)"
+    @update:visible="payVis = $event"
+  />
 
-  <!-- 添加弹窗 -->
-  <!-- <Add
-    v-model:visible="addMebVis"
-    @submit="onAddSub"
-    @update:visible="addMebVis = $event"
-  /> -->
-
-  <Details v-model:visible="dtlsVis" title="会员详情" :rowDt="curRow" />
+  <Info
+    v-model:visible="infVis"
+    :curData="curData"
+    @submit="onCxl(curData, 1)"
+    @update:visible="infVis = $event"
+  />
 </template>

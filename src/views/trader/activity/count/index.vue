@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import Search from "./form/search.vue";
-import Add from "./dialog/add.vue";
 import { useColumns } from "./form/config/columns";
+import Info from "./dialog/info.vue";
 
 const {
   loading,
@@ -11,15 +11,14 @@ const {
   pagination,
   lodConf,
   adapConf,
-  editData,
-  addVis,
-  addType,
   onSzChg,
   onCurChg,
   getList,
   onPrmUp,
-  shwAdd,
-  getSummaries
+  isInfo,
+  getSum,
+  infVis,
+  curData
 } = useColumns();
 
 onMounted(() => {
@@ -30,7 +29,7 @@ onMounted(() => {
 <template>
   <el-card shadow="never" :body-style="{ height: 'calc(100vh - 188px)' }">
     <template #header>
-      <Search :exportData="dtLst" @update:param="onPrmUp" @add="shwAdd(0)" />
+      <Search :exportData="dtLst" @update:param="onPrmUp" />
     </template>
 
     <pure-table
@@ -48,20 +47,21 @@ onMounted(() => {
       :pagination="pagination"
       :data="dtLst"
       :show-summary="true"
-      :summary-method="getSummaries"
+      :summary-method="getSum"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
     >
-      <template #operation="{}">
-        <el-button link type="primary" size="small"> 详情 </el-button>
+      <template #operation="{ row }">
+        <el-button link type="primary" size="small" @click="isInfo(row)">
+          详情
+        </el-button>
       </template>
     </pure-table>
 
-    <Add
-      v-model:visible="addVis"
-      :editData="editData"
-      :type="addType"
-      @update:visible="addVis = $event"
+    <Info
+      v-model:visible="infVis"
+      :curData="curData"
+      @update:visible="infVis = $event"
     />
   </el-card>
 </template>

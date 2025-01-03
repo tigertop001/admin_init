@@ -69,7 +69,7 @@ export function useColumns() {
           <span>
             {row.uid || "--"}/{row.account || "--"}/{row.nickname || "--"}/
           </span>
-          {row.sign == 2 ? (
+          {row.sign == 1 ? (
             <span class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300">
               会员标识
             </span>
@@ -172,7 +172,7 @@ export function useColumns() {
       const res = await store.pass(params);
       if (res?.code === 0) {
         message("操作成功", { type: "success" });
-        getList(searchParam.value); // 刷新列表
+        getList(searchParam.value);
       } else {
         message(res?.msg || "操作失败", { type: "error" });
       }
@@ -198,7 +198,7 @@ export function useColumns() {
       const res = await store.cancel(params);
       if (res?.code === 0) {
         message("操作成功", { type: "success" });
-        getList(searchParam.value); // 刷新列表
+        getList(searchParam.value);
       } else {
         message(res?.msg || "操作失败", { type: "error" });
       }
@@ -275,7 +275,7 @@ export function useColumns() {
       const res = await store.reject(params);
       if (res?.code === 0) {
         message("操作成功", { type: "success" });
-        getList(searchParam.value); // 刷新列表
+        getList(searchParam.value);
       } else {
         message(res?.msg || "操作失败", { type: "error" });
       }

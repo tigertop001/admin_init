@@ -7,7 +7,6 @@ export interface SearchField {
   type: string;
   label: string;
 }
-
 export interface SearchStateType {
   start: number;
   limit: number;
@@ -228,12 +227,30 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     emit("update:param", param.value);
   };
 
+  const onAdd = () => {
+    emit("add");
+  };
+
+  const onBatcxl = () => {
+    emit("batcxl");
+  };
+  const onBatchk = () => {
+    emit("batchk");
+  };
+  const onBatrej = () => {
+    emit("batrej");
+  };
+
   return {
     searchState,
     searchVal,
     columns,
     onSearch,
     onReset,
-    onPrmUp
+    onPrmUp,
+    onAdd,
+    onBatchk,
+    onBatrej,
+    onBatcxl
   };
 };

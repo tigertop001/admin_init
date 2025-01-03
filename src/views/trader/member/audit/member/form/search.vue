@@ -56,9 +56,6 @@ defineExpose({ searchVal });
           查询
         </el-button>
         <el-button :icon="Refresh" @click="onReset">重置</el-button>
-        <el-button type="primary" :icon="Plus" @click="onAdd">
-          新增陪玩
-        </el-button>
         <el-button type="primary" @click="onBatchk">批量审核</el-button>
         <el-button type="primary" @click="onBatrej">批量驳回</el-button>
         <el-button

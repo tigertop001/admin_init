@@ -200,9 +200,6 @@ export function useColumns() {
     });
   };
 
-  /**
-   * 搜索参数更新
-   */
   const onPrmUp = (newParam: any) => {
     if (
       Object.keys(newParam).length === 2 &&

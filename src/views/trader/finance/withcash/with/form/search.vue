@@ -14,6 +14,18 @@ const emit = defineEmits<{
   (_e: "update:param", _param: Record<string, any>): void;
 }>();
 
+const {
+  searchState,
+  searchVal,
+  columns,
+  onSearch,
+  onReset,
+  onPrmUp,
+  onBatcxl,
+  onBatchk,
+  onBatrej
+} = useSearch(emit);
+
 const props = defineProps({
   expExcel: {
     type: Function as PropType<(_data: any[]) => void>,
@@ -24,9 +36,6 @@ const props = defineProps({
     required: true
   }
 });
-
-const { searchState, searchVal, columns, onSearch, onReset, onPrmUp } =
-  useSearch(emit);
 
 defineExpose({ searchVal });
 </script>
@@ -58,9 +67,9 @@ defineExpose({ searchVal });
           查询
         </el-button>
         <el-button :icon="Refresh" @click="onReset">重置</el-button>
-        <el-button type="primary" @click="onReset">批量代付</el-button>
-        <el-button type="primary" @click="onReset">批量确认</el-button>
-        <el-button type="primary" @click="onReset">批量取消</el-button>
+        <el-button type="primary" @click="onBatchk">批量代付</el-button>
+        <el-button type="primary" @click="onBatrej">批量确认</el-button>
+        <el-button type="primary" @click="onBatcxl">批量取消</el-button>
         <el-button
           type="primary"
           :icon="Upload"

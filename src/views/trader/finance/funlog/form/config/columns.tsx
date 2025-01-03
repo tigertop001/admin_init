@@ -43,9 +43,9 @@ export function useColumns() {
   const columns = [
     {
       label: "ID",
-      prop: "orderId",
+      prop: "id",
       width: 90,
-      formatter: row => `${row.orderId || "--"}`
+      formatter: row => `${row.id || "--"}`
     },
     {
       label: "UID/账号/会员标识",
@@ -54,7 +54,7 @@ export function useColumns() {
       cellRenderer: ({ row }) => (
         <div class="flex flex-col gap-2">
           {row.uid || "--"}/{row.account || "--"}
-          {row.sign == 2 ? (
+          {row.sign == 1 ? (
             <span class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300">
               会员标识
             </span>
@@ -116,10 +116,6 @@ export function useColumns() {
       formatter: row => `${row.operator || "--"}`
     }
   ];
-
-  /**
-   * 搜索参数更新
-   */
   const onPrmUp = (newParam: any) => {
     if (
       Object.keys(newParam).length === 2 &&
@@ -153,21 +149,27 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 通过处理
-   */
-  const onPass = async (params = searchParam.value) => {
+  const onMpt = async (params = searchParam.value) => {
     try {
-      const res = await store.pass(params as object);
+      const res = await store.mpt(params as object);
       if (res?.code === 0) {
-        params.states == 1 ? "通过" : "取消";
-        message("操作成功", { type: "success" });
-        getList(searchParam.value);
       } else {
         message("未找到数据", { type: "error" });
       }
     } catch (error) {
       console.error("获取数据失败:", error);
+      message("获取数据失败", { type: "error" });
+    }
+  };
+
+  const onSpt = async (params = searchParam.value) => {
+    try {
+      const res = await store.spt(params as object);
+      if (res?.code === 0) {
+      } else {
+        message("未找到数据", { type: "error" });
+      }
+    } catch (error) {
       message("获取数据失败", { type: "error" });
     }
   };
@@ -187,7 +189,8 @@ export function useColumns() {
     pagination,
     lodConf,
     adapConf,
-    onPass,
+    onMpt,
+    onSpt,
     onSzChg,
     onCurChg,
     setData,

@@ -2,8 +2,8 @@ import { ref } from "vue";
 import { message } from "@/utils/message";
 import { usePagination } from "@/hooks/usePagination";
 import { fmtTs } from "@/utils/dateFormat";
-import { useMemPlay } from "../store";
-const store = useMemPlay();
+import { useFinReex } from "../store";
+const store = useFinReex();
 
 import { useSearch, crtDFS } from "./searchConfig";
 const searchState = ref(crtDFS);
@@ -63,7 +63,7 @@ export function useColumns() {
           <span>
             {row.uid || "--"}/{row.account || "--"}/
           </span>
-          {row.sign == 2 ? (
+          {row.sign == 1 ? (
             <span class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300">
               会员标识
             </span>

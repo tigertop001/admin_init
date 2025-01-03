@@ -10,7 +10,8 @@ const {
   pagination,
   lodConf,
   adapConf,
-  onPass,
+  onMpt,
+  onSpt,
   onSzChg,
   onCurChg,
   getList,
@@ -30,6 +31,8 @@ onMounted(() => {
         :exportData="dtLst"
         :expExcel="expExcel"
         @update:param="onPrmUp"
+        @mpt="onMpt"
+        @spt="onSpt"
       />
     </template>
 
@@ -49,27 +52,6 @@ onMounted(() => {
       :data="dtLst"
       @page-size-change="onSzChg"
       @page-current-change="onCurChg"
-    >
-      <template #operation="{ row }">
-        <el-button
-          v-if="row.withdrawalState == 1"
-          link
-          type="primary"
-          size="small"
-          @click="onPass({ id: row.id, withdrawalState: 2 })"
-        >
-          通过
-        </el-button>
-        <el-button
-          v-if="row.withdrawalState == 1"
-          link
-          type="primary"
-          size="small"
-          @click="onPass({ id: row.id, withdrawalState: 3 })"
-        >
-          取消
-        </el-button>
-      </template>
-    </pure-table>
+    />
   </el-card>
 </template>

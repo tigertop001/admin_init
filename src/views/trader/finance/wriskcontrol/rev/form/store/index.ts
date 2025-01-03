@@ -1,92 +1,87 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMemPlayStore = defineStore({
-  id: "memPlay",
+const useFinRevStore = defineStore({
+  id: "finRev",
+
   state: () => ({}),
+
   actions: {
     async list(params) {
       try {
         const response = await api.list(params);
         return response;
       } catch (error) {
-        console.error("获取列表数据失败:", error);
+        console.error("获取列表失败:", error);
         throw error;
       }
     },
-
-    async add(params) {
+    async black(params) {
       try {
-        const response = await api.add(params);
+        const response = await api.black(params);
         return response;
       } catch (error) {
-        console.error("新增失败:", error);
+        console.error("获取列表失败:", error);
         throw error;
       }
     },
-    /**
-     * 新增现有
-     */
-    async addNow(params) {
+    async pass(params) {
       try {
-        const response = await api.addNow(params);
+        const response = await api.pass(params);
         return response;
       } catch (error) {
-        console.error("编辑失败:", error);
+        console.error("通过失败:", error);
         throw error;
       }
     },
-    /**
-     * 加入三方账户
-     */
-    async add3rd(params) {
+    async cancel(params) {
       try {
-        const response = await api.add3rd(params);
+        const response = await api.cancel(params);
         return response;
       } catch (error) {
-        console.error("加入失败:", error);
+        console.error("撤销审核失败:", error);
         throw error;
       }
     },
-    /**
-     * 退出三方账户
-     */
-    async qt3rd(params) {
+    async clear(params) {
       try {
-        const response = await api.qt3rd(params);
+        const response = await api.clear(params);
         return response;
       } catch (error) {
-        console.error("退出失败:", error);
+        console.error("清除失败:", error);
         throw error;
       }
     },
-    /**
-     * 获取用户钱包信息
-     */
-    async getMny(params) {
+    async reject(params) {
       try {
-        const response = await api.getMny(params);
+        const response = await api.reject(params);
         return response;
       } catch (error) {
-        console.error("获取失败:", error);
+        console.error("驳回失败:", error);
         throw error;
       }
     },
-    /**
-     * 是否进三方
-     */
-    async ent3rd(params) {
+    async batrej(params) {
       try {
-        const response = await api.ent3rd(params);
+        const response = await api.batrej(params);
         return response;
       } catch (error) {
-        console.error("操作失败:", error);
+        console.error("驳回失败:", error);
+        throw error;
+      }
+    },
+    async batchk(params) {
+      try {
+        const response = await api.batchk(params);
+        return response;
+      } catch (error) {
+        console.error("驳回失败:", error);
         throw error;
       }
     }
   }
 });
 
-export function useMemPlay() {
-  return useMemPlayStore();
+export function useFinRev() {
+  return useFinRevStore();
 }

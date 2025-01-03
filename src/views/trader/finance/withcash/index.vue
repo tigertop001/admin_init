@@ -5,7 +5,6 @@ import With from "./with/index.vue";
 import Set from "./set/index.vue";
 import Audit from "./audit/index.vue";
 import Fee from "./fee/index.vue";
-import Conf from "./conf/index.vue";
 
 const actNm = ref("1");
 
@@ -13,8 +12,7 @@ const tabs = [
   { label: "提现出款", name: "1", component: With },
   { label: "提现设置", name: "2", component: Set },
   { label: "稽核流水", name: "3", component: Audit },
-  { label: "提现手续费", name: "4", component: Fee },
-  { label: "下分卡配置", name: "5", component: Conf }
+  { label: "提现手续费", name: "4", component: Fee }
 ];
 
 const onClk = (tab: any) => {

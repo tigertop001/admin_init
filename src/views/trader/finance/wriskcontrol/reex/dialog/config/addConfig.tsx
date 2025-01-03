@@ -1,6 +1,6 @@
 import { ref, computed, watch } from "vue";
 import type { FieldValues } from "plus-pro-components";
-import { useMemPlay } from "../../form/store/";
+import { useFinReex } from "../../form/store/";
 import { message } from "@/utils/message";
 
 interface AddDialogProps {
@@ -12,7 +12,7 @@ export function useAddDialog(
   props: AddDialogProps,
   emit: (event: string, ...args: any[]) => void
 ) {
-  const store = useMemPlay();
+  const store = useFinReex();
   const walletInfo = ref<any>(null);
 
   // 表单验证规则

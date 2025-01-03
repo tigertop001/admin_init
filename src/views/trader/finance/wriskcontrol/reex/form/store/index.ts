@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../api";
 
-const useMemPlayStore = defineStore({
-  id: "memPlay",
+const useFinReexStore = defineStore({
+  id: "finReex",
   state: () => ({}),
   actions: {
     async list(params) {
@@ -24,9 +24,6 @@ const useMemPlayStore = defineStore({
         throw error;
       }
     },
-    /**
-     * 新增现有
-     */
     async addNow(params) {
       try {
         const response = await api.addNow(params);
@@ -36,9 +33,6 @@ const useMemPlayStore = defineStore({
         throw error;
       }
     },
-    /**
-     * 加入三方账户
-     */
     async add3rd(params) {
       try {
         const response = await api.add3rd(params);
@@ -48,9 +42,6 @@ const useMemPlayStore = defineStore({
         throw error;
       }
     },
-    /**
-     * 退出三方账户
-     */
     async qt3rd(params) {
       try {
         const response = await api.qt3rd(params);
@@ -60,9 +51,6 @@ const useMemPlayStore = defineStore({
         throw error;
       }
     },
-    /**
-     * 获取用户钱包信息
-     */
     async getMny(params) {
       try {
         const response = await api.getMny(params);
@@ -72,9 +60,6 @@ const useMemPlayStore = defineStore({
         throw error;
       }
     },
-    /**
-     * 是否进三方
-     */
     async ent3rd(params) {
       try {
         const response = await api.ent3rd(params);
@@ -87,6 +72,6 @@ const useMemPlayStore = defineStore({
   }
 });
 
-export function useMemPlay() {
-  return useMemPlayStore();
+export function useFinReex() {
+  return useFinReexStore();
 }

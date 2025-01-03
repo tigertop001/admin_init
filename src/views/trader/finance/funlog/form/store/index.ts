@@ -14,9 +14,18 @@ const useFfunStore = defineStore({
         throw error;
       }
     },
-    async pass(params) {
+    async mpt(params) {
       try {
-        const response = await api.pass(params);
+        const response = await api.mpt(params);
+        return response;
+      } catch (error) {
+        console.error("操作失败:", error);
+        throw error;
+      }
+    },
+    async spt(params) {
+      try {
+        const response = await api.spt(params);
         return response;
       } catch (error) {
         console.error("操作失败:", error);

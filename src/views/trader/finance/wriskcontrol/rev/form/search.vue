@@ -21,8 +21,9 @@ const {
   onSearch,
   onReset,
   onPrmUp,
-  onAdd3rd,
-  onQt3rd
+  onAdd,
+  onBatchk,
+  onBatrej
 } = useSearch(emit);
 
 defineExpose({ searchVal });
@@ -35,7 +36,7 @@ defineExpose({ searchVal });
     :defaultValues="searchState"
     label-position="right"
     :hasFooter="true"
-    :showNumber="2"
+    :showNumber="1"
     :col-props="{
       xs: { span: 24 },
       sm: { span: 12 },
@@ -55,8 +56,8 @@ defineExpose({ searchVal });
           查询
         </el-button>
         <el-button :icon="Refresh" @click="onReset">重置</el-button>
-        <el-button type="primary" @click="onAdd3rd"> 批量通过 </el-button>
-        <el-button type="primary" @click="onQt3rd"> 批量取消 </el-button>
+        <el-button type="primary" @click="onBatchk">批量通过</el-button>
+        <el-button type="primary" @click="onBatrej">批量取消</el-button>
         <el-button
           :icon="isShowUnfold ? ArrowUp : ArrowDown"
           link

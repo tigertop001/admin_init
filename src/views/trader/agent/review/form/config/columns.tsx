@@ -67,7 +67,7 @@ export function useColumns() {
           <span>
             {row.uid || "--"}/{row.account || "--"}/
           </span>
-          {row.sign == 2 ? (
+          {row.sign == 1 ? (
             <span class="cursor-pointer text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-300">
               会员标识
             </span>
@@ -266,7 +266,7 @@ export function useColumns() {
 
       if (res?.code === 0) {
         message("操作成功", { type: "success", showClose: true });
-        await getList(searchParam.value); // 刷新列表
+        await getList(searchParam.value);
         clrSel(); // 清空选择
       } else {
         message(res?.msg || "操作失败", { type: "error" });

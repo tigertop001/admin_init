@@ -82,9 +82,6 @@ export function useColumns() {
     }
   };
 
-  /**
-   * 通过处理
-   */
   const onPass = async (params = searchParam.value) => {
     try {
       const res = await store.pass(params as object);
