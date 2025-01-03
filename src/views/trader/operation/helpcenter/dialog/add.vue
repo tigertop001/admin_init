@@ -16,7 +16,7 @@ const props = defineProps<{
 const dlgConf = computed(() => {
   const isEdit = props.type === 1;
   return {
-    title: isEdit ? "修改轮播图" : "添加轮播图",
+    title: isEdit ? "修改问题" : "添加问题",
     confirmText: isEdit ? "修改" : "提交"
   };
 });
@@ -47,32 +47,51 @@ const onDateChg = (val: any[]) => {
   }
 };
 
+const FORM_RULES = {
+  name: [
+    { required: true, message: "请输入活动标签", trigger: "blur" },
+    {
+      pattern: /^[\u4e00-\u9fa5a-zA-Z0-9\s]{2,20}$/,
+      message: "活动标签长度为2-20位，不能包含特殊字符"
+    }
+  ],
+  sort: [
+    { required: true, message: "排序必须为大于0的整数", trigger: "blur" },
+    {
+      pattern: /^[1-9]\d*$/,
+      message: "排序必须为大于0的整数"
+    }
+  ],
+  isDisplay: [{ required: true, message: "请选择分层类别", trigger: "change" }],
+  status: [{ required: true, message: "请选择状态", trigger: "blur" }]
+} as const;
+
 const showUidInput = computed(() => formData.value.recipient === 2);
 
 const columns = computed<PlusColumn[]>(() => {
   const baseColumns: PlusColumn[] = [
     {
-      label: "标题",
+      label: "问题标题",
       labelWidth: 100,
-      prop: "title",
+      prop: "question",
       valueType: "input",
       rules: [
         {
           required: true,
-          message: "标题不能为空",
+          message: "问题标题不能为空",
           trigger: ["blur", "change"]
         }
       ]
     },
     {
-      label: "轮播图片",
+      label: "问题内容",
       labelWidth: 100,
-      prop: "content",
+      prop: "answer",
       valueType: "input",
       rules: [
         {
           required: true,
-          message: "请输入图片地址",
+          message: "请输入问题内容",
           trigger: ["blur", "change"]
         }
       ]
@@ -80,45 +99,33 @@ const columns = computed<PlusColumn[]>(() => {
     {
       label: "排序",
       labelWidth: 100,
-      prop: "sentTime",
-      valueType: "date-picker",
+      prop: "sort",
+      // valueType: "input",
+      valueType: "input",
       fieldProps: {
-        type: "datetimerange",
-        startPlaceholder: "请选择",
-        endPlaceholder: "请选择",
-        modelValue: dateRange.value.sentTime,
-        "onUpdate:modelValue": onDateChg
+        type: "number",
+        placeholder: "请输入排序"
       },
-      rules: [
-        {
-          required: true,
-          message: "发送时间不能为空",
-          trigger: ["blur", "change"]
-        }
-      ]
+      rules: FORM_RULES.sort
     },
     {
-      label: "跳转类型",
+      label: "状态",
       labelWidth: 100,
-      prop: "recipient",
-      valueType: "radio",
+      prop: "isDisplay",
+      valueType: "select",
       options: [
         {
-          label: "不跳转",
-          value: 1
+          label: "启用",
+          value: 1,
+          color: "red"
         },
         {
-          label: "跳转",
-          value: 2
+          label: "停用",
+          value: 2,
+          color: "blue"
         }
       ],
-      rules: [
-        {
-          required: true,
-          message: "收件人不能为空",
-          trigger: ["blur", "change"]
-        }
-      ]
+      rules: FORM_RULES.isDisplay
     }
   ];
 
@@ -208,6 +215,9 @@ watch(
 
 const onCfm = () => {
   delete formData.value.sentTime;
+  formData.value.sort = formData.value.sort
+    ? Number(formData.value.sort)
+    : null;
   emit("submit", formData.value);
   emit("update:visible", false);
   if (props.type === 0) {

@@ -5,7 +5,7 @@ const apiTp = import.meta.env.VITE_APITYPE;
 const API_URLS = {
   LIST: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/sysmanager/carousel/list"
+    real: "/api/v1/tenant/sysmanager/help-list"
   },
   ADD: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
@@ -17,11 +17,11 @@ const API_URLS = {
   },
   DEL: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/level/delete"
+    real: "/api/v1/tenant/sysmanager/help-delete"
   },
   ED: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/isEnterThird"
+    real: "/api/v1/tenant/sysmanager/help-edit"
   },
   INFO: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",

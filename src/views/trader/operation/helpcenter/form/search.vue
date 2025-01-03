@@ -42,7 +42,7 @@ defineExpose({ searchVal });
         </el-button>
         <el-button :icon="Refresh" @click="onReset"> 重置 </el-button>
         <el-button type="primary" :icon="Plus" @click="onAdd">
-          添加轮播图
+          添加问题
         </el-button>
       </div>
     </template>

@@ -21,7 +21,7 @@ const API_URLS = {
   },
   PUB: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/activity/release"
+    real: "/api/v1/tenant/sysmanager/message-edit"
   },
   INFO: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",

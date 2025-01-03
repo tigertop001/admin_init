@@ -36,12 +36,18 @@ export function useColumns() {
     }
   });
 
-  const onEd = async (row: any, value: number) => {
-    if (value === row.levelSign) return;
+  const redirectTypeMap = {
+    1: { text: "指定游戏" },
+    2: { text: "内部界面" },
+    3: { text: "指定活动详情" },
+    4: { text: "外部链接" }
+  };
+
+  const onEd = async (row: any, value: boolean) => {
+    if (value === row.status) return;
     try {
       const params = {
-        uid: row.id,
-        isThird: value
+        id: row.id
       };
       const res = await store.ed(params);
       if (res?.code === 0) {
@@ -49,25 +55,25 @@ export function useColumns() {
         getList(searchParam.value);
       } else {
         message(res?.msg || "设置失败", { type: "error" });
-        row.levelSign = !value;
+        row.status = !value;
       }
     } catch (error) {
       console.error("设置失败:", error);
       message("设置失败", { type: "error" });
-      row.levelSign = !value;
+      row.status = !value;
     }
   };
 
   const columns = [
     {
       label: "ID",
-      prop: "levelName",
-      formatter: row => `${row.levelName || "--"}`
+      prop: "id",
+      formatter: row => `${row.id || "--"}`
     },
     {
       label: "标题",
-      prop: "minVal",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "title",
+      formatter: row => `${row.title || "--"}`
     },
     {
       label: "缩略图",
@@ -77,43 +83,48 @@ export function useColumns() {
     },
     {
       label: "跳转类型",
-      prop: "members",
-      formatter: row => `${row.minVal || "--"} `
+      prop: "redirectType",
+      cellRenderer: ({ row }) => {
+        const redirectType = redirectTypeMap[row.redirectType] || {
+          text: "--"
+        };
+        return <span>{redirectType.text}</span>;
+      }
     },
     {
       label: "排序",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "sort",
+      formatter: row => `${row.sort || "--"} `
     },
     {
       label: "操作人",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "operator",
+      formatter: row => `${row.operator || "--"} `
     },
     {
       label: "最后操作时间 ",
-      prop: "members",
+      prop: "updatedAt",
       formatter: row =>
         `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "状态",
       width: 140,
-      prop: "levelSign",
+      prop: "status",
       cellRenderer: ({ row }) => {
-        if (row.levelSign === undefined) {
-          row.levelSign = 2;
+        if (row.status === undefined) {
+          row.status = 2;
         }
         return (
           <el-switch
-            modelValue={row.levelSign}
+            modelValue={row.status}
             onChange={value => {
-              if (value !== row.levelSign) {
+              if (value !== row.status) {
                 onEd(row, value);
               }
             }}
-            activeValue={1}
-            inactiveValue={2}
+            activeValue={true}
+            inactiveValue={false}
             inlinePrompt
             activeText="启用"
             inactiveText="停用"

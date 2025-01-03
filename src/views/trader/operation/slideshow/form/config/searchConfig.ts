@@ -1,5 +1,7 @@
 import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
+import { usPullCols } from "@/views/trader/comm/pull/notice/form/columns";
+const { getPullData, cfgDt, loading } = usPullCols();
 
 export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
@@ -13,10 +15,25 @@ export const crtDFS = () => ({
   limit: 10
 });
 
+const lvlOp = computed(() => {
+  if (!cfgDt.value?.data?.levelList) {
+    return [];
+  }
+  return cfgDt.value.data.levelList.map(item => ({
+    label: item.levelName,
+    value: item.id
+  }));
+});
+const ensDtLd = async () => {
+  if (!cfgDt.value && !loading.value) {
+    await getPullData({ query: ["EnableStatus"] });
+  }
+};
+
 const crtCols = (): PlusColumn[] => [
   {
     label: "标题",
-    prop: "tagId",
+    prop: "title",
     valueType: "input"
   },
   {
@@ -24,20 +41,7 @@ const crtCols = (): PlusColumn[] => [
     labelWidth: 100,
     prop: "status",
     valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "开启",
-        value: 1
-      },
-      {
-        label: "关闭",
-        value: 2
-      }
-    ]
+    options: lvlOp.value
   }
 ];
 
@@ -56,6 +60,9 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
   });
   const searchVal = computed(() => param.value);
   const columns = crtCols();
+
+  // 在初始化时加载数据
+  ensDtLd();
 
   const onSearch = () => {
     emit("update:param", param.value);

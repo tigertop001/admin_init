@@ -35,7 +35,10 @@ export function useColumns() {
     }
   });
 
-  const { onSelChg, clrSel } = useTableSelection(dtLst);
+  const { clrSel } = useTableSelection(dtLst);
+  const onSelChg = (rows: any[]) => {
+    seldRows.value = rows;
+  };
 
   const statusMap = {
     1: { text: "待审核", color: "text-orange-600" },
@@ -155,7 +158,6 @@ export function useColumns() {
       message("获取数据失败", { type: "error" });
     }
   };
-  // 通过审核
   const onPass = async (row: any) => {
     try {
       await ElMessageBox.confirm("确定要通过审核吗？", "提示", {
@@ -207,7 +209,6 @@ export function useColumns() {
       }
     }
   };
-
   const onBlK = async (row: any) => {
     try {
       await ElMessageBox.confirm("确定要将该用户拉黑吗？", "提示", {
@@ -286,6 +287,55 @@ export function useColumns() {
     }
   };
 
+  const seldRows = ref<any[]>([]);
+  const batchk = async () => {
+    if (!seldRows.value.length) {
+      message("请选择需要操作的账号", { type: "error" });
+      return;
+    }
+
+    try {
+      const params = {
+        ids: seldRows.value.map(row => row.id).join(",")
+      };
+      const res = await store.batchk(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        seldRows.value = [];
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("操作失败:", error);
+      message("操作失败", { type: "error" });
+    }
+  };
+
+  const batrej = async () => {
+    if (!seldRows.value.length) {
+      message("请选择需要操作的账号", { type: "error" });
+      return;
+    }
+
+    try {
+      const params = {
+        ids: seldRows.value.map(row => row.id).join(",")
+      };
+      const res = await store.batrej(params);
+      if (res?.code === 0) {
+        message("操作成功", { type: "success" });
+        seldRows.value = [];
+        getList(searchParam.value);
+      } else {
+        message(res?.msg || "操作失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("操作失败:", error);
+      message("操作失败", { type: "error" });
+    }
+  };
+
   return {
     loading,
     columns,
@@ -304,6 +354,8 @@ export function useColumns() {
     onBlK,
     onClr,
     onRej,
-    onSelChg
+    onSelChg,
+    batrej,
+    batchk
   };
 }

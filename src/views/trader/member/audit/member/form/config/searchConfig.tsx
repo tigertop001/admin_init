@@ -18,7 +18,7 @@ export interface SearchStateType {
   start: number;
   limit: number;
   account: SearchField;
-  startTime: number | null;
+  beginTime: number | null;
   endTime: number | null;
 }
 
@@ -27,17 +27,19 @@ export interface SearchEmits {
   add: () => void;
 }
 
+/**
+ * 常量配置
+ */
 export const srchOpts = {
   account: [
     { label: "UID", value: "uid", typename: "会员" },
-    { label: "用户名", value: "account", typename: "会员" },
-    { label: "昵称", value: "nickname", typename: "会员" }
+    { label: "用户名", value: "account", typename: "会员" }
   ]
 } as const;
 
 export const crtDFS = (): SearchStateType => ({
   account: { content: null, type: "uid", label: "UID" },
-  startTime: null,
+  beginTime: null,
   endTime: null,
   start: 0,
   limit: 10
@@ -46,7 +48,7 @@ export const crtDFS = (): SearchStateType => ({
 const onDateChg = (
   searchState: SearchStateType,
   val: any[],
-  startKey: "startTime",
+  startKey: "beginTime",
   endKey: "endTime"
 ) => {
   if (val && Array.isArray(val)) {
@@ -60,54 +62,16 @@ const onDateChg = (
 
 const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
   {
-    label: "审核状态",
-    prop: "status",
-    valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "待审核",
-        value: 1
-      },
-      {
-        label: "已驳回",
-        value: 2
-      },
-      {
-        label: "已通过",
-        value: 3
-      },
-      {
-        label: "已撤销",
-        value: 4
-      },
-      {
-        label: "黑名单",
-        value: 5
-      },
-      {
-        label: "已清除",
-        value: 6
-      }
-    ]
-  },
-  {
-    label: "项目",
-    prop: "items",
-    valueType: "select",
-    options: [
-      { label: "头像", value: "avatar" },
-      { label: "名称", value: "uname" },
-      { label: "手机号", value: "phone" },
-      { label: "昵称", value: "nickname" },
-      { label: "背景图", value: "skinType" },
-      { label: "个性签名", value: "profile" },
-      { label: "清除", value: "clear" },
-      { label: "全部", value: null }
-    ]
+    label: "时间",
+    prop: "regTime",
+    valueType: "date-picker",
+    fieldProps: {
+      type: "datetimerange",
+      startPlaceholder: "请选择",
+      endPlaceholder: "请选择",
+      onChange: (val: any) =>
+        onDateChg(searchState.value, val, "beginTime", "endTime")
+    }
   },
   {
     label: "会员",
@@ -135,16 +99,24 @@ const crtCols = (searchState: { value: SearchStateType }): PlusColumn[] => [
     )
   },
   {
-    label: "日期",
-    prop: "time",
-    valueType: "date-picker",
-    fieldProps: {
-      type: "datetimerange",
-      startPlaceholder: "请选择",
-      endPlaceholder: "请选择",
-      onChange: (val: any) =>
-        onDateChg(searchState.value, val, "startTime", "endTime")
-    }
+    label: "是否进入三方账户",
+    labelWidth: 150,
+    prop: "status",
+    valueType: "select",
+    options: [
+      {
+        label: "全部",
+        value: 0
+      },
+      {
+        label: "是",
+        value: 1
+      },
+      {
+        label: "否",
+        value: 2
+      }
+    ]
   }
 ];
 
@@ -155,7 +127,7 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     const result: Record<string, any> = {
       start: searchState.value.start,
       limit: searchState.value.limit,
-      startTime: searchState.value.startTime,
+      beginTime: searchState.value.beginTime,
       endTime: searchState.value.endTime
     };
 
@@ -184,12 +156,26 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     emit("update:param", param.value);
   };
 
+  const onAdd = () => {
+    emit("add");
+  };
+
+  const onBatchk = () => {
+    emit("batchk");
+  };
+  const onBatrej = () => {
+    emit("batrej");
+  };
+
   return {
     searchState,
     searchVal,
     columns,
     onSearch,
     onReset,
-    onPrmUp
+    onPrmUp,
+    onAdd,
+    onBatchk,
+    onBatrej
   };
 };

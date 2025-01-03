@@ -26,6 +26,14 @@ const API_URLS = {
   REJECT: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
     real: "/api/v1/tenant/usercenter/check/AdminCheckReject"
+  },
+  BATREJ: {
+    mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
+    real: "/api/v1/tenant/usercenter/check/userBatchReject"
+  },
+  BATCHK: {
+    mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
+    real: "/api/v1/tenant/usercenter/check/userBatchCheck"
   }
 } as const;
 
@@ -47,26 +55,26 @@ const getUrl = (api: keyof typeof API_URLS) => {
 export const listApi = data => {
   return http.request<Result>("post", getUrl("LIST"), { data });
 };
-
-// 黑名单
 export const blackApi = data => {
   return http.request<Result>("post", getUrl("BLACK"), { data });
 };
-// 通过
 export const passApi = data => {
   return http.request<Result>("post", getUrl("PASS"), { data });
 };
-// 撤销审核
 export const cancelApi = data => {
   return http.request<Result>("post", getUrl("CANCEL"), { data });
 };
-// 一键清除
 export const clearApi = data => {
   return http.request<Result>("post", getUrl("CLEAR"), { data });
 };
-// 驳回
 export const rejectApi = data => {
   return http.request<Result>("post", getUrl("REJECT"), { data });
+};
+export const batrejApi = data => {
+  return http.request<Result>("post", getUrl("BATREJ"), { data });
+};
+export const batchkApi = data => {
+  return http.request<Result>("post", getUrl("BATCHK"), { data });
 };
 export const api = {
   list: listApi,
@@ -74,5 +82,7 @@ export const api = {
   pass: passApi,
   cancel: cancelApi,
   clear: clearApi,
-  reject: rejectApi
+  reject: rejectApi,
+  batrej: batrejApi,
+  batchk: batchkApi
 };

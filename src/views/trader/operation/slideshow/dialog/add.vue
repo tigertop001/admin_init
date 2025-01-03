@@ -27,8 +27,9 @@ const formData = ref<FieldValues>({
   content: "",
   startAt: null,
   endAt: null,
-  recipient: 1,
-  uid: ""
+  isRedirect: false,
+  uid: "",
+  redirectType: 1
 });
 
 const dateRange = ref({
@@ -47,7 +48,26 @@ const onDateChg = (val: any[]) => {
   }
 };
 
-const showUidInput = computed(() => formData.value.recipient === 2);
+const FORM_RULES = {
+  name: [
+    { required: true, message: "请输入活动标签", trigger: "blur" },
+    {
+      pattern: /^[\u4e00-\u9fa5a-zA-Z0-9\s]{2,20}$/,
+      message: "活动标签长度为2-20位，不能包含特殊字符"
+    }
+  ],
+  sort: [
+    { required: true, message: "排序必须为大于0的整数", trigger: "blur" },
+    {
+      pattern: /^[1-9]\d*$/,
+      message: "排序必须为大于0的整数"
+    }
+  ],
+  status: [{ required: true, message: "请选择状态", trigger: "blur" }]
+} as const;
+
+const showUidInput = computed(() => formData.value.isRedirect === true);
+const showUidInput1 = computed(() => formData.value.redirectType);
 
 const columns = computed<PlusColumn[]>(() => {
   const baseColumns: PlusColumn[] = [
@@ -67,7 +87,7 @@ const columns = computed<PlusColumn[]>(() => {
     {
       label: "轮播图片",
       labelWidth: 100,
-      prop: "content",
+      prop: "url",
       valueType: "input",
       rules: [
         {
@@ -80,36 +100,27 @@ const columns = computed<PlusColumn[]>(() => {
     {
       label: "排序",
       labelWidth: 100,
-      prop: "sentTime",
-      valueType: "date-picker",
+      prop: "sort",
+      valueType: "input",
       fieldProps: {
-        type: "datetimerange",
-        startPlaceholder: "请选择",
-        endPlaceholder: "请选择",
-        modelValue: dateRange.value.sentTime,
-        "onUpdate:modelValue": onDateChg
+        type: "number",
+        placeholder: "请输入排序"
       },
-      rules: [
-        {
-          required: true,
-          message: "发送时间不能为空",
-          trigger: ["blur", "change"]
-        }
-      ]
+      rules: FORM_RULES.sort
     },
     {
       label: "跳转类型",
       labelWidth: 100,
-      prop: "recipient",
+      prop: "isRedirect",
       valueType: "radio",
       options: [
         {
           label: "不跳转",
-          value: 1
+          value: false
         },
         {
           label: "跳转",
-          value: 2
+          value: true
         }
       ],
       rules: [
@@ -123,34 +134,79 @@ const columns = computed<PlusColumn[]>(() => {
   ];
 
   if (showUidInput.value) {
-    baseColumns.push(
-      {
-        label: " 跳转类型",
-        labelWidth: 100,
-        prop: "uid",
-        valueType: "select",
-        options: [
-          {
-            label: "内部界面",
-            value: 1
-          },
-          {
-            label: "指定活动详请",
-            value: 2
-          },
-          {
-            label: "外部链接",
-            value: 3
-          }
-        ]
-      },
-      {
-        label: "游戏ID",
-        labelWidth: 100,
-        prop: "uid",
-        valueType: "input"
-      }
-    );
+    baseColumns.push({
+      label: "跳转类型",
+      labelWidth: 100,
+      prop: "redirectType",
+      valueType: "select",
+      options: [
+        {
+          label: "指定游戏",
+          value: 1
+        },
+        {
+          label: "内部界面",
+          value: 2
+        },
+        {
+          label: "指定活动详请",
+          value: 3
+        },
+        {
+          label: "外部链接",
+          value: 4
+        }
+      ]
+    });
+  }
+  if (showUidInput1.value == 1) {
+    baseColumns.push({
+      label: "游戏ID",
+      labelWidth: 100,
+      prop: "uid",
+      valueType: "input"
+    });
+  }
+
+  if (showUidInput1.value == 2) {
+    baseColumns.push({
+      label: "内部界面",
+      labelWidth: 100,
+      prop: "uid",
+      valueType: "select",
+      options: [
+        {
+          label: "代理中心",
+          value: 1
+        },
+        {
+          label: "VIP详情",
+          value: 2
+        },
+        {
+          label: "充值界面",
+          value: 3
+        }
+      ]
+    });
+  }
+
+  if (showUidInput1.value == 3) {
+    baseColumns.push({
+      label: "活动ID",
+      labelWidth: 100,
+      prop: "uid",
+      valueType: "input"
+    });
+  }
+
+  if (showUidInput1.value == 4) {
+    baseColumns.push({
+      label: "外部链接",
+      labelWidth: 100,
+      prop: "uid",
+      valueType: "input"
+    });
   }
 
   return baseColumns;
@@ -162,8 +218,9 @@ const crtDefVal = (columns: PlusColumn[]) => {
     content: "",
     startAt: null,
     endAt: null,
-    recipient: 1,
-    uid: ""
+    isRedirect: false,
+    uid: "",
+    redirectType: 1
   };
 
   return defaultValues;
@@ -198,16 +255,29 @@ watch(
 );
 
 watch(
-  () => formData.value.recipient,
+  () => formData.value.isRedirect,
   newValue => {
-    if (newValue === 1) {
+    if (newValue === false) {
       formData.value.uid = "";
     }
   }
 );
 
+watch(
+  () => formData.value.redirectType,
+  newValue => {
+    console.log("newValue", newValue);
+    // if (newValue === 1) {
+    //   formData.value.uid = "";
+    // }
+  }
+);
+
 const onCfm = () => {
   delete formData.value.sentTime;
+  formData.value.sort = formData.value.sort
+    ? Number(formData.value.sort)
+    : null;
   emit("submit", formData.value);
   emit("update:visible", false);
   if (props.type === 0) {

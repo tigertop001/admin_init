@@ -16,7 +16,7 @@ const props = defineProps<{
 const dlgConf = computed(() => {
   const isEdit = props.type === 1;
   return {
-    title: isEdit ? "修改轮播图" : "添加轮播图",
+    title: isEdit ? "修改弹窗" : "添加弹窗",
     confirmText: isEdit ? "修改" : "提交"
   };
 });

@@ -36,6 +36,11 @@ export function useColumns() {
     }
   });
 
+  const receiverTypeMap = {
+    1: { text: "所有用户" },
+    2: { text: "指定用户" }
+  };
+
   const statusMap = {
     1: { text: "未发布", color: "text-yellow-500" },
     2: { text: "待发布", color: "text-green-600" },
@@ -46,51 +51,57 @@ export function useColumns() {
   const columns = [
     {
       label: "ID",
-      prop: "levelName",
-      formatter: row => `${row.levelName || "--"}`
+      prop: "id",
+      formatter: row => `${row.id || "--"}`
     },
     {
       label: "标题",
-      prop: "levelName",
-      formatter: row => `${row.levelName || "--"}`
+      prop: "title",
+      formatter: row => `${row.title || "--"}`
     },
     {
       label: "内容",
-      prop: "minVal",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "content",
+      formatter: row => `${row.content || "--"}`
     },
     {
       label: "收件人",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "receiverType",
+      // formatter: row => `${row.receiverType || "--"}`
+      cellRenderer: ({ row }) => {
+        const receiverType = receiverTypeMap[row.receiverType] || {
+          text: "--"
+        };
+        return <span>{receiverType.text}</span>;
+      }
     },
     {
       label: "发送时间",
-      prop: "members",
+      prop: "sendAt",
       formatter: row =>
-        `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
+        `${fmtTs(row.sendAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "操作人",
-      prop: "levelSign",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "operator",
+      formatter: row => `${row.operator || "--"}`
     },
     {
       label: "最后操作时间",
-      prop: "remark",
+      prop: "updatedAt",
       formatter: row =>
         `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "已读/发送",
       prop: "remark",
-      formatter: row => `${row.remark || "--"} / ${row.remark || "--"}`
+      formatter: row => `${row.readNum || "--"} / ${row.sendNum || "--"}`
     },
     {
       label: "状态",
-      prop: "status",
+      prop: "publishStatus",
       cellRenderer: ({ row }) => {
-        const status = statusMap[row.status] || {
+        const status = statusMap[row.publishStatus] || {
           text: "--",
           color: "text-gray-400"
         };
@@ -99,7 +110,7 @@ export function useColumns() {
     },
     {
       label: "操作",
-      width: "150",
+      width: "250",
       fixed: "right",
       slot: "operation"
     }
@@ -224,18 +235,40 @@ export function useColumns() {
       return;
     }
     try {
-      const params = { id: row.id };
+      const params = { id: row.id, publishStatus: 2 };
       const res = await store.pub(params);
       if (res?.code === 0) {
-        message("活动发布成功", { type: "success", showClose: true });
+        message("发布成功", { type: "success", showClose: true });
         await getList(searchParam.value);
         addVis.value = false;
       } else {
-        message(res?.msg || "活动发布失败", { type: "error" });
+        message(res?.msg || "发布失败", { type: "error" });
       }
     } catch (error) {
-      console.error("活动发布失败:", error);
-      message("活动发布失败", { type: "error" });
+      console.error("发布失败:", error);
+      message("发布失败", { type: "error" });
+    }
+  };
+
+  // 撤回
+  const onRev = async (row: any) => {
+    if (!row || !row.id) {
+      message("数据异常", { type: "error" });
+      return;
+    }
+    try {
+      const params = { id: row.id, publishStatus: 1 };
+      const res = await store.pub(params);
+      if (res?.code === 0) {
+        message("撤回成功", { type: "success", showClose: true });
+        await getList(searchParam.value);
+        addVis.value = false;
+      } else {
+        message(res?.msg || "撤回失败", { type: "error" });
+      }
+    } catch (error) {
+      console.error("撤回失败:", error);
+      message("撤回失败", { type: "error" });
     }
   };
 
@@ -270,6 +303,7 @@ export function useColumns() {
     onAddSub,
     onDel,
     onPrmUp,
-    onPub
+    onPub,
+    onRev
   };
 }

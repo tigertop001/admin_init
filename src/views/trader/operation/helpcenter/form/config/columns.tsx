@@ -37,11 +37,11 @@ export function useColumns() {
   });
 
   const onEd = async (row: any, value: number) => {
-    if (value === row.levelSign) return;
+    if (value === row.isDisplay) return;
     try {
       const params = {
-        uid: row.id,
-        isThird: value
+        id: row.id,
+        isDisplay: value
       };
       const res = await store.ed(params);
       if (res?.code === 0) {
@@ -49,60 +49,60 @@ export function useColumns() {
         getList(searchParam.value);
       } else {
         message(res?.msg || "设置失败", { type: "error" });
-        row.levelSign = !value;
+        row.isDisplay = !value;
       }
     } catch (error) {
       console.error("设置失败:", error);
       message("设置失败", { type: "error" });
-      row.levelSign = !value;
+      row.isDisplay = !value;
     }
   };
 
   const columns = [
     {
       label: "ID",
-      prop: "levelName",
-      formatter: row => `${row.levelName || "--"}`
+      prop: "id",
+      formatter: row => `${row.id || "--"}`
     },
     {
       label: "问题标题",
-      prop: "minVal",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "question",
+      formatter: row => `${row.question || "--"}`
     },
     {
       label: "问题内容",
-      prop: "members",
-      formatter: row => `${row.minVal || "--"} `
+      prop: "answer",
+      formatter: row => `${row.answer || "--"} `
     },
     {
       label: "排序",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "sort",
+      formatter: row => `${row.sort || "--"}`
     },
     {
       label: "操作人",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "operator",
+      formatter: row => `${row.operator || "--"}`
     },
     {
       label: "最后操作时间 ",
-      prop: "members",
+      prop: "updatedAt",
       formatter: row =>
         `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "状态",
       width: 140,
-      prop: "levelSign",
+      prop: "isDisplay",
       cellRenderer: ({ row }) => {
-        if (row.levelSign === undefined) {
-          row.levelSign = 2;
+        if (row.isDisplay === undefined) {
+          row.isDisplay = 2;
         }
         return (
           <el-switch
-            modelValue={row.levelSign}
+            modelValue={row.isDisplay}
             onChange={value => {
-              if (value !== row.levelSign) {
+              if (value !== row.isDisplay) {
                 onEd(row, value);
               }
             }}
@@ -168,8 +168,10 @@ export function useColumns() {
   };
 
   const onEdit = async (row: any) => {
-    const res = await store.info({ id: row.id });
-    editData.value = res.data.list;
+    // const res = await store.info({ id: row.id });
+    // editData.value = res.data.list;
+    // shwAdd(1);
+    editData.value = row;
     shwAdd(1);
   };
 

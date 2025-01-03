@@ -60,6 +60,26 @@ const useMemMemStore = defineStore({
         console.error("驳回失败:", error);
         throw error;
       }
+    },
+    // 批量驳回
+    async batrej(params) {
+      try {
+        const response = await api.batrej(params);
+        return response;
+      } catch (error) {
+        console.error("驳回失败:", error);
+        throw error;
+      }
+    },
+    // 批量审核
+    async batchk(params) {
+      try {
+        const response = await api.batchk(params);
+        return response;
+      } catch (error) {
+        console.error("驳回失败:", error);
+        throw error;
+      }
     }
   }
 });

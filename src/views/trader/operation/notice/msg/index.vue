@@ -22,7 +22,8 @@ const {
   onAddSub,
   onPrmUp,
   onDel,
-  onPub
+  onPub,
+  onRev
 } = useColumns();
 
 onMounted(() => {
@@ -60,6 +61,12 @@ onMounted(() => {
       </el-button>
       <el-button link type="danger" size="small" @click="onDel(row)">
         删除
+      </el-button>
+      <el-button link type="warning" size="small" @click="onEdit(row)">
+        详情
+      </el-button>
+      <el-button link type="warning" size="small" @click="onRev(row)">
+        撤回
       </el-button>
     </template>
   </pure-table>

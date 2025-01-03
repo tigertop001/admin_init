@@ -17,6 +17,7 @@ const useOpNntcStore = defineStore({
       }
     },
     async add(params) {
+      console.log("打印公告添加的内容", params);
       try {
         const response = await api.add(params);
         return response;

@@ -7,7 +7,7 @@ export interface SearchEmits {
 }
 
 export const crtDFS = () => ({
-  tagId: null,
+  title: null,
   status: null,
   start: 0,
   limit: 10
@@ -16,7 +16,7 @@ export const crtDFS = () => ({
 const crtCols = (): PlusColumn[] => [
   {
     label: "标题",
-    prop: "tagId",
+    prop: "title",
     valueType: "input"
   },
   {
@@ -48,7 +48,7 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     const result: Record<string, any> = {
       start: searchState.value.start,
       limit: searchState.value.limit,
-      tagId: searchState.value.tagId,
+      title: searchState.value.title,
       status: searchState.value.status
     };
 

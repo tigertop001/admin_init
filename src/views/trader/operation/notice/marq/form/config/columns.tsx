@@ -36,6 +36,11 @@ export function useColumns() {
     }
   });
 
+  const receiverTypeMap = {
+    1: { text: "所有用户" },
+    2: { text: "指定用户" }
+  };
+
   const statusMap = {
     1: { text: "未发布", color: "text-yellow-500" },
     2: { text: "待发布", color: "text-green-600" },
@@ -44,11 +49,11 @@ export function useColumns() {
   };
 
   const onEd = async (row: any, value: number) => {
-    if (value === row.levelSign) return;
+    if (value === row.publishStatus) return;
     try {
       const params = {
-        uid: row.id,
-        isThird: value
+        id: row.id,
+        openStatus: row.openStatus == 1 ? 2 : 1
       };
       const res = await store.ed(params);
       if (res?.code === 0) {
@@ -56,73 +61,78 @@ export function useColumns() {
         getList(searchParam.value);
       } else {
         message(res?.msg || "设置失败", { type: "error" });
-        row.levelSign = !value;
+        row.publishStatus = !value;
       }
     } catch (error) {
       console.error("设置失败:", error);
       message("设置失败", { type: "error" });
-      row.levelSign = !value;
+      row.publishStatus = !value;
     }
   };
 
   const columns = [
     {
       label: "ID",
-      prop: "levelName",
-      formatter: row => `${row.levelName || "--"}`
+      prop: "id",
+      formatter: row => `${row.id || "--"}`
     },
     {
       label: "内容",
-      prop: "minVal",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "content",
+      formatter: row => `${row.content || "--"}`
     },
     {
       label: "收件人",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "receiverType",
+      // formatter: row => `${row.receiverType || "--"}`
+      cellRenderer: ({ row }) => {
+        const receiverType = receiverTypeMap[row.receiverType] || {
+          text: "--"
+        };
+        return <span>{receiverType.text}</span>;
+      }
     },
     {
       label: "开始时间",
-      prop: "members",
+      prop: "sendAt",
       formatter: row =>
-        `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
+        `${fmtTs(row.sendAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "结束时间",
-      prop: "members",
-      formatter: row =>
-        `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
+      prop: "endAt",
+      formatter: row => `${fmtTs(row.endAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "排序",
-      prop: "levelSign",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "sort",
+      formatter: row => `${row.sort || "--"}`
     },
     {
       label: "操作人",
-      prop: "levelSign",
-      formatter: row => `${row.minVal || "--"} - ${row.maxVal || "--"}  `
+      prop: "operator",
+      formatter: row => `${row.operator || "--"}`
     },
     {
       label: "最后操作时间",
-      prop: "remark",
+      prop: "updatedAt",
       formatter: row =>
         `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "启/停用",
       width: 140,
-      prop: "levelSign",
+      prop: "openStatus",
       cellRenderer: ({ row }) => {
-        if (row.levelSign === undefined) {
-          row.levelSign = 2;
+        if (row.openStatus === undefined) {
+          row.openStatus = 2;
         }
         return (
           <el-switch
-            modelValue={row.levelSign}
+            modelValue={row.openStatus}
             onChange={value => {
-              if (value !== row.levelSign) {
-                console.log(value, "---", row.levelSign);
+              if (value !== row.openStatus) {
+                console.log(value, "---", row.openStatus);
                 onEd(row, value);
               }
             }}
@@ -138,9 +148,9 @@ export function useColumns() {
     },
     {
       label: "状态",
-      prop: "status",
+      prop: "publishStatus",
       cellRenderer: ({ row }) => {
-        const status = statusMap[row.status] || {
+        const status = statusMap[row.publishStatus] || {
           text: "--",
           color: "text-gray-400"
         };
@@ -149,7 +159,7 @@ export function useColumns() {
     },
     {
       label: "操作",
-      width: "150",
+      width: "200",
       fixed: "right",
       slot: "operation"
     }
@@ -199,8 +209,10 @@ export function useColumns() {
   };
 
   const onEdit = async (row: any) => {
-    const res = await store.info({ id: row.id });
-    editData.value = res.data.list;
+    // const res = await store.info({ id: row.id });
+    // editData.value = res.data.list;
+    // shwAdd(1);
+    editData.value = row;
     shwAdd(1);
   };
 
@@ -272,18 +284,18 @@ export function useColumns() {
       return;
     }
     try {
-      const params = { id: row.id };
+      const params = { id: row.id, publishStatus: 2 };
       const res = await store.pub(params);
       if (res?.code === 0) {
-        message("活动发布成功", { type: "success", showClose: true });
+        message("跑马灯发布成功", { type: "success", showClose: true });
         await getList(searchParam.value);
         addVis.value = false;
       } else {
-        message(res?.msg || "活动发布失败", { type: "error" });
+        message(res?.msg || "跑马灯发布失败", { type: "error" });
       }
     } catch (error) {
-      console.error("活动发布失败:", error);
-      message("活动发布失败", { type: "error" });
+      console.error("跑马灯发布失败:", error);
+      message("跑马灯发布失败", { type: "error" });
     }
   };
 

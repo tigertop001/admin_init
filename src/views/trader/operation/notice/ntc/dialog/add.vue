@@ -23,31 +23,45 @@ const dlgConf = computed(() => {
 
 const visible = ref(false);
 const formData = ref<FieldValues>({
+  type: 2, // 类型 1:系统消息 2:公告
   title: "",
   content: "",
   startAt: null,
   endAt: null,
-  recipient: 1,
-  uid: ""
+  receiverType: 1,
+  SendUidList: "",
+  sendAt: null
 });
 
 const dateRange = ref({
-  sentTime: []
+  // sentTime: []
+  sendAtTime: []
 });
 
-const onDateChg = (val: any[]) => {
-  if (val && Array.isArray(val)) {
-    formData.value.startAt = Math.floor(val[0]);
-    formData.value.endAt = Math.floor(val[1]);
-    dateRange.value.sentTime = val;
+const onDateChg = (val: any) => {
+  console.log("时间12321aa3", Math.floor(val));
+  if (val) {
+    formData.value.sendAt = Math.floor(val);
+    dateRange.value.sendAtTime = val;
   } else {
-    formData.value.startAt = null;
-    formData.value.endAt = null;
-    dateRange.value.sentTime = [];
+    formData.value.sendAt = null;
+    dateRange.value.sendAtTime = [];
   }
+  // if (val && Array.isArray(val)) {
+  //   formData.value.sendAt = Math.floor(val);
+  //   formData.value.startAt = Math.floor(val[0]);
+  //   formData.value.endAt = Math.floor(val[1]);
+  //   console.log("时间123213", formData.value.sendAt);
+  //   dateRange.value.sentTime = val;
+  // } else {
+  //   formData.value.sendAt = null;
+  //   formData.value.startAt = null;
+  //   formData.value.endAt = null;
+  //   dateRange.value.sentTime = [];
+  // }
 };
 
-const showUidInput = computed(() => formData.value.recipient === 2);
+const showUidInput = computed(() => formData.value.receiverType === 2);
 
 const columns = computed<PlusColumn[]>(() => {
   const baseColumns: PlusColumn[] = [
@@ -80,14 +94,17 @@ const columns = computed<PlusColumn[]>(() => {
     {
       label: "发送时间",
       labelWidth: 100,
-      prop: "sentTime",
+      prop: "sendAtTime",
       valueType: "date-picker",
       fieldProps: {
-        type: "datetimerange",
-        startPlaceholder: "请选择",
-        endPlaceholder: "请选择",
-        modelValue: dateRange.value.sentTime,
-        "onUpdate:modelValue": onDateChg
+        type: "datetime",
+        // startPlaceholder: "请选择",
+        // endPlaceholder: "请选择",
+        modelValue: dateRange.value.sendAtTime,
+        // "onUpdate:modelValue": onDateChg
+        // onUpdate: onDateChg
+        // modelValue: formData.value.sendAtTime, // 显式绑定 sendAt
+        "onUpdate:modelValue": onDateChg // 确保变更时触发
       },
       rules: [
         {
@@ -100,7 +117,7 @@ const columns = computed<PlusColumn[]>(() => {
     {
       label: "收件人",
       labelWidth: 100,
-      prop: "recipient",
+      prop: "receiverType",
       valueType: "radio",
       options: [
         {
@@ -126,7 +143,7 @@ const columns = computed<PlusColumn[]>(() => {
     baseColumns.push({
       label: "会员ID",
       labelWidth: 100,
-      prop: "uid",
+      prop: "SendUidList",
       valueType: "input"
     });
   }
@@ -136,12 +153,15 @@ const columns = computed<PlusColumn[]>(() => {
 
 const crtDefVal = (columns: PlusColumn[]) => {
   const defaultValues = {
+    type: 2, // 类型 1:系统消息 2:公告
     title: "",
     content: "",
     startAt: null,
     endAt: null,
-    recipient: 1,
-    uid: ""
+    receiverType: 1,
+    SendUidList: "",
+    sendAt: null,
+    publishStatus: 1 // 状态 1:未发布 2:待发送 3:已发送/发布 4:已撤回
   };
 
   return defaultValues;
@@ -153,7 +173,7 @@ const emit = defineEmits<{
 }>();
 
 const rstFrm = () => {
-  dateRange.value.sentTime = [];
+  dateRange.value.sendAtTime = [];
   if (props.type === 0) {
     formData.value = crtDefVal(columns.value);
   } else if (props.type === 1 && props.editData) {
@@ -161,8 +181,15 @@ const rstFrm = () => {
       ...crtDefVal(columns.value),
       ...props.editData
     };
-    if (props.editData.startAt && props.editData.endAt) {
-      dateRange.value.sentTime = [props.editData.startAt, props.editData.endAt];
+    // if (props.editData.startAt && props.editData.endAt) {
+    //   // dateRange.value.sendAtTime = [props.editData.startAt, props.editData.endAt];
+    //   dateRange.value.sendAtTime = [props.editData.sendAt];
+    //   console.log("dateRange.value.sendAtTime", dateRange.value.sendAtTime);
+    // }
+    if (props.editData.sendAt) {
+      // dateRange.value.sendAtTime = [props.editData.sendAt];
+      console.log("dateRange.value.sendAt", props.editData.sendAt);
+      console.log("dateRange.value.sendAtTime", dateRange.value.sendAtTime);
     }
   }
 };
@@ -176,16 +203,24 @@ watch(
 );
 
 watch(
-  () => formData.value.recipient,
+  () => formData.value.receiverType,
   newValue => {
     if (newValue === 1) {
-      formData.value.uid = "";
+      formData.value.SendUidList = "";
     }
   }
 );
 
 const onCfm = () => {
+  if (formData.value.receiverType === 2) {
+    formData.value.SendUidList = formData.value.SendUidList.toString()
+      .split(",")
+      .map(Number);
+  } else {
+    formData.value.SendUidList = [];
+  }
   delete formData.value.sentTime;
+  delete formData.value.sendAtTime;
   emit("submit", formData.value);
   emit("update:visible", false);
   if (props.type === 0) {

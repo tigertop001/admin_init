@@ -5,27 +5,28 @@ const apiTp = import.meta.env.VITE_APITYPE;
 const API_URLS = {
   LIST: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/level/list"
+    real: "/api/v1/tenant/sysmanager/marquee-list"
   },
   ADD: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/level/add"
+    real: "/api/v1/tenant/sysmanager/marquee-create"
   },
   EDIT: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/level/edit"
+    real: "/api/v1/tenant/sysmanager/marquee-edit"
   },
   DEL: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/level/delete"
+    real: "/api/v1/tenant/sysmanager/marquee-delete"
   },
   PUB: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/activity/release"
+    real: "/api/v1/tenant/sysmanager/marquee-edit"
   },
+  // 跑马灯 启/停用
   ED: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",
-    real: "/api/v1/tenant/usercenter/vitrural/isEnterThird"
+    real: "/api/v1/tenant/sysmanager/marquee-edit"
   },
   INFO: {
     mock: "/mock/6740733ee0641e1205ae5b92/member/membership/list",

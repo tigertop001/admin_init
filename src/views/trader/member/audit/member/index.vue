@@ -19,7 +19,9 @@ const {
   onBlK,
   onClr,
   onRej,
-  onSelChg
+  onSelChg,
+  batchk,
+  batrej
 } = useColumns();
 
 onMounted(() => {
@@ -29,7 +31,12 @@ onMounted(() => {
 
 <template>
   <div class="mb-4">
-    <Search :exportData="dtLst" @update:param="onPrmUp" />
+    <Search
+      :exportData="dtLst"
+      @update:param="onPrmUp"
+      @batchk="batchk"
+      @batrej="batrej"
+    />
   </div>
 
   <pure-table
