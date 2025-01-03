@@ -1,6 +1,30 @@
 import type { Plugin } from "vite";
 import { isArray } from "@pureadmin/utils";
 import compressPlugin from "vite-plugin-compression";
+import archiver from "archiver";
+import fs from "fs";
+import path from "path";
+
+async function zipDist(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const archive = archiver("zip", {
+      zlib: { level: 9 }
+    });
+    const output = fs.createWriteStream(path.join(process.cwd(), "dist.zip"));
+
+    output.on("close", () => {
+      resolve();
+    });
+
+    archive.on("error", err => {
+      reject(err);
+    });
+
+    archive.pipe(output);
+    archive.directory("dist/", false);
+    archive.finalize();
+  });
+}
 
 export const configCompressPlugin = (
   compress: ViteCompression
@@ -54,6 +78,20 @@ export const configCompressPlugin = (
       }
     }
   });
+
+  // 添加 zip 插件
+  if (compress.includes("zip")) {
+    plugins.push({
+      name: "vite-plugin-zip-dist",
+      closeBundle: async () => {
+        try {
+          await zipDist();
+        } catch (error) {
+          console.error("Failed to zip dist directory:", error);
+        }
+      }
+    });
+  }
 
   return plugins;
 };
