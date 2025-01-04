@@ -88,7 +88,14 @@ export function useColumns() {
         const redirectType = redirectTypeMap[row.redirectType] || {
           text: "--"
         };
-        return <span>{redirectType.text}</span>;
+        // return <span>{redirectType.text}</span>;
+        return (
+          <span>
+            {row.isRedirect
+              ? `${redirectType.text} ${row.redirectTo ? "-" + row.redirectTo : ""}`
+              : "不跳转"}
+          </span>
+        );
       }
     },
     {

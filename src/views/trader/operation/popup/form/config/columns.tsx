@@ -37,11 +37,11 @@ export function useColumns() {
   });
 
   const onEd = async (row: any, value: number) => {
-    if (value === row.levelSign) return;
+    if (value === row.IsDisplay) return;
     try {
       const params = {
-        uid: row.id,
-        isThird: value
+        id: row.id,
+        IsDisplay: value
       };
       const res = await store.ed(params);
       if (res?.code === 0) {
@@ -49,71 +49,95 @@ export function useColumns() {
         getList(searchParam.value);
       } else {
         message(res?.msg || "设置失败", { type: "error" });
-        row.levelSign = !value;
+        row.IsDisplay = !value;
       }
     } catch (error) {
       console.error("设置失败:", error);
       message("设置失败", { type: "error" });
-      row.levelSign = !value;
+      row.IsDisplay = !value;
     }
+  };
+
+  const popTypeMap = {
+    1: { text: "未登录弹窗" },
+    2: { text: "登陆弹窗" },
+    3: { text: "返回首页弹窗" },
+    4: { text: "界面刷新弹窗" }
+  };
+
+  const redirectTypeMap = {
+    1: { text: "指定游戏" },
+    2: { text: "内部界面" },
+    3: { text: "指定活动详情" },
+    4: { text: "外部链接" }
   };
 
   const columns = [
     {
       label: "ID",
-      prop: "levelName",
-      formatter: row => `${row.levelName || "--"}`
+      prop: "id",
+      formatter: row => `${row.id || "--"}`
     },
     {
       label: "标题",
-      prop: "minVal",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "title",
+      formatter: row => `${row.title || "--"}`
     },
     {
       label: "缩略图",
-      prop: "url",
+      prop: "thumbnail",
       slot: "image",
-      formatter: row => `${row.url || "--"}`
+      formatter: row => `${row.thumbnail || "--"}`
     },
     {
       label: "弹窗类型",
-      prop: "members",
-      formatter: row => `${row.minVal || "--"} `
+      prop: "popType",
+      cellRenderer: ({ row }) => {
+        const popType = popTypeMap[row.popType] || {
+          text: "--"
+        };
+        return <span>{popType.text}</span>;
+      }
     },
     {
       label: "跳转类型",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "redirectType",
+      cellRenderer: ({ row }) => {
+        const redirectType = redirectTypeMap[row.redirectType] || {
+          text: "--"
+        };
+        return <span>{redirectType.text}</span>;
+      }
     },
     {
       label: "排序",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "sort",
+      formatter: row => `${row.sort || "--"}`
     },
     {
       label: "操作人",
-      prop: "peopleLevel",
-      formatter: row => `${row.minVal || "--"}`
+      prop: "operator",
+      formatter: row => `${row.operator || "--"}`
     },
     {
       label: "最后操作时间 ",
-      prop: "members",
+      prop: "updatedAt",
       formatter: row =>
         `${fmtTs(row.updatedAt, "YYYY-MM-DD HH:mm:ss.SSS") || "--"}`
     },
     {
       label: "状态",
       width: 140,
-      prop: "levelSign",
+      prop: "IsDisplay",
       cellRenderer: ({ row }) => {
-        if (row.levelSign === undefined) {
-          row.levelSign = 2;
+        if (row.IsDisplay === undefined) {
+          row.IsDisplay = 2;
         }
         return (
           <el-switch
-            modelValue={row.levelSign}
+            modelValue={row.IsDisplay}
             onChange={value => {
-              if (value !== row.levelSign) {
+              if (value !== row.IsDisplay) {
                 onEd(row, value);
               }
             }}

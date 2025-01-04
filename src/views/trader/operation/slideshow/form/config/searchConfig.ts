@@ -9,19 +9,19 @@ export interface SearchEmits {
 }
 
 export const crtDFS = () => ({
-  tagId: null,
+  title: null,
   status: null,
   start: 0,
   limit: 10
 });
 
 const lvlOp = computed(() => {
-  if (!cfgDt.value?.data?.levelList) {
+  if (!cfgDt.value?.data?.list.EnableStatus) {
     return [];
   }
-  return cfgDt.value.data.levelList.map(item => ({
-    label: item.levelName,
-    value: item.id
+  return cfgDt.value.data.list.EnableStatus.map(item => ({
+    label: item.text,
+    value: item.value
   }));
 });
 const ensDtLd = async () => {
@@ -52,7 +52,7 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     const result: Record<string, any> = {
       start: searchState.value.start,
       limit: searchState.value.limit,
-      tagId: searchState.value.tagId,
+      title: searchState.value.title,
       status: searchState.value.status
     };
 

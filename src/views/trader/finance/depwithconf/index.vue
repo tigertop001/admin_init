@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 
 import EPay from "./epay/index.vue";
-import OT from "./ot/index.vue";
 import PG from "./pg/index.vue";
 import PT from "./pt/index.vue";
 import WT from "./wt/index.vue";
@@ -11,10 +10,9 @@ const actNm = ref("1");
 
 const tabs = [
   { label: "在线支付设置", name: "1", component: EPay },
-  { label: "线下转账设置", name: "2", component: OT },
-  { label: "代付通道设置", name: "3", component: PG },
-  { label: "支付类型管理", name: "4", component: PT },
-  { label: "提款类型管理", name: "5", component: WT }
+  { label: "代付通道设置", name: "2", component: PG },
+  { label: "支付类型管理", name: "3", component: PT },
+  { label: "提款类型管理", name: "4", component: WT }
 ];
 
 const onClk = (tab: any) => {

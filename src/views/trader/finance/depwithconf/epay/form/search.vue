@@ -7,6 +7,8 @@ import { ref } from "vue";
 
 const emit = defineEmits<{
   (_e: "update:param", _param: Record<string, any>): void;
+  (_e: "add"): void;
+  (_e: "marset"): void;
 }>();
 
 const {

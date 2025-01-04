@@ -2,9 +2,9 @@
 import { onMounted } from "vue";
 import { useColumns } from "./form/config/columns";
 import Search from "./form/search.vue";
-import Add from "./dialog/add.vue";
+import Add from "./dialog/add/index.vue";
 import Marset from "./dialog/marset.vue";
-import Set from "./dialog/set.vue";
+import Set from "./dialog/set/index.vue";
 
 const {
   loading,

@@ -23,7 +23,8 @@ const {
   onPrmUp,
   onDel,
   onPub,
-  onRev
+  onRev,
+  onDet
 } = useColumns();
 
 onMounted(() => {
@@ -62,7 +63,7 @@ onMounted(() => {
       <el-button link type="danger" size="small" @click="onDel(row)">
         删除
       </el-button>
-      <el-button link type="warning" size="small" @click="onEdit(row)">
+      <el-button link type="warning" size="small" @click="onDet(row)">
         详情
       </el-button>
       <el-button link type="warning" size="small" @click="onRev(row)">

@@ -19,6 +19,8 @@ export interface SearchStateType {
 
 export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
+  add: () => void;
+  marset: () => void;
 }
 
 export const crtDFS = (): SearchStateType => ({
@@ -101,7 +103,9 @@ const crtCols = (): PlusColumn[] => [
   }
 ];
 
-export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
+export const useSearch = (
+  emit: (event: keyof SearchEmits, ...args: any[]) => void
+) => {
   const searchState = ref<SearchStateType>(crtDFS());
 
   const param = computed(() => {
@@ -139,7 +143,6 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
     emit("add");
   };
   const onMarSet = () => {
-    console.log("ccc-");
     emit("marset");
   };
   return {

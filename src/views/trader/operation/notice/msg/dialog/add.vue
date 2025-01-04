@@ -16,7 +16,13 @@ const props = defineProps<{
 const dlgConf = computed(() => {
   const isEdit = props.type === 1;
   return {
-    title: isEdit ? "修改消息" : "添加消息",
+    // title: isEdit ? "修改消息" : "添加消息",
+    title:
+      props.type === 1
+        ? "修改消息"
+        : props.type === 3
+          ? "消息详情"
+          : "添加消息",
     confirmText: isEdit ? "修改" : "提交"
   };
 });
@@ -63,6 +69,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "title",
       valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       rules: [
         {
           required: true,
@@ -76,6 +85,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "content",
       valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       rules: [
         {
           required: true,
@@ -96,7 +108,8 @@ const columns = computed<PlusColumn[]>(() => {
         // modelValue: dateRange.value.sentTime,
         // "onUpdate:modelValue": onDateChg
         modelValue: formData.value.sendAt, // 显式绑定 sendAt
-        "onUpdate:modelValue": onDateChg // 确保变更时触发
+        "onUpdate:modelValue": onDateChg, // 确保变更时触发
+        disabled: props.type === 3 // 动态禁用
       },
       rules: [
         {
@@ -111,6 +124,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "receiverType",
       valueType: "radio",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       options: [
         {
           label: "全部会员",
@@ -136,7 +152,10 @@ const columns = computed<PlusColumn[]>(() => {
       label: "会员ID",
       labelWidth: 100,
       prop: "SendUidList",
-      valueType: "input"
+      valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      }
     });
   }
 
@@ -168,7 +187,7 @@ const rstFrm = () => {
   dateRange.value.sentTime = [];
   if (props.type === 0) {
     formData.value = crtDefVal(columns.value);
-  } else if (props.type === 1 && props.editData) {
+  } else if ((props.type === 1 || props.type === 3) && props.editData) {
     formData.value = {
       ...crtDefVal(columns.value),
       ...props.editData

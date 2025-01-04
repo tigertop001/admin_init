@@ -166,6 +166,12 @@ export function useColumns() {
     shwAdd(1);
   };
 
+  // 详情
+  const onDet = (row: any) => {
+    editData.value = row;
+    shwAdd(3);
+  };
+
   const onAddSub = async (formValues: FieldValues) => {
     if (addType.value === 0) {
       await putAdd(formValues);
@@ -303,6 +309,7 @@ export function useColumns() {
     onDel,
     onPrmUp,
     onPub,
-    onRev
+    onRev,
+    onDet
   };
 }

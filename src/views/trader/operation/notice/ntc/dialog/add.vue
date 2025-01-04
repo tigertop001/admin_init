@@ -16,7 +16,12 @@ const props = defineProps<{
 const dlgConf = computed(() => {
   const isEdit = props.type === 1;
   return {
-    title: isEdit ? "修改公告" : "添加公告",
+    title:
+      props.type === 1
+        ? "修改公告"
+        : props.type === 3
+          ? "公告详情"
+          : "添加公告",
     confirmText: isEdit ? "修改" : "提交"
   };
 });
@@ -70,6 +75,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "title",
       valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       rules: [
         {
           required: true,
@@ -83,6 +91,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "content",
       valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       rules: [
         {
           required: true,
@@ -104,7 +115,8 @@ const columns = computed<PlusColumn[]>(() => {
         // "onUpdate:modelValue": onDateChg
         // onUpdate: onDateChg
         // modelValue: formData.value.sendAtTime, // 显式绑定 sendAt
-        "onUpdate:modelValue": onDateChg // 确保变更时触发
+        "onUpdate:modelValue": onDateChg, // 确保变更时触发
+        disabled: props.type === 3 // 动态禁用
       },
       rules: [
         {
@@ -119,6 +131,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "receiverType",
       valueType: "radio",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       options: [
         {
           label: "全部会员",
@@ -144,7 +159,10 @@ const columns = computed<PlusColumn[]>(() => {
       label: "会员ID",
       labelWidth: 100,
       prop: "SendUidList",
-      valueType: "input"
+      valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      }
     });
   }
 
@@ -176,7 +194,7 @@ const rstFrm = () => {
   dateRange.value.sendAtTime = [];
   if (props.type === 0) {
     formData.value = crtDefVal(columns.value);
-  } else if (props.type === 1 && props.editData) {
+  } else if ((props.type === 1 || props.type === 3) && props.editData) {
     formData.value = {
       ...crtDefVal(columns.value),
       ...props.editData
@@ -186,11 +204,6 @@ const rstFrm = () => {
     //   dateRange.value.sendAtTime = [props.editData.sendAt];
     //   console.log("dateRange.value.sendAtTime", dateRange.value.sendAtTime);
     // }
-    if (props.editData.sendAt) {
-      // dateRange.value.sendAtTime = [props.editData.sendAt];
-      console.log("dateRange.value.sendAt", props.editData.sendAt);
-      console.log("dateRange.value.sendAtTime", dateRange.value.sendAtTime);
-    }
   }
 };
 

@@ -1,5 +1,7 @@
 import { computed, ref } from "vue";
 import type { PlusColumn } from "plus-pro-components";
+import { usPullCols } from "@/views/trader/comm/pull/notice/form/columns";
+const { getPullData, cfgDt, loading } = usPullCols();
 
 export interface SearchEmits {
   "update:param": (param: Record<string, any>) => void;
@@ -8,37 +10,41 @@ export interface SearchEmits {
 
 export const crtDFS = () => ({
   type: 2, // 类型 1:系统消息 2:公告
-  title: null,
-  status: null,
   start: 0,
-  limit: 10
+  limit: 10,
+  query: {
+    keyword: "",
+    type: null
+  }
 });
+
+const lvlOp = computed(() => {
+  if (!cfgDt.value?.data?.list.PublishStatus) {
+    return [];
+  }
+  return cfgDt.value.data.list.PublishStatus.map(item => ({
+    label: item.text,
+    value: item.value
+  }));
+});
+const ensDtLd = async () => {
+  if (!cfgDt.value && !loading.value) {
+    await getPullData({ query: ["PublishStatus"] });
+  }
+};
 
 const crtCols = (): PlusColumn[] => [
   {
     label: "标题",
-    prop: "title",
+    prop: "query.keyword",
     valueType: "input"
   },
   {
     label: "状态",
     labelWidth: 100,
-    prop: "status",
+    prop: "query.type",
     valueType: "select",
-    options: [
-      {
-        label: "全部",
-        value: 0
-      },
-      {
-        label: "开启",
-        value: 1
-      },
-      {
-        label: "关闭",
-        value: 2
-      }
-    ]
+    options: lvlOp.value
   }
 ];
 
@@ -50,14 +56,16 @@ export const useSearch = (emit: (event: string, ...args: any[]) => void) => {
       type: searchState.value.type,
       start: searchState.value.start,
       limit: searchState.value.limit,
-      title: searchState.value.title,
-      status: searchState.value.status
+      query: searchState.value.query
     };
 
     return result;
   });
   const searchVal = computed(() => param.value);
   const columns = crtCols();
+
+  // 在初始化时加载数据
+  ensDtLd();
 
   const onSearch = () => {
     emit("update:param", param.value);

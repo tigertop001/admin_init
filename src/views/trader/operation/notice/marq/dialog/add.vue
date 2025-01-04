@@ -16,7 +16,12 @@ const props = defineProps<{
 const dlgConf = computed(() => {
   const isEdit = props.type === 1;
   return {
-    title: isEdit ? "修改跑马灯" : "添加跑马灯",
+    title:
+      props.type === 1
+        ? "修改跑马灯"
+        : props.type === 3
+          ? "跑马灯详情"
+          : "添加跑马灯",
     confirmText: isEdit ? "修改" : "提交"
   };
 });
@@ -73,6 +78,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "content",
       valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       rules: [
         {
           required: true,
@@ -91,7 +99,8 @@ const columns = computed<PlusColumn[]>(() => {
         startPlaceholder: "请选择",
         endPlaceholder: "请选择",
         modelValue: dateRange.value.sentTime,
-        "onUpdate:modelValue": onDateChg
+        "onUpdate:modelValue": onDateChg,
+        disabled: props.type === 3 // 动态禁用
       }
     },
     // {
@@ -115,7 +124,8 @@ const columns = computed<PlusColumn[]>(() => {
       valueType: "input",
       fieldProps: {
         type: "number",
-        placeholder: "请输入排序"
+        placeholder: "请输入排序",
+        disabled: props.type === 3 // 动态禁用
       },
       rules: FORM_RULES.sort
     },
@@ -124,6 +134,9 @@ const columns = computed<PlusColumn[]>(() => {
       labelWidth: 100,
       prop: "receiverType",
       valueType: "radio",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      },
       options: [
         {
           label: "全部会员",
@@ -137,7 +150,7 @@ const columns = computed<PlusColumn[]>(() => {
       rules: [
         {
           required: true,
-          message: "请输入会员ID",
+          message: "请选择收件人",
           trigger: ["blur", "change"]
         }
       ]
@@ -149,7 +162,10 @@ const columns = computed<PlusColumn[]>(() => {
       label: "会员ID",
       labelWidth: 100,
       prop: "SendUidList",
-      valueType: "input"
+      valueType: "input",
+      fieldProps: {
+        disabled: props.type === 3 // 动态禁用
+      }
     });
   }
 
@@ -177,7 +193,7 @@ const rstFrm = () => {
   dateRange.value.sentTime = [];
   if (props.type === 0) {
     formData.value = crtDefVal(columns.value);
-  } else if (props.type === 1 && props.editData) {
+  } else if ((props.type === 1 || props.type === 3) && props.editData) {
     formData.value = {
       ...crtDefVal(columns.value),
       ...props.editData

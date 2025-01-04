@@ -28,7 +28,7 @@ const formData = ref<FieldValues>({
   startAt: null,
   endAt: null,
   isRedirect: false,
-  uid: "",
+  redirectTo: "",
   redirectType: 1
 });
 
@@ -159,52 +159,52 @@ const columns = computed<PlusColumn[]>(() => {
       ]
     });
   }
-  if (showUidInput1.value == 1) {
+  if (showUidInput1.value == 1 && showUidInput.value) {
     baseColumns.push({
       label: "游戏ID",
       labelWidth: 100,
-      prop: "uid",
+      prop: "redirectTo",
       valueType: "input"
     });
   }
 
-  if (showUidInput1.value == 2) {
+  if (showUidInput1.value == 2 && showUidInput.value) {
     baseColumns.push({
       label: "内部界面",
       labelWidth: 100,
-      prop: "uid",
+      prop: "redirectTo",
       valueType: "select",
       options: [
         {
           label: "代理中心",
-          value: 1
+          value: "代理中心"
         },
         {
           label: "VIP详情",
-          value: 2
+          value: "VIP详情"
         },
         {
           label: "充值界面",
-          value: 3
+          value: "充值界面"
         }
       ]
     });
   }
 
-  if (showUidInput1.value == 3) {
+  if (showUidInput1.value == 3 && showUidInput.value) {
     baseColumns.push({
       label: "活动ID",
       labelWidth: 100,
-      prop: "uid",
+      prop: "redirectTo",
       valueType: "input"
     });
   }
 
-  if (showUidInput1.value == 4) {
+  if (showUidInput1.value == 4 && showUidInput.value) {
     baseColumns.push({
       label: "外部链接",
       labelWidth: 100,
-      prop: "uid",
+      prop: "redirectTo",
       valueType: "input"
     });
   }
@@ -219,7 +219,7 @@ const crtDefVal = (columns: PlusColumn[]) => {
     startAt: null,
     endAt: null,
     isRedirect: false,
-    uid: "",
+    redirectTo: "",
     redirectType: 1
   };
 
